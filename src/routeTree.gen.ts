@@ -11,6 +11,13 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WelcomeRouteImport } from './routes/welcome'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as OnboardingIntroRouteImport } from './routes/onboarding.intro'
+import { Route as OnboardingChallengesRouteImport } from './routes/onboarding.challenges'
+import { Route as OnboardingBasicInfoRouteImport } from './routes/onboarding.basic-info'
+import { Route as OnboardingAssessmentIntroRouteImport } from './routes/onboarding.assessment-intro'
+import { Route as AuthSignupRouteImport } from './routes/auth.signup'
+import { Route as AuthLoginRouteImport } from './routes/auth.login'
+import { Route as AuthForgotPasswordRouteImport } from './routes/auth.forgot-password'
 
 const WelcomeRoute = WelcomeRouteImport.update({
   id: '/welcome',
@@ -22,31 +29,123 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OnboardingIntroRoute = OnboardingIntroRouteImport.update({
+  id: '/onboarding/intro',
+  path: '/onboarding/intro',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingChallengesRoute = OnboardingChallengesRouteImport.update({
+  id: '/onboarding/challenges',
+  path: '/onboarding/challenges',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingBasicInfoRoute = OnboardingBasicInfoRouteImport.update({
+  id: '/onboarding/basic-info',
+  path: '/onboarding/basic-info',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingAssessmentIntroRoute =
+  OnboardingAssessmentIntroRouteImport.update({
+    id: '/onboarding/assessment-intro',
+    path: '/onboarding/assessment-intro',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AuthSignupRoute = AuthSignupRouteImport.update({
+  id: '/auth/signup',
+  path: '/auth/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthLoginRoute = AuthLoginRouteImport.update({
+  id: '/auth/login',
+  path: '/auth/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
+  id: '/auth/forgot-password',
+  path: '/auth/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/welcome': typeof WelcomeRoute
+  '/auth/forgot-password': typeof AuthForgotPasswordRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/signup': typeof AuthSignupRoute
+  '/onboarding/assessment-intro': typeof OnboardingAssessmentIntroRoute
+  '/onboarding/basic-info': typeof OnboardingBasicInfoRoute
+  '/onboarding/challenges': typeof OnboardingChallengesRoute
+  '/onboarding/intro': typeof OnboardingIntroRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/welcome': typeof WelcomeRoute
+  '/auth/forgot-password': typeof AuthForgotPasswordRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/signup': typeof AuthSignupRoute
+  '/onboarding/assessment-intro': typeof OnboardingAssessmentIntroRoute
+  '/onboarding/basic-info': typeof OnboardingBasicInfoRoute
+  '/onboarding/challenges': typeof OnboardingChallengesRoute
+  '/onboarding/intro': typeof OnboardingIntroRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/welcome': typeof WelcomeRoute
+  '/auth/forgot-password': typeof AuthForgotPasswordRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/signup': typeof AuthSignupRoute
+  '/onboarding/assessment-intro': typeof OnboardingAssessmentIntroRoute
+  '/onboarding/basic-info': typeof OnboardingBasicInfoRoute
+  '/onboarding/challenges': typeof OnboardingChallengesRoute
+  '/onboarding/intro': typeof OnboardingIntroRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/welcome'
+  fullPaths:
+    | '/'
+    | '/welcome'
+    | '/auth/forgot-password'
+    | '/auth/login'
+    | '/auth/signup'
+    | '/onboarding/assessment-intro'
+    | '/onboarding/basic-info'
+    | '/onboarding/challenges'
+    | '/onboarding/intro'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/welcome'
-  id: '__root__' | '/' | '/welcome'
+  to:
+    | '/'
+    | '/welcome'
+    | '/auth/forgot-password'
+    | '/auth/login'
+    | '/auth/signup'
+    | '/onboarding/assessment-intro'
+    | '/onboarding/basic-info'
+    | '/onboarding/challenges'
+    | '/onboarding/intro'
+  id:
+    | '__root__'
+    | '/'
+    | '/welcome'
+    | '/auth/forgot-password'
+    | '/auth/login'
+    | '/auth/signup'
+    | '/onboarding/assessment-intro'
+    | '/onboarding/basic-info'
+    | '/onboarding/challenges'
+    | '/onboarding/intro'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   WelcomeRoute: typeof WelcomeRoute
+  AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
+  AuthLoginRoute: typeof AuthLoginRoute
+  AuthSignupRoute: typeof AuthSignupRoute
+  OnboardingAssessmentIntroRoute: typeof OnboardingAssessmentIntroRoute
+  OnboardingBasicInfoRoute: typeof OnboardingBasicInfoRoute
+  OnboardingChallengesRoute: typeof OnboardingChallengesRoute
+  OnboardingIntroRoute: typeof OnboardingIntroRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +164,68 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/onboarding/intro': {
+      id: '/onboarding/intro'
+      path: '/onboarding/intro'
+      fullPath: '/onboarding/intro'
+      preLoaderRoute: typeof OnboardingIntroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding/challenges': {
+      id: '/onboarding/challenges'
+      path: '/onboarding/challenges'
+      fullPath: '/onboarding/challenges'
+      preLoaderRoute: typeof OnboardingChallengesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding/basic-info': {
+      id: '/onboarding/basic-info'
+      path: '/onboarding/basic-info'
+      fullPath: '/onboarding/basic-info'
+      preLoaderRoute: typeof OnboardingBasicInfoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding/assessment-intro': {
+      id: '/onboarding/assessment-intro'
+      path: '/onboarding/assessment-intro'
+      fullPath: '/onboarding/assessment-intro'
+      preLoaderRoute: typeof OnboardingAssessmentIntroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/signup': {
+      id: '/auth/signup'
+      path: '/auth/signup'
+      fullPath: '/auth/signup'
+      preLoaderRoute: typeof AuthSignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/login': {
+      id: '/auth/login'
+      path: '/auth/login'
+      fullPath: '/auth/login'
+      preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/forgot-password': {
+      id: '/auth/forgot-password'
+      path: '/auth/forgot-password'
+      fullPath: '/auth/forgot-password'
+      preLoaderRoute: typeof AuthForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   WelcomeRoute: WelcomeRoute,
+  AuthForgotPasswordRoute: AuthForgotPasswordRoute,
+  AuthLoginRoute: AuthLoginRoute,
+  AuthSignupRoute: AuthSignupRoute,
+  OnboardingAssessmentIntroRoute: OnboardingAssessmentIntroRoute,
+  OnboardingBasicInfoRoute: OnboardingBasicInfoRoute,
+  OnboardingChallengesRoute: OnboardingChallengesRoute,
+  OnboardingIntroRoute: OnboardingIntroRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
