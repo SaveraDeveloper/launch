@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WelcomeRouteImport } from './routes/welcome'
+import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AssessmentIndexRouteImport } from './routes/assessment.index'
 import { Route as OnboardingIntroRouteImport } from './routes/onboarding.intro'
@@ -22,10 +23,15 @@ import { Route as AuthForgotPasswordRouteImport } from './routes/auth.forgot-pas
 import { Route as AssessmentRecommendationsRouteImport } from './routes/assessment.recommendations'
 import { Route as AssessmentProcessingRouteImport } from './routes/assessment.processing'
 import { Route as AssessmentDiscoveryRouteImport } from './routes/assessment.discovery'
+import { Route as AppHomeRouteImport } from './routes/_app.home'
 
 const WelcomeRoute = WelcomeRouteImport.update({
   id: '/welcome',
   path: '/welcome',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -90,10 +96,16 @@ const AssessmentDiscoveryRoute = AssessmentDiscoveryRouteImport.update({
   path: '/assessment/discovery',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppHomeRoute = AppHomeRouteImport.update({
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/welcome': typeof WelcomeRoute
+  '/home': typeof AppHomeRoute
   '/assessment/discovery': typeof AssessmentDiscoveryRoute
   '/assessment/processing': typeof AssessmentProcessingRoute
   '/assessment/recommendations': typeof AssessmentRecommendationsRoute
@@ -109,6 +121,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/welcome': typeof WelcomeRoute
+  '/home': typeof AppHomeRoute
   '/assessment/discovery': typeof AssessmentDiscoveryRoute
   '/assessment/processing': typeof AssessmentProcessingRoute
   '/assessment/recommendations': typeof AssessmentRecommendationsRoute
@@ -124,7 +137,9 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_app': typeof AppRouteWithChildren
   '/welcome': typeof WelcomeRoute
+  '/_app/home': typeof AppHomeRoute
   '/assessment/discovery': typeof AssessmentDiscoveryRoute
   '/assessment/processing': typeof AssessmentProcessingRoute
   '/assessment/recommendations': typeof AssessmentRecommendationsRoute
@@ -142,6 +157,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/welcome'
+    | '/home'
     | '/assessment/discovery'
     | '/assessment/processing'
     | '/assessment/recommendations'
@@ -157,6 +173,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/welcome'
+    | '/home'
     | '/assessment/discovery'
     | '/assessment/processing'
     | '/assessment/recommendations'
@@ -171,7 +188,9 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/_app'
     | '/welcome'
+    | '/_app/home'
     | '/assessment/discovery'
     | '/assessment/processing'
     | '/assessment/recommendations'
@@ -187,6 +206,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
   WelcomeRoute: typeof WelcomeRoute
   AssessmentDiscoveryRoute: typeof AssessmentDiscoveryRoute
   AssessmentProcessingRoute: typeof AssessmentProcessingRoute
@@ -208,6 +228,13 @@ declare module '@tanstack/react-router' {
       path: '/welcome'
       fullPath: '/welcome'
       preLoaderRoute: typeof WelcomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -294,11 +321,29 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AssessmentDiscoveryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/home': {
+      id: '/_app/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof AppHomeRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppHomeRoute: typeof AppHomeRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppHomeRoute: AppHomeRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
   WelcomeRoute: WelcomeRoute,
   AssessmentDiscoveryRoute: AssessmentDiscoveryRoute,
   AssessmentProcessingRoute: AssessmentProcessingRoute,
