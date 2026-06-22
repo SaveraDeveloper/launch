@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { ScreenScaffold, Section, Placeholder, ActionList } from "@/components/ScreenScaffold";
 
 export const Route = createFileRoute("/_app/safety/crisis")({ component: () => (
@@ -7,7 +7,9 @@ export const Route = createFileRoute("/_app/safety/crisis")({ component: () => (
     <ActionList items={[
       { label: "Call a Helpline", variant: "primary" },
       { label: "Text a Crisis Line", variant: "secondary" },
-      { label: "Grounding Exercise", variant: "secondary", to: "/activities/breathing" },
     ]} />
+    <Link to="/activities/$id" params={{ id: "breathing" }} className="block rounded-xl bg-secondary px-4 py-3 text-center text-sm hover:bg-accent">
+      Grounding Exercise
+    </Link>
   </ScreenScaffold>
 ) });

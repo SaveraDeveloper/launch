@@ -29,16 +29,16 @@ function Page() {
           <ActionList items={[{ label: "View Insights", variant: "secondary", to: "/insights" }]} />
         </Section>
         <Section title="Active Experience">
-          <ActionList items={[
-            { label: "Continue Experience", variant: "primary", to: "/experiences/thought-lab/active" },
-            { label: "Browse Experiences", variant: "ghost", to: "/experiences" },
-          ]} />
+          <Link to="/experiences/$id/active" params={{ id: "thought-lab" }} className="block rounded-xl bg-primary px-4 py-3 text-center text-sm font-medium text-primary-foreground hover:bg-primary/90">
+            Continue Experience
+          </Link>
+          <Link to="/experiences" className="mt-2 block rounded-xl px-4 py-3 text-center text-sm text-muted-foreground hover:bg-accent/50">
+            Browse Experiences
+          </Link>
         </Section>
         <Section title="Recommended Activities">
-          <ActionList items={[
-            { label: "5-min Breathing", variant: "secondary", to: "/activities/breathing" },
-            { label: "Thought Reframe", variant: "secondary", to: "/activities/reframe" },
-          ]} />
+          <Link to="/activities/$id" params={{ id: "breathing" }} className="block rounded-xl bg-secondary px-4 py-3 text-sm hover:bg-accent">5-min Breathing</Link>
+          <Link to="/activities/$id" params={{ id: "reframe" }} className="block rounded-xl bg-secondary px-4 py-3 text-sm hover:bg-accent">Thought Reframe</Link>
         </Section>
         <Section title="Quick Actions">
           <div className="grid grid-cols-2 gap-2">
