@@ -23,7 +23,44 @@ import { Route as AuthForgotPasswordRouteImport } from './routes/auth.forgot-pas
 import { Route as AssessmentRecommendationsRouteImport } from './routes/assessment.recommendations'
 import { Route as AssessmentProcessingRouteImport } from './routes/assessment.processing'
 import { Route as AssessmentDiscoveryRouteImport } from './routes/assessment.discovery'
+import { Route as AppTrackingRouteImport } from './routes/_app.tracking'
+import { Route as AppProfileRouteImport } from './routes/_app.profile'
+import { Route as AppNotificationsRouteImport } from './routes/_app.notifications'
+import { Route as AppInsightsRouteImport } from './routes/_app.insights'
 import { Route as AppHomeRouteImport } from './routes/_app.home'
+import { Route as AppCheckInRouteImport } from './routes/_app.check-in'
+import { Route as AppWellbeingIndexRouteImport } from './routes/_app.wellbeing.index'
+import { Route as AppTrackingIndexRouteImport } from './routes/_app.tracking.index'
+import { Route as AppSettingsIndexRouteImport } from './routes/_app.settings.index'
+import { Route as AppSafetyIndexRouteImport } from './routes/_app.safety.index'
+import { Route as AppResourcesIndexRouteImport } from './routes/_app.resources.index'
+import { Route as AppProgressIndexRouteImport } from './routes/_app.progress.index'
+import { Route as AppExperiencesIndexRouteImport } from './routes/_app.experiences.index'
+import { Route as AppCompanionIndexRouteImport } from './routes/_app.companion.index'
+import { Route as AppWellbeingSelectRouteImport } from './routes/_app.wellbeing.select'
+import { Route as AppWellbeingResultsRouteImport } from './routes/_app.wellbeing.results'
+import { Route as AppWellbeingAssessmentRouteImport } from './routes/_app.wellbeing.assessment'
+import { Route as AppTrackingTaskRouteImport } from './routes/_app.tracking.task'
+import { Route as AppTrackingMoodRouteImport } from './routes/_app.tracking.mood'
+import { Route as AppTrackingInsightsRouteImport } from './routes/_app.tracking.insights'
+import { Route as AppTrackingHabitRouteImport } from './routes/_app.tracking.habit'
+import { Route as AppSettingsRemindersRouteImport } from './routes/_app.settings.reminders'
+import { Route as AppSettingsPrivacyRouteImport } from './routes/_app.settings.privacy'
+import { Route as AppSettingsNotificationsRouteImport } from './routes/_app.settings.notifications'
+import { Route as AppSafetyProfessionalRouteImport } from './routes/_app.safety.professional'
+import { Route as AppSafetyCrisisRouteImport } from './routes/_app.safety.crisis'
+import { Route as AppResourcesSavedRouteImport } from './routes/_app.resources.saved'
+import { Route as AppResourcesIdRouteImport } from './routes/_app.resources.$id'
+import { Route as AppProgressMilestonesRouteImport } from './routes/_app.progress.milestones'
+import { Route as AppProgressAchievementsRouteImport } from './routes/_app.progress.achievements'
+import { Route as AppCompanionReflectionRouteImport } from './routes/_app.companion.reflection'
+import { Route as AppCompanionChatRouteImport } from './routes/_app.companion.chat'
+import { Route as AppExperiencesIdIndexRouteImport } from './routes/_app.experiences.$id.index'
+import { Route as AppActivitiesIdIndexRouteImport } from './routes/_app.activities.$id.index'
+import { Route as AppExperiencesIdCompleteRouteImport } from './routes/_app.experiences.$id.complete'
+import { Route as AppExperiencesIdActiveRouteImport } from './routes/_app.experiences.$id.active'
+import { Route as AppActivitiesIdCompleteRouteImport } from './routes/_app.activities.$id.complete'
+import { Route as AppActivitiesIdActiveRouteImport } from './routes/_app.activities.$id.active'
 
 const WelcomeRoute = WelcomeRouteImport.update({
   id: '/welcome',
@@ -96,16 +133,208 @@ const AssessmentDiscoveryRoute = AssessmentDiscoveryRouteImport.update({
   path: '/assessment/discovery',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppTrackingRoute = AppTrackingRouteImport.update({
+  id: '/tracking',
+  path: '/tracking',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProfileRoute = AppProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppNotificationsRoute = AppNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppInsightsRoute = AppInsightsRouteImport.update({
+  id: '/insights',
+  path: '/insights',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppHomeRoute = AppHomeRouteImport.update({
   id: '/home',
   path: '/home',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCheckInRoute = AppCheckInRouteImport.update({
+  id: '/check-in',
+  path: '/check-in',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppWellbeingIndexRoute = AppWellbeingIndexRouteImport.update({
+  id: '/wellbeing/',
+  path: '/wellbeing/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppTrackingIndexRoute = AppTrackingIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppTrackingRoute,
+} as any)
+const AppSettingsIndexRoute = AppSettingsIndexRouteImport.update({
+  id: '/settings/',
+  path: '/settings/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSafetyIndexRoute = AppSafetyIndexRouteImport.update({
+  id: '/safety/',
+  path: '/safety/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppResourcesIndexRoute = AppResourcesIndexRouteImport.update({
+  id: '/resources/',
+  path: '/resources/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProgressIndexRoute = AppProgressIndexRouteImport.update({
+  id: '/progress/',
+  path: '/progress/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppExperiencesIndexRoute = AppExperiencesIndexRouteImport.update({
+  id: '/experiences/',
+  path: '/experiences/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCompanionIndexRoute = AppCompanionIndexRouteImport.update({
+  id: '/companion/',
+  path: '/companion/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppWellbeingSelectRoute = AppWellbeingSelectRouteImport.update({
+  id: '/wellbeing/select',
+  path: '/wellbeing/select',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppWellbeingResultsRoute = AppWellbeingResultsRouteImport.update({
+  id: '/wellbeing/results',
+  path: '/wellbeing/results',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppWellbeingAssessmentRoute = AppWellbeingAssessmentRouteImport.update({
+  id: '/wellbeing/assessment',
+  path: '/wellbeing/assessment',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppTrackingTaskRoute = AppTrackingTaskRouteImport.update({
+  id: '/task',
+  path: '/task',
+  getParentRoute: () => AppTrackingRoute,
+} as any)
+const AppTrackingMoodRoute = AppTrackingMoodRouteImport.update({
+  id: '/mood',
+  path: '/mood',
+  getParentRoute: () => AppTrackingRoute,
+} as any)
+const AppTrackingInsightsRoute = AppTrackingInsightsRouteImport.update({
+  id: '/insights',
+  path: '/insights',
+  getParentRoute: () => AppTrackingRoute,
+} as any)
+const AppTrackingHabitRoute = AppTrackingHabitRouteImport.update({
+  id: '/habit',
+  path: '/habit',
+  getParentRoute: () => AppTrackingRoute,
+} as any)
+const AppSettingsRemindersRoute = AppSettingsRemindersRouteImport.update({
+  id: '/settings/reminders',
+  path: '/settings/reminders',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsPrivacyRoute = AppSettingsPrivacyRouteImport.update({
+  id: '/settings/privacy',
+  path: '/settings/privacy',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsNotificationsRoute =
+  AppSettingsNotificationsRouteImport.update({
+    id: '/settings/notifications',
+    path: '/settings/notifications',
+    getParentRoute: () => AppRoute,
+  } as any)
+const AppSafetyProfessionalRoute = AppSafetyProfessionalRouteImport.update({
+  id: '/safety/professional',
+  path: '/safety/professional',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSafetyCrisisRoute = AppSafetyCrisisRouteImport.update({
+  id: '/safety/crisis',
+  path: '/safety/crisis',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppResourcesSavedRoute = AppResourcesSavedRouteImport.update({
+  id: '/resources/saved',
+  path: '/resources/saved',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppResourcesIdRoute = AppResourcesIdRouteImport.update({
+  id: '/resources/$id',
+  path: '/resources/$id',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProgressMilestonesRoute = AppProgressMilestonesRouteImport.update({
+  id: '/progress/milestones',
+  path: '/progress/milestones',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProgressAchievementsRoute = AppProgressAchievementsRouteImport.update({
+  id: '/progress/achievements',
+  path: '/progress/achievements',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCompanionReflectionRoute = AppCompanionReflectionRouteImport.update({
+  id: '/companion/reflection',
+  path: '/companion/reflection',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCompanionChatRoute = AppCompanionChatRouteImport.update({
+  id: '/companion/chat',
+  path: '/companion/chat',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppExperiencesIdIndexRoute = AppExperiencesIdIndexRouteImport.update({
+  id: '/experiences/$id/',
+  path: '/experiences/$id/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppActivitiesIdIndexRoute = AppActivitiesIdIndexRouteImport.update({
+  id: '/activities/$id/',
+  path: '/activities/$id/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppExperiencesIdCompleteRoute =
+  AppExperiencesIdCompleteRouteImport.update({
+    id: '/experiences/$id/complete',
+    path: '/experiences/$id/complete',
+    getParentRoute: () => AppRoute,
+  } as any)
+const AppExperiencesIdActiveRoute = AppExperiencesIdActiveRouteImport.update({
+  id: '/experiences/$id/active',
+  path: '/experiences/$id/active',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppActivitiesIdCompleteRoute = AppActivitiesIdCompleteRouteImport.update({
+  id: '/activities/$id/complete',
+  path: '/activities/$id/complete',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppActivitiesIdActiveRoute = AppActivitiesIdActiveRouteImport.update({
+  id: '/activities/$id/active',
+  path: '/activities/$id/active',
   getParentRoute: () => AppRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/welcome': typeof WelcomeRoute
+  '/check-in': typeof AppCheckInRoute
   '/home': typeof AppHomeRoute
+  '/insights': typeof AppInsightsRoute
+  '/notifications': typeof AppNotificationsRoute
+  '/profile': typeof AppProfileRoute
+  '/tracking': typeof AppTrackingRouteWithChildren
   '/assessment/discovery': typeof AssessmentDiscoveryRoute
   '/assessment/processing': typeof AssessmentProcessingRoute
   '/assessment/recommendations': typeof AssessmentRecommendationsRoute
@@ -117,11 +346,47 @@ export interface FileRoutesByFullPath {
   '/onboarding/challenges': typeof OnboardingChallengesRoute
   '/onboarding/intro': typeof OnboardingIntroRoute
   '/assessment/': typeof AssessmentIndexRoute
+  '/companion/chat': typeof AppCompanionChatRoute
+  '/companion/reflection': typeof AppCompanionReflectionRoute
+  '/progress/achievements': typeof AppProgressAchievementsRoute
+  '/progress/milestones': typeof AppProgressMilestonesRoute
+  '/resources/$id': typeof AppResourcesIdRoute
+  '/resources/saved': typeof AppResourcesSavedRoute
+  '/safety/crisis': typeof AppSafetyCrisisRoute
+  '/safety/professional': typeof AppSafetyProfessionalRoute
+  '/settings/notifications': typeof AppSettingsNotificationsRoute
+  '/settings/privacy': typeof AppSettingsPrivacyRoute
+  '/settings/reminders': typeof AppSettingsRemindersRoute
+  '/tracking/habit': typeof AppTrackingHabitRoute
+  '/tracking/insights': typeof AppTrackingInsightsRoute
+  '/tracking/mood': typeof AppTrackingMoodRoute
+  '/tracking/task': typeof AppTrackingTaskRoute
+  '/wellbeing/assessment': typeof AppWellbeingAssessmentRoute
+  '/wellbeing/results': typeof AppWellbeingResultsRoute
+  '/wellbeing/select': typeof AppWellbeingSelectRoute
+  '/companion/': typeof AppCompanionIndexRoute
+  '/experiences/': typeof AppExperiencesIndexRoute
+  '/progress/': typeof AppProgressIndexRoute
+  '/resources/': typeof AppResourcesIndexRoute
+  '/safety/': typeof AppSafetyIndexRoute
+  '/settings/': typeof AppSettingsIndexRoute
+  '/tracking/': typeof AppTrackingIndexRoute
+  '/wellbeing/': typeof AppWellbeingIndexRoute
+  '/activities/$id/active': typeof AppActivitiesIdActiveRoute
+  '/activities/$id/complete': typeof AppActivitiesIdCompleteRoute
+  '/experiences/$id/active': typeof AppExperiencesIdActiveRoute
+  '/experiences/$id/complete': typeof AppExperiencesIdCompleteRoute
+  '/activities/$id/': typeof AppActivitiesIdIndexRoute
+  '/experiences/$id/': typeof AppExperiencesIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/welcome': typeof WelcomeRoute
+  '/check-in': typeof AppCheckInRoute
   '/home': typeof AppHomeRoute
+  '/insights': typeof AppInsightsRoute
+  '/notifications': typeof AppNotificationsRoute
+  '/profile': typeof AppProfileRoute
   '/assessment/discovery': typeof AssessmentDiscoveryRoute
   '/assessment/processing': typeof AssessmentProcessingRoute
   '/assessment/recommendations': typeof AssessmentRecommendationsRoute
@@ -133,13 +398,50 @@ export interface FileRoutesByTo {
   '/onboarding/challenges': typeof OnboardingChallengesRoute
   '/onboarding/intro': typeof OnboardingIntroRoute
   '/assessment': typeof AssessmentIndexRoute
+  '/companion/chat': typeof AppCompanionChatRoute
+  '/companion/reflection': typeof AppCompanionReflectionRoute
+  '/progress/achievements': typeof AppProgressAchievementsRoute
+  '/progress/milestones': typeof AppProgressMilestonesRoute
+  '/resources/$id': typeof AppResourcesIdRoute
+  '/resources/saved': typeof AppResourcesSavedRoute
+  '/safety/crisis': typeof AppSafetyCrisisRoute
+  '/safety/professional': typeof AppSafetyProfessionalRoute
+  '/settings/notifications': typeof AppSettingsNotificationsRoute
+  '/settings/privacy': typeof AppSettingsPrivacyRoute
+  '/settings/reminders': typeof AppSettingsRemindersRoute
+  '/tracking/habit': typeof AppTrackingHabitRoute
+  '/tracking/insights': typeof AppTrackingInsightsRoute
+  '/tracking/mood': typeof AppTrackingMoodRoute
+  '/tracking/task': typeof AppTrackingTaskRoute
+  '/wellbeing/assessment': typeof AppWellbeingAssessmentRoute
+  '/wellbeing/results': typeof AppWellbeingResultsRoute
+  '/wellbeing/select': typeof AppWellbeingSelectRoute
+  '/companion': typeof AppCompanionIndexRoute
+  '/experiences': typeof AppExperiencesIndexRoute
+  '/progress': typeof AppProgressIndexRoute
+  '/resources': typeof AppResourcesIndexRoute
+  '/safety': typeof AppSafetyIndexRoute
+  '/settings': typeof AppSettingsIndexRoute
+  '/tracking': typeof AppTrackingIndexRoute
+  '/wellbeing': typeof AppWellbeingIndexRoute
+  '/activities/$id/active': typeof AppActivitiesIdActiveRoute
+  '/activities/$id/complete': typeof AppActivitiesIdCompleteRoute
+  '/experiences/$id/active': typeof AppExperiencesIdActiveRoute
+  '/experiences/$id/complete': typeof AppExperiencesIdCompleteRoute
+  '/activities/$id': typeof AppActivitiesIdIndexRoute
+  '/experiences/$id': typeof AppExperiencesIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_app': typeof AppRouteWithChildren
   '/welcome': typeof WelcomeRoute
+  '/_app/check-in': typeof AppCheckInRoute
   '/_app/home': typeof AppHomeRoute
+  '/_app/insights': typeof AppInsightsRoute
+  '/_app/notifications': typeof AppNotificationsRoute
+  '/_app/profile': typeof AppProfileRoute
+  '/_app/tracking': typeof AppTrackingRouteWithChildren
   '/assessment/discovery': typeof AssessmentDiscoveryRoute
   '/assessment/processing': typeof AssessmentProcessingRoute
   '/assessment/recommendations': typeof AssessmentRecommendationsRoute
@@ -151,13 +453,50 @@ export interface FileRoutesById {
   '/onboarding/challenges': typeof OnboardingChallengesRoute
   '/onboarding/intro': typeof OnboardingIntroRoute
   '/assessment/': typeof AssessmentIndexRoute
+  '/_app/companion/chat': typeof AppCompanionChatRoute
+  '/_app/companion/reflection': typeof AppCompanionReflectionRoute
+  '/_app/progress/achievements': typeof AppProgressAchievementsRoute
+  '/_app/progress/milestones': typeof AppProgressMilestonesRoute
+  '/_app/resources/$id': typeof AppResourcesIdRoute
+  '/_app/resources/saved': typeof AppResourcesSavedRoute
+  '/_app/safety/crisis': typeof AppSafetyCrisisRoute
+  '/_app/safety/professional': typeof AppSafetyProfessionalRoute
+  '/_app/settings/notifications': typeof AppSettingsNotificationsRoute
+  '/_app/settings/privacy': typeof AppSettingsPrivacyRoute
+  '/_app/settings/reminders': typeof AppSettingsRemindersRoute
+  '/_app/tracking/habit': typeof AppTrackingHabitRoute
+  '/_app/tracking/insights': typeof AppTrackingInsightsRoute
+  '/_app/tracking/mood': typeof AppTrackingMoodRoute
+  '/_app/tracking/task': typeof AppTrackingTaskRoute
+  '/_app/wellbeing/assessment': typeof AppWellbeingAssessmentRoute
+  '/_app/wellbeing/results': typeof AppWellbeingResultsRoute
+  '/_app/wellbeing/select': typeof AppWellbeingSelectRoute
+  '/_app/companion/': typeof AppCompanionIndexRoute
+  '/_app/experiences/': typeof AppExperiencesIndexRoute
+  '/_app/progress/': typeof AppProgressIndexRoute
+  '/_app/resources/': typeof AppResourcesIndexRoute
+  '/_app/safety/': typeof AppSafetyIndexRoute
+  '/_app/settings/': typeof AppSettingsIndexRoute
+  '/_app/tracking/': typeof AppTrackingIndexRoute
+  '/_app/wellbeing/': typeof AppWellbeingIndexRoute
+  '/_app/activities/$id/active': typeof AppActivitiesIdActiveRoute
+  '/_app/activities/$id/complete': typeof AppActivitiesIdCompleteRoute
+  '/_app/experiences/$id/active': typeof AppExperiencesIdActiveRoute
+  '/_app/experiences/$id/complete': typeof AppExperiencesIdCompleteRoute
+  '/_app/activities/$id/': typeof AppActivitiesIdIndexRoute
+  '/_app/experiences/$id/': typeof AppExperiencesIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/welcome'
+    | '/check-in'
     | '/home'
+    | '/insights'
+    | '/notifications'
+    | '/profile'
+    | '/tracking'
     | '/assessment/discovery'
     | '/assessment/processing'
     | '/assessment/recommendations'
@@ -169,11 +508,47 @@ export interface FileRouteTypes {
     | '/onboarding/challenges'
     | '/onboarding/intro'
     | '/assessment/'
+    | '/companion/chat'
+    | '/companion/reflection'
+    | '/progress/achievements'
+    | '/progress/milestones'
+    | '/resources/$id'
+    | '/resources/saved'
+    | '/safety/crisis'
+    | '/safety/professional'
+    | '/settings/notifications'
+    | '/settings/privacy'
+    | '/settings/reminders'
+    | '/tracking/habit'
+    | '/tracking/insights'
+    | '/tracking/mood'
+    | '/tracking/task'
+    | '/wellbeing/assessment'
+    | '/wellbeing/results'
+    | '/wellbeing/select'
+    | '/companion/'
+    | '/experiences/'
+    | '/progress/'
+    | '/resources/'
+    | '/safety/'
+    | '/settings/'
+    | '/tracking/'
+    | '/wellbeing/'
+    | '/activities/$id/active'
+    | '/activities/$id/complete'
+    | '/experiences/$id/active'
+    | '/experiences/$id/complete'
+    | '/activities/$id/'
+    | '/experiences/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/welcome'
+    | '/check-in'
     | '/home'
+    | '/insights'
+    | '/notifications'
+    | '/profile'
     | '/assessment/discovery'
     | '/assessment/processing'
     | '/assessment/recommendations'
@@ -185,12 +560,49 @@ export interface FileRouteTypes {
     | '/onboarding/challenges'
     | '/onboarding/intro'
     | '/assessment'
+    | '/companion/chat'
+    | '/companion/reflection'
+    | '/progress/achievements'
+    | '/progress/milestones'
+    | '/resources/$id'
+    | '/resources/saved'
+    | '/safety/crisis'
+    | '/safety/professional'
+    | '/settings/notifications'
+    | '/settings/privacy'
+    | '/settings/reminders'
+    | '/tracking/habit'
+    | '/tracking/insights'
+    | '/tracking/mood'
+    | '/tracking/task'
+    | '/wellbeing/assessment'
+    | '/wellbeing/results'
+    | '/wellbeing/select'
+    | '/companion'
+    | '/experiences'
+    | '/progress'
+    | '/resources'
+    | '/safety'
+    | '/settings'
+    | '/tracking'
+    | '/wellbeing'
+    | '/activities/$id/active'
+    | '/activities/$id/complete'
+    | '/experiences/$id/active'
+    | '/experiences/$id/complete'
+    | '/activities/$id'
+    | '/experiences/$id'
   id:
     | '__root__'
     | '/'
     | '/_app'
     | '/welcome'
+    | '/_app/check-in'
     | '/_app/home'
+    | '/_app/insights'
+    | '/_app/notifications'
+    | '/_app/profile'
+    | '/_app/tracking'
     | '/assessment/discovery'
     | '/assessment/processing'
     | '/assessment/recommendations'
@@ -202,6 +614,38 @@ export interface FileRouteTypes {
     | '/onboarding/challenges'
     | '/onboarding/intro'
     | '/assessment/'
+    | '/_app/companion/chat'
+    | '/_app/companion/reflection'
+    | '/_app/progress/achievements'
+    | '/_app/progress/milestones'
+    | '/_app/resources/$id'
+    | '/_app/resources/saved'
+    | '/_app/safety/crisis'
+    | '/_app/safety/professional'
+    | '/_app/settings/notifications'
+    | '/_app/settings/privacy'
+    | '/_app/settings/reminders'
+    | '/_app/tracking/habit'
+    | '/_app/tracking/insights'
+    | '/_app/tracking/mood'
+    | '/_app/tracking/task'
+    | '/_app/wellbeing/assessment'
+    | '/_app/wellbeing/results'
+    | '/_app/wellbeing/select'
+    | '/_app/companion/'
+    | '/_app/experiences/'
+    | '/_app/progress/'
+    | '/_app/resources/'
+    | '/_app/safety/'
+    | '/_app/settings/'
+    | '/_app/tracking/'
+    | '/_app/wellbeing/'
+    | '/_app/activities/$id/active'
+    | '/_app/activities/$id/complete'
+    | '/_app/experiences/$id/active'
+    | '/_app/experiences/$id/complete'
+    | '/_app/activities/$id/'
+    | '/_app/experiences/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -321,6 +765,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AssessmentDiscoveryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/tracking': {
+      id: '/_app/tracking'
+      path: '/tracking'
+      fullPath: '/tracking'
+      preLoaderRoute: typeof AppTrackingRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/profile': {
+      id: '/_app/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AppProfileRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/notifications': {
+      id: '/_app/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof AppNotificationsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/insights': {
+      id: '/_app/insights'
+      path: '/insights'
+      fullPath: '/insights'
+      preLoaderRoute: typeof AppInsightsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/home': {
       id: '/_app/home'
       path: '/home'
@@ -328,15 +800,330 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppHomeRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/check-in': {
+      id: '/_app/check-in'
+      path: '/check-in'
+      fullPath: '/check-in'
+      preLoaderRoute: typeof AppCheckInRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/wellbeing/': {
+      id: '/_app/wellbeing/'
+      path: '/wellbeing'
+      fullPath: '/wellbeing/'
+      preLoaderRoute: typeof AppWellbeingIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/tracking/': {
+      id: '/_app/tracking/'
+      path: '/'
+      fullPath: '/tracking/'
+      preLoaderRoute: typeof AppTrackingIndexRouteImport
+      parentRoute: typeof AppTrackingRoute
+    }
+    '/_app/settings/': {
+      id: '/_app/settings/'
+      path: '/settings'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof AppSettingsIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/safety/': {
+      id: '/_app/safety/'
+      path: '/safety'
+      fullPath: '/safety/'
+      preLoaderRoute: typeof AppSafetyIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/resources/': {
+      id: '/_app/resources/'
+      path: '/resources'
+      fullPath: '/resources/'
+      preLoaderRoute: typeof AppResourcesIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/progress/': {
+      id: '/_app/progress/'
+      path: '/progress'
+      fullPath: '/progress/'
+      preLoaderRoute: typeof AppProgressIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/experiences/': {
+      id: '/_app/experiences/'
+      path: '/experiences'
+      fullPath: '/experiences/'
+      preLoaderRoute: typeof AppExperiencesIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/companion/': {
+      id: '/_app/companion/'
+      path: '/companion'
+      fullPath: '/companion/'
+      preLoaderRoute: typeof AppCompanionIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/wellbeing/select': {
+      id: '/_app/wellbeing/select'
+      path: '/wellbeing/select'
+      fullPath: '/wellbeing/select'
+      preLoaderRoute: typeof AppWellbeingSelectRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/wellbeing/results': {
+      id: '/_app/wellbeing/results'
+      path: '/wellbeing/results'
+      fullPath: '/wellbeing/results'
+      preLoaderRoute: typeof AppWellbeingResultsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/wellbeing/assessment': {
+      id: '/_app/wellbeing/assessment'
+      path: '/wellbeing/assessment'
+      fullPath: '/wellbeing/assessment'
+      preLoaderRoute: typeof AppWellbeingAssessmentRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/tracking/task': {
+      id: '/_app/tracking/task'
+      path: '/task'
+      fullPath: '/tracking/task'
+      preLoaderRoute: typeof AppTrackingTaskRouteImport
+      parentRoute: typeof AppTrackingRoute
+    }
+    '/_app/tracking/mood': {
+      id: '/_app/tracking/mood'
+      path: '/mood'
+      fullPath: '/tracking/mood'
+      preLoaderRoute: typeof AppTrackingMoodRouteImport
+      parentRoute: typeof AppTrackingRoute
+    }
+    '/_app/tracking/insights': {
+      id: '/_app/tracking/insights'
+      path: '/insights'
+      fullPath: '/tracking/insights'
+      preLoaderRoute: typeof AppTrackingInsightsRouteImport
+      parentRoute: typeof AppTrackingRoute
+    }
+    '/_app/tracking/habit': {
+      id: '/_app/tracking/habit'
+      path: '/habit'
+      fullPath: '/tracking/habit'
+      preLoaderRoute: typeof AppTrackingHabitRouteImport
+      parentRoute: typeof AppTrackingRoute
+    }
+    '/_app/settings/reminders': {
+      id: '/_app/settings/reminders'
+      path: '/settings/reminders'
+      fullPath: '/settings/reminders'
+      preLoaderRoute: typeof AppSettingsRemindersRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/settings/privacy': {
+      id: '/_app/settings/privacy'
+      path: '/settings/privacy'
+      fullPath: '/settings/privacy'
+      preLoaderRoute: typeof AppSettingsPrivacyRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/settings/notifications': {
+      id: '/_app/settings/notifications'
+      path: '/settings/notifications'
+      fullPath: '/settings/notifications'
+      preLoaderRoute: typeof AppSettingsNotificationsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/safety/professional': {
+      id: '/_app/safety/professional'
+      path: '/safety/professional'
+      fullPath: '/safety/professional'
+      preLoaderRoute: typeof AppSafetyProfessionalRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/safety/crisis': {
+      id: '/_app/safety/crisis'
+      path: '/safety/crisis'
+      fullPath: '/safety/crisis'
+      preLoaderRoute: typeof AppSafetyCrisisRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/resources/saved': {
+      id: '/_app/resources/saved'
+      path: '/resources/saved'
+      fullPath: '/resources/saved'
+      preLoaderRoute: typeof AppResourcesSavedRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/resources/$id': {
+      id: '/_app/resources/$id'
+      path: '/resources/$id'
+      fullPath: '/resources/$id'
+      preLoaderRoute: typeof AppResourcesIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/progress/milestones': {
+      id: '/_app/progress/milestones'
+      path: '/progress/milestones'
+      fullPath: '/progress/milestones'
+      preLoaderRoute: typeof AppProgressMilestonesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/progress/achievements': {
+      id: '/_app/progress/achievements'
+      path: '/progress/achievements'
+      fullPath: '/progress/achievements'
+      preLoaderRoute: typeof AppProgressAchievementsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/companion/reflection': {
+      id: '/_app/companion/reflection'
+      path: '/companion/reflection'
+      fullPath: '/companion/reflection'
+      preLoaderRoute: typeof AppCompanionReflectionRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/companion/chat': {
+      id: '/_app/companion/chat'
+      path: '/companion/chat'
+      fullPath: '/companion/chat'
+      preLoaderRoute: typeof AppCompanionChatRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/experiences/$id/': {
+      id: '/_app/experiences/$id/'
+      path: '/experiences/$id'
+      fullPath: '/experiences/$id/'
+      preLoaderRoute: typeof AppExperiencesIdIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/activities/$id/': {
+      id: '/_app/activities/$id/'
+      path: '/activities/$id'
+      fullPath: '/activities/$id/'
+      preLoaderRoute: typeof AppActivitiesIdIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/experiences/$id/complete': {
+      id: '/_app/experiences/$id/complete'
+      path: '/experiences/$id/complete'
+      fullPath: '/experiences/$id/complete'
+      preLoaderRoute: typeof AppExperiencesIdCompleteRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/experiences/$id/active': {
+      id: '/_app/experiences/$id/active'
+      path: '/experiences/$id/active'
+      fullPath: '/experiences/$id/active'
+      preLoaderRoute: typeof AppExperiencesIdActiveRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/activities/$id/complete': {
+      id: '/_app/activities/$id/complete'
+      path: '/activities/$id/complete'
+      fullPath: '/activities/$id/complete'
+      preLoaderRoute: typeof AppActivitiesIdCompleteRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/activities/$id/active': {
+      id: '/_app/activities/$id/active'
+      path: '/activities/$id/active'
+      fullPath: '/activities/$id/active'
+      preLoaderRoute: typeof AppActivitiesIdActiveRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
+interface AppTrackingRouteChildren {
+  AppTrackingHabitRoute: typeof AppTrackingHabitRoute
+  AppTrackingInsightsRoute: typeof AppTrackingInsightsRoute
+  AppTrackingMoodRoute: typeof AppTrackingMoodRoute
+  AppTrackingTaskRoute: typeof AppTrackingTaskRoute
+  AppTrackingIndexRoute: typeof AppTrackingIndexRoute
+}
+
+const AppTrackingRouteChildren: AppTrackingRouteChildren = {
+  AppTrackingHabitRoute: AppTrackingHabitRoute,
+  AppTrackingInsightsRoute: AppTrackingInsightsRoute,
+  AppTrackingMoodRoute: AppTrackingMoodRoute,
+  AppTrackingTaskRoute: AppTrackingTaskRoute,
+  AppTrackingIndexRoute: AppTrackingIndexRoute,
+}
+
+const AppTrackingRouteWithChildren = AppTrackingRoute._addFileChildren(
+  AppTrackingRouteChildren,
+)
+
 interface AppRouteChildren {
+  AppCheckInRoute: typeof AppCheckInRoute
   AppHomeRoute: typeof AppHomeRoute
+  AppInsightsRoute: typeof AppInsightsRoute
+  AppNotificationsRoute: typeof AppNotificationsRoute
+  AppProfileRoute: typeof AppProfileRoute
+  AppTrackingRoute: typeof AppTrackingRouteWithChildren
+  AppCompanionChatRoute: typeof AppCompanionChatRoute
+  AppCompanionReflectionRoute: typeof AppCompanionReflectionRoute
+  AppProgressAchievementsRoute: typeof AppProgressAchievementsRoute
+  AppProgressMilestonesRoute: typeof AppProgressMilestonesRoute
+  AppResourcesIdRoute: typeof AppResourcesIdRoute
+  AppResourcesSavedRoute: typeof AppResourcesSavedRoute
+  AppSafetyCrisisRoute: typeof AppSafetyCrisisRoute
+  AppSafetyProfessionalRoute: typeof AppSafetyProfessionalRoute
+  AppSettingsNotificationsRoute: typeof AppSettingsNotificationsRoute
+  AppSettingsPrivacyRoute: typeof AppSettingsPrivacyRoute
+  AppSettingsRemindersRoute: typeof AppSettingsRemindersRoute
+  AppWellbeingAssessmentRoute: typeof AppWellbeingAssessmentRoute
+  AppWellbeingResultsRoute: typeof AppWellbeingResultsRoute
+  AppWellbeingSelectRoute: typeof AppWellbeingSelectRoute
+  AppCompanionIndexRoute: typeof AppCompanionIndexRoute
+  AppExperiencesIndexRoute: typeof AppExperiencesIndexRoute
+  AppProgressIndexRoute: typeof AppProgressIndexRoute
+  AppResourcesIndexRoute: typeof AppResourcesIndexRoute
+  AppSafetyIndexRoute: typeof AppSafetyIndexRoute
+  AppSettingsIndexRoute: typeof AppSettingsIndexRoute
+  AppWellbeingIndexRoute: typeof AppWellbeingIndexRoute
+  AppActivitiesIdActiveRoute: typeof AppActivitiesIdActiveRoute
+  AppActivitiesIdCompleteRoute: typeof AppActivitiesIdCompleteRoute
+  AppExperiencesIdActiveRoute: typeof AppExperiencesIdActiveRoute
+  AppExperiencesIdCompleteRoute: typeof AppExperiencesIdCompleteRoute
+  AppActivitiesIdIndexRoute: typeof AppActivitiesIdIndexRoute
+  AppExperiencesIdIndexRoute: typeof AppExperiencesIdIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppCheckInRoute: AppCheckInRoute,
   AppHomeRoute: AppHomeRoute,
+  AppInsightsRoute: AppInsightsRoute,
+  AppNotificationsRoute: AppNotificationsRoute,
+  AppProfileRoute: AppProfileRoute,
+  AppTrackingRoute: AppTrackingRouteWithChildren,
+  AppCompanionChatRoute: AppCompanionChatRoute,
+  AppCompanionReflectionRoute: AppCompanionReflectionRoute,
+  AppProgressAchievementsRoute: AppProgressAchievementsRoute,
+  AppProgressMilestonesRoute: AppProgressMilestonesRoute,
+  AppResourcesIdRoute: AppResourcesIdRoute,
+  AppResourcesSavedRoute: AppResourcesSavedRoute,
+  AppSafetyCrisisRoute: AppSafetyCrisisRoute,
+  AppSafetyProfessionalRoute: AppSafetyProfessionalRoute,
+  AppSettingsNotificationsRoute: AppSettingsNotificationsRoute,
+  AppSettingsPrivacyRoute: AppSettingsPrivacyRoute,
+  AppSettingsRemindersRoute: AppSettingsRemindersRoute,
+  AppWellbeingAssessmentRoute: AppWellbeingAssessmentRoute,
+  AppWellbeingResultsRoute: AppWellbeingResultsRoute,
+  AppWellbeingSelectRoute: AppWellbeingSelectRoute,
+  AppCompanionIndexRoute: AppCompanionIndexRoute,
+  AppExperiencesIndexRoute: AppExperiencesIndexRoute,
+  AppProgressIndexRoute: AppProgressIndexRoute,
+  AppResourcesIndexRoute: AppResourcesIndexRoute,
+  AppSafetyIndexRoute: AppSafetyIndexRoute,
+  AppSettingsIndexRoute: AppSettingsIndexRoute,
+  AppWellbeingIndexRoute: AppWellbeingIndexRoute,
+  AppActivitiesIdActiveRoute: AppActivitiesIdActiveRoute,
+  AppActivitiesIdCompleteRoute: AppActivitiesIdCompleteRoute,
+  AppExperiencesIdActiveRoute: AppExperiencesIdActiveRoute,
+  AppExperiencesIdCompleteRoute: AppExperiencesIdCompleteRoute,
+  AppActivitiesIdIndexRoute: AppActivitiesIdIndexRoute,
+  AppExperiencesIdIndexRoute: AppExperiencesIdIndexRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
