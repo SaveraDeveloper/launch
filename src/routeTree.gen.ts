@@ -13,7 +13,9 @@ import { Route as WelcomeRouteImport } from './routes/welcome'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AssessmentIndexRouteImport } from './routes/assessment.index'
+import { Route as OnboardingLocationRouteImport } from './routes/onboarding.location'
 import { Route as OnboardingIntroRouteImport } from './routes/onboarding.intro'
+import { Route as OnboardingGenderRouteImport } from './routes/onboarding.gender'
 import { Route as OnboardingChallengesRouteImport } from './routes/onboarding.challenges'
 import { Route as OnboardingBasicInfoRouteImport } from './routes/onboarding.basic-info'
 import { Route as OnboardingAssessmentIntroRouteImport } from './routes/onboarding.assessment-intro'
@@ -81,9 +83,19 @@ const AssessmentIndexRoute = AssessmentIndexRouteImport.update({
   path: '/assessment/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OnboardingLocationRoute = OnboardingLocationRouteImport.update({
+  id: '/onboarding/location',
+  path: '/onboarding/location',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OnboardingIntroRoute = OnboardingIntroRouteImport.update({
   id: '/onboarding/intro',
   path: '/onboarding/intro',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingGenderRoute = OnboardingGenderRouteImport.update({
+  id: '/onboarding/gender',
+  path: '/onboarding/gender',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OnboardingChallengesRoute = OnboardingChallengesRouteImport.update({
@@ -344,7 +356,9 @@ export interface FileRoutesByFullPath {
   '/onboarding/assessment-intro': typeof OnboardingAssessmentIntroRoute
   '/onboarding/basic-info': typeof OnboardingBasicInfoRoute
   '/onboarding/challenges': typeof OnboardingChallengesRoute
+  '/onboarding/gender': typeof OnboardingGenderRoute
   '/onboarding/intro': typeof OnboardingIntroRoute
+  '/onboarding/location': typeof OnboardingLocationRoute
   '/assessment/': typeof AssessmentIndexRoute
   '/companion/chat': typeof AppCompanionChatRoute
   '/companion/reflection': typeof AppCompanionReflectionRoute
@@ -396,7 +410,9 @@ export interface FileRoutesByTo {
   '/onboarding/assessment-intro': typeof OnboardingAssessmentIntroRoute
   '/onboarding/basic-info': typeof OnboardingBasicInfoRoute
   '/onboarding/challenges': typeof OnboardingChallengesRoute
+  '/onboarding/gender': typeof OnboardingGenderRoute
   '/onboarding/intro': typeof OnboardingIntroRoute
+  '/onboarding/location': typeof OnboardingLocationRoute
   '/assessment': typeof AssessmentIndexRoute
   '/companion/chat': typeof AppCompanionChatRoute
   '/companion/reflection': typeof AppCompanionReflectionRoute
@@ -451,7 +467,9 @@ export interface FileRoutesById {
   '/onboarding/assessment-intro': typeof OnboardingAssessmentIntroRoute
   '/onboarding/basic-info': typeof OnboardingBasicInfoRoute
   '/onboarding/challenges': typeof OnboardingChallengesRoute
+  '/onboarding/gender': typeof OnboardingGenderRoute
   '/onboarding/intro': typeof OnboardingIntroRoute
+  '/onboarding/location': typeof OnboardingLocationRoute
   '/assessment/': typeof AssessmentIndexRoute
   '/_app/companion/chat': typeof AppCompanionChatRoute
   '/_app/companion/reflection': typeof AppCompanionReflectionRoute
@@ -506,7 +524,9 @@ export interface FileRouteTypes {
     | '/onboarding/assessment-intro'
     | '/onboarding/basic-info'
     | '/onboarding/challenges'
+    | '/onboarding/gender'
     | '/onboarding/intro'
+    | '/onboarding/location'
     | '/assessment/'
     | '/companion/chat'
     | '/companion/reflection'
@@ -558,7 +578,9 @@ export interface FileRouteTypes {
     | '/onboarding/assessment-intro'
     | '/onboarding/basic-info'
     | '/onboarding/challenges'
+    | '/onboarding/gender'
     | '/onboarding/intro'
+    | '/onboarding/location'
     | '/assessment'
     | '/companion/chat'
     | '/companion/reflection'
@@ -612,7 +634,9 @@ export interface FileRouteTypes {
     | '/onboarding/assessment-intro'
     | '/onboarding/basic-info'
     | '/onboarding/challenges'
+    | '/onboarding/gender'
     | '/onboarding/intro'
+    | '/onboarding/location'
     | '/assessment/'
     | '/_app/companion/chat'
     | '/_app/companion/reflection'
@@ -661,7 +685,9 @@ export interface RootRouteChildren {
   OnboardingAssessmentIntroRoute: typeof OnboardingAssessmentIntroRoute
   OnboardingBasicInfoRoute: typeof OnboardingBasicInfoRoute
   OnboardingChallengesRoute: typeof OnboardingChallengesRoute
+  OnboardingGenderRoute: typeof OnboardingGenderRoute
   OnboardingIntroRoute: typeof OnboardingIntroRoute
+  OnboardingLocationRoute: typeof OnboardingLocationRoute
   AssessmentIndexRoute: typeof AssessmentIndexRoute
 }
 
@@ -695,11 +721,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AssessmentIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/onboarding/location': {
+      id: '/onboarding/location'
+      path: '/onboarding/location'
+      fullPath: '/onboarding/location'
+      preLoaderRoute: typeof OnboardingLocationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/onboarding/intro': {
       id: '/onboarding/intro'
       path: '/onboarding/intro'
       fullPath: '/onboarding/intro'
       preLoaderRoute: typeof OnboardingIntroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding/gender': {
+      id: '/onboarding/gender'
+      path: '/onboarding/gender'
+      fullPath: '/onboarding/gender'
+      preLoaderRoute: typeof OnboardingGenderRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/onboarding/challenges': {
@@ -1141,7 +1181,9 @@ const rootRouteChildren: RootRouteChildren = {
   OnboardingAssessmentIntroRoute: OnboardingAssessmentIntroRoute,
   OnboardingBasicInfoRoute: OnboardingBasicInfoRoute,
   OnboardingChallengesRoute: OnboardingChallengesRoute,
+  OnboardingGenderRoute: OnboardingGenderRoute,
   OnboardingIntroRoute: OnboardingIntroRoute,
+  OnboardingLocationRoute: OnboardingLocationRoute,
   AssessmentIndexRoute: AssessmentIndexRoute,
 }
 export const routeTree = rootRouteImport

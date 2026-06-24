@@ -30,7 +30,8 @@
   --color-ring: var(--ring);
   --color-navy: var(--navy);
   --color-navy-deep: var(--navy-deep);
-  --font-display: "Inter", system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
 }
 
 :root {
@@ -60,14 +61,75 @@
 }
 
 @layer base {
-  * {
-    border-color: var(--color-border);
-  }
+  * { border-color: var(--color-border); }
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
   }
-  h1, h2, h3, h4 { letter-spacing: -0.02em; }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
 }
+
+/* --- Aroha gradients --- */
+.bg-aroha-warm {
+  background:
+    radial-gradient(120% 80% at 20% 10%, #f6c66a 0%, transparent 55%),
+    radial-gradient(120% 80% at 90% 30%, #ec5aa6 0%, transparent 55%),
+    radial-gradient(140% 100% at 50% 100%, #7a3cbf 0%, #2a1259 70%, #120627 100%);
+}
+.bg-aroha-cool {
+  background:
+    radial-gradient(120% 80% at 20% 10%, #a6e1ff 0%, transparent 55%),
+    radial-gradient(120% 80% at 90% 30%, #5d8bff 0%, transparent 55%),
+    radial-gradient(140% 100% at 50% 100%, #1a2a8a 0%, #0a1340 70%, #050926 100%);
+}
+.bg-aroha-morph { position: relative; isolation: isolate; }
+.bg-aroha-morph::before,
+.bg-aroha-morph::after {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  transition: opacity 1.8s ease;
+}
+.bg-aroha-morph::before {
+  background:
+    radial-gradient(120% 80% at 20% 10%, #f6c66a 0%, transparent 55%),
+    radial-gradient(120% 80% at 90% 30%, #ec5aa6 0%, transparent 55%),
+    radial-gradient(140% 100% at 50% 100%, #7a3cbf 0%, #2a1259 70%, #120627 100%);
+  opacity: 1;
+}
+.bg-aroha-morph::after  {
+  background:
+    radial-gradient(120% 80% at 20% 10%, #a6e1ff 0%, transparent 55%),
+    radial-gradient(120% 80% at 90% 30%, #5d8bff 0%, transparent 55%),
+    radial-gradient(140% 100% at 50% 100%, #1a2a8a 0%, #0a1340 70%, #050926 100%);
+  opacity: 0;
+}
+.bg-aroha-morph[data-mode="cool"]::before { opacity: 0; }
+.bg-aroha-morph[data-mode="cool"]::after  { opacity: 1; }
+
+/* --- Flicker / shimmer animation for headlines --- */
+@keyframes aroha-flicker {
+  0%, 100% { opacity: 1; text-shadow: 0 0 22px rgba(255,255,255,0.35); }
+  6%  { opacity: 0.55; }
+  8%  { opacity: 1; }
+  20% { opacity: 0.85; }
+  22% { opacity: 1; }
+  55% { opacity: 0.7;  text-shadow: 0 0 8px rgba(255,255,255,0.2); }
+  57% { opacity: 1;    text-shadow: 0 0 28px rgba(255,255,255,0.45); }
+  78% { opacity: 0.9; }
+}
+.animate-flicker { animation: aroha-flicker 5.5s ease-in-out infinite; }
+
+/* --- Rise-up baseline animation --- */
+@keyframes aroha-rise {
+  0%   { transform: translateY(110%); opacity: 0; }
+  100% { transform: translateY(0);    opacity: 1; }
+}
+.animate-rise { animation: aroha-rise 1400ms cubic-bezier(.2,.7,.2,1) both; }
+
+/* fade-in helper */
+@keyframes aroha-fade { from { opacity: 0; transform: translateY(8px);} to { opacity: 1; transform: none;} }
+.animate-soft-in { animation: aroha-fade 700ms ease-out both; }
