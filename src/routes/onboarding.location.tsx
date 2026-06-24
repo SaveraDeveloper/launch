@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import indiaMap from "@/assets/aroha-11.svg.asset.json";
+import indiaMap from "@/assets/aroha-8.svg.asset.json";
 
 export const Route = createFileRoute("/onboarding/location")({
   head: () => ({ meta: [{ title: "Where do you live? — Aroha" }] }),
@@ -39,8 +39,8 @@ function Page() {
           <img
             src={indiaMap.url}
             alt="Map of India"
-            className="w-[78%] select-none"
-            style={{ filter: "invert(1) drop-shadow(0 0 14px rgba(255,255,255,0.35))" }}
+            className="w-[82%] select-none"
+            style={{ mixBlendMode: "screen", filter: "drop-shadow(0 0 14px rgba(255,255,255,0.25))" }}
           />
         </div>
 
