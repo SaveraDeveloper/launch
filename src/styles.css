@@ -91,10 +91,22 @@
 .bg-aroha-morph::before,
 .bg-aroha-morph::after {
   content: ""; position: absolute; inset: 0; z-index: -1;
-  transition: opacity 1.6s ease;
+  transition: opacity 1.8s ease;
 }
-.bg-aroha-morph::before { @apply bg-aroha-warm; opacity: 1; }
-.bg-aroha-morph::after  { @apply bg-aroha-cool; opacity: 0; }
+.bg-aroha-morph::before {
+  background:
+    radial-gradient(120% 80% at 20% 10%, #f6c66a 0%, transparent 55%),
+    radial-gradient(120% 80% at 90% 30%, #ec5aa6 0%, transparent 55%),
+    radial-gradient(140% 100% at 50% 100%, #7a3cbf 0%, #2a1259 70%, #120627 100%);
+  opacity: 1;
+}
+.bg-aroha-morph::after  {
+  background:
+    radial-gradient(120% 80% at 20% 10%, #a6e1ff 0%, transparent 55%),
+    radial-gradient(120% 80% at 90% 30%, #5d8bff 0%, transparent 55%),
+    radial-gradient(140% 100% at 50% 100%, #1a2a8a 0%, #0a1340 70%, #050926 100%);
+  opacity: 0;
+}
 .bg-aroha-morph[data-mode="cool"]::before { opacity: 0; }
 .bg-aroha-morph[data-mode="cool"]::after  { opacity: 1; }
 
