@@ -28,15 +28,12 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-navy: var(--navy);
-  --color-navy-deep: var(--navy-deep);
-  --font-display: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
-  --font-body: "Inter", system-ui, sans-serif;
+  --font-display: "Fraunces", "Cormorant Garamond", "Times New Roman", serif;
+  --font-body: "DM Sans", system-ui, sans-serif;
 }
 
 :root {
   --radius: 0.75rem;
-  /* Dark theme: navy / black / grey / white */
   --background: oklch(0.16 0.02 250);
   --foreground: oklch(0.98 0 0);
   --card: oklch(0.21 0.025 250);
@@ -56,80 +53,108 @@
   --border: oklch(0.3 0.02 250);
   --input: oklch(0.27 0.02 250);
   --ring: oklch(0.65 0.13 250);
-  --navy: oklch(0.28 0.06 255);
-  --navy-deep: oklch(0.18 0.04 255);
 }
 
 @layer base {
   * { border-color: var(--color-border); }
   body {
-    background-color: var(--color-background);
+    background-color: #1a0b2e;
     color: var(--color-foreground);
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
   }
   h1, h2, h3, h4 {
     font-family: var(--font-display);
-    letter-spacing: -0.02em;
+    font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 0;
+    letter-spacing: -0.005em;
+    font-weight: 400;
   }
 }
 
-/* --- Aroha gradients --- */
+/* The Seasons-style elegant serif headline */
+.font-seasons {
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 0;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+}
+
+/* Warm gradient — purple→pink→orange (welcome / intro / location) */
 .bg-aroha-warm {
   background:
-    radial-gradient(120% 80% at 20% 10%, #f6c66a 0%, transparent 55%),
-    radial-gradient(120% 80% at 90% 30%, #ec5aa6 0%, transparent 55%),
-    radial-gradient(140% 100% at 50% 100%, #7a3cbf 0%, #2a1259 70%, #120627 100%);
+    linear-gradient(155deg,
+      #7a3cbf 0%,
+      #9a3fb8 20%,
+      #c2419c 45%,
+      #e35a8a 65%,
+      #f08260 88%,
+      #f6a85a 100%);
 }
+
+/* Cool gradient — light blue→deep blue (assessment) */
 .bg-aroha-cool {
   background:
-    radial-gradient(120% 80% at 20% 10%, #a6e1ff 0%, transparent 55%),
-    radial-gradient(120% 80% at 90% 30%, #5d8bff 0%, transparent 55%),
-    radial-gradient(140% 100% at 50% 100%, #1a2a8a 0%, #0a1340 70%, #050926 100%);
+    linear-gradient(165deg,
+      #c8d8ff 0%,
+      #8aa2e8 25%,
+      #5b6fd0 55%,
+      #3a3fa6 80%,
+      #2a2880 100%);
 }
+
 .bg-aroha-morph { position: relative; isolation: isolate; }
-.bg-aroha-morph::before,
-.bg-aroha-morph::after {
+.bg-aroha-morph::before, .bg-aroha-morph::after {
   content: ""; position: absolute; inset: 0; z-index: -1;
-  transition: opacity 1.8s ease;
+  transition: opacity 1.6s ease;
 }
 .bg-aroha-morph::before {
-  background:
-    radial-gradient(120% 80% at 20% 10%, #f6c66a 0%, transparent 55%),
-    radial-gradient(120% 80% at 90% 30%, #ec5aa6 0%, transparent 55%),
-    radial-gradient(140% 100% at 50% 100%, #7a3cbf 0%, #2a1259 70%, #120627 100%);
+  background: linear-gradient(155deg,#7a3cbf 0%,#c2419c 45%,#f08260 88%,#f6a85a 100%);
   opacity: 1;
 }
-.bg-aroha-morph::after  {
-  background:
-    radial-gradient(120% 80% at 20% 10%, #a6e1ff 0%, transparent 55%),
-    radial-gradient(120% 80% at 90% 30%, #5d8bff 0%, transparent 55%),
-    radial-gradient(140% 100% at 50% 100%, #1a2a8a 0%, #0a1340 70%, #050926 100%);
+.bg-aroha-morph::after {
+  background: linear-gradient(165deg,#c8d8ff 0%,#5b6fd0 55%,#2a2880 100%);
   opacity: 0;
 }
 .bg-aroha-morph[data-mode="cool"]::before { opacity: 0; }
 .bg-aroha-morph[data-mode="cool"]::after  { opacity: 1; }
 
-/* --- Flicker / shimmer animation for headlines --- */
+/* Gradient-bordered input (purple→pink→orange stroke) */
+.aroha-input {
+  width: 100%;
+  border-radius: 9999px;
+  padding: 14px 20px;
+  background: #fff;
+  color: #1a0b2e;
+  font-family: var(--font-body);
+  font-size: 15px;
+  border: 2px solid transparent;
+  background-image:
+    linear-gradient(#fff,#fff),
+    linear-gradient(90deg,#7a3cbf,#e35a8a,#f6a85a);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  outline: none;
+}
+.aroha-input::placeholder { color: #b9b3c8; }
+
+/* Flicker / shimmer for headlines */
 @keyframes aroha-flicker {
   0%, 100% { opacity: 1; text-shadow: 0 0 22px rgba(255,255,255,0.35); }
   6%  { opacity: 0.55; }
   8%  { opacity: 1; }
   20% { opacity: 0.85; }
   22% { opacity: 1; }
-  55% { opacity: 0.7;  text-shadow: 0 0 8px rgba(255,255,255,0.2); }
-  57% { opacity: 1;    text-shadow: 0 0 28px rgba(255,255,255,0.45); }
+  55% { opacity: 0.7; text-shadow: 0 0 8px rgba(255,255,255,0.2); }
+  57% { opacity: 1;   text-shadow: 0 0 28px rgba(255,255,255,0.45); }
   78% { opacity: 0.9; }
 }
 .animate-flicker { animation: aroha-flicker 5.5s ease-in-out infinite; }
 
-/* --- Rise-up baseline animation --- */
 @keyframes aroha-rise {
-  0%   { transform: translateY(110%); opacity: 0; }
-  100% { transform: translateY(0);    opacity: 1; }
+  0%   { transform: translateY(40%); opacity: 0; }
+  100% { transform: translateY(0);   opacity: 1; }
 }
-.animate-rise { animation: aroha-rise 1400ms cubic-bezier(.2,.7,.2,1) both; }
+.animate-rise { animation: aroha-rise 1200ms cubic-bezier(.2,.7,.2,1) both; }
 
-/* fade-in helper */
 @keyframes aroha-fade { from { opacity: 0; transform: translateY(8px);} to { opacity: 1; transform: none;} }
 .animate-soft-in { animation: aroha-fade 700ms ease-out both; }
