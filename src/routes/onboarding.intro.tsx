@@ -6,21 +6,7 @@ export const Route = createFileRoute("/onboarding/intro")({
   component: Page,
 });
 
-const ages = Array.from({ length: 88 }, (_, i) => 13 + i); // 13..100
-
-function Field({
-  label, children,
-}: { label: string; children: React.ReactNode }) {
-  return (
-    <label className="block">
-      <span className="mb-2 block text-sm font-medium text-white/80">{label}</span>
-      {children}
-    </label>
-  );
-}
-
-const inputCls =
-  "w-full rounded-xl border border-white/20 bg-white/5 px-4 py-3.5 text-white placeholder:text-white/40 outline-none focus:border-white/60 focus:bg-white/10 backdrop-blur";
+const ages = Array.from({ length: 88 }, (_, i) => 13 + i);
 
 function Page() {
   const nav = useNavigate();
@@ -29,78 +15,70 @@ function Page() {
     setForm((f) => ({ ...f, [k]: e.target.value }));
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-aroha-warm text-white">
-      <div className="mx-auto flex min-h-screen w-full max-w-2xl flex-col px-6 pt-16 pb-12">
-        <h1 className="font-display text-[40px] font-bold leading-[1.05] tracking-tight animate-flicker">
-          Let's get to know you
+    <div className="relative min-h-screen w-full overflow-hidden bg-aroha-warm text-white">
+      <div className="relative z-10 flex min-h-screen flex-col px-6 pt-14 pb-10">
+        {/* top bar: back + next */}
+        <div className="flex items-center justify-between">
+          <Link to="/welcome" className="text-sm text-white/80">←</Link>
+          <button
+            type="button"
+            onClick={() => nav({ to: "/onboarding/location" })}
+            className="text-sm font-semibold text-white"
+          >
+            Next →
+          </button>
+        </div>
+
+        <h1 className="mt-4 text-center font-seasons text-[40px] leading-[1.05] animate-flicker">
+          Let's get to know<br />you
         </h1>
-        <p className="mt-3 text-white/80">
-          Aroha personalizes your journey through experiences, activities, and insights.
+        <p className="mt-4 text-center text-[15px] text-white/90">
+          Aroha personalizes your journey through<br />experiences, activities, and insights.
         </p>
 
-        <form
-          className="mt-8 flex flex-col gap-4"
-          onSubmit={(e) => {
-            e.preventDefault();
-            nav({ to: "/onboarding/location" });
-          }}
-        >
-          <Field label="Name">
-            <input className={inputCls} placeholder="Ex: John" value={form.name} onChange={set("name")} required />
-          </Field>
+        {/* White card */}
+        <div className="mt-7 rounded-[28px] bg-white/95 p-6 text-[#1a0b2e] shadow-xl shadow-black/20">
+          <form
+            className="flex flex-col gap-4"
+            onSubmit={(e) => { e.preventDefault(); nav({ to: "/onboarding/location" }); }}
+          >
+            <div>
+              <label className="mb-1.5 block text-sm font-medium text-[#1a0b2e]">Name:</label>
+              <input className="aroha-input" placeholder="Ex: John" value={form.name} onChange={set("name")} />
+            </div>
 
-          <Field label="Age">
-            <select
-              className={`${inputCls} appearance-none`}
-              value={form.age}
-              onChange={set("age")}
-              required
+            <div>
+              <label className="mb-1.5 block text-sm font-medium text-[#1a0b2e]">Age:</label>
+              <select className="aroha-input appearance-none" value={form.age} onChange={set("age")}>
+                <option value="" disabled>Select your age</option>
+                {ages.map((a) => <option key={a} value={a}>{a}</option>)}
+              </select>
+            </div>
+
+            <div>
+              <label className="mb-1.5 block text-sm font-medium text-[#1a0b2e]">Email/Phone Number:</label>
+              <input className="aroha-input" placeholder="Ex: john@gmail.com" value={form.email} onChange={set("email")} />
+            </div>
+
+            <div className="my-2 flex items-center gap-3 text-xs text-[#1a0b2e]/50">
+              <div className="h-px flex-1 bg-[#1a0b2e]/15" /> Or <div className="h-px flex-1 bg-[#1a0b2e]/15" />
+            </div>
+
+            <button
+              type="button"
+              className="flex items-center justify-center gap-2 rounded-full border border-[#1a0b2e]/15 py-3 font-semibold text-[#1a0b2e]"
             >
-              <option value="" disabled className="bg-[#2a1259]">Ex: dropdown — select your age</option>
-              {ages.map((a) => (
-                <option key={a} value={a} className="bg-[#2a1259]">{a}</option>
-              ))}
-            </select>
-          </Field>
-
-          <Field label="Email">
-            <input className={inputCls} type="email" placeholder="Ex: john@gmail.com" value={form.email} onChange={set("email")} required />
-          </Field>
-
-          <Field label="Phone number">
-            <input className={inputCls} placeholder="Ex: xxx-xxx-xxxx" value={form.phone} onChange={set("phone")} required />
-          </Field>
-
-          <button
-            type="submit"
-            className="mt-2 rounded-2xl bg-white px-5 py-4 text-center font-semibold text-[#3a1278] shadow-lg shadow-black/20 hover:bg-white/90"
-          >
-            Continue
-          </button>
-        </form>
-
-        <div className="my-6 flex items-center gap-3 text-xs uppercase tracking-wider text-white/50">
-          <div className="h-px flex-1 bg-white/20" /> or <div className="h-px flex-1 bg-white/20" />
+              <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-white text-[13px] font-bold">G</span>
+              Continue with Google
+            </button>
+            <button
+              type="button"
+              className="flex items-center justify-center gap-2 rounded-full border border-[#1a0b2e]/15 py-3 font-semibold text-[#1a0b2e]"
+            >
+              <span className="text-lg"></span> Continue with Apple
+            </button>
+          </form>
         </div>
-
-        <div className="flex flex-col gap-3">
-          <button
-            type="button"
-            disabled
-            className="cursor-not-allowed rounded-2xl border border-white/25 bg-white/10 px-5 py-4 font-medium text-white/90 opacity-80"
-          >
-            Continue with Google
-          </button>
-          <button
-            type="button"
-            disabled
-            className="cursor-not-allowed rounded-2xl border border-white/25 bg-white/10 px-5 py-4 font-medium text-white/90 opacity-80"
-          >
-            Continue with Apple
-          </button>
-        </div>
-
-        <Link to="/welcome" className="mt-8 self-center text-sm text-white/60 hover:text-white">← Back</Link>
       </div>
     </div>
   );
