@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 
 export const Route = createFileRoute("/onboarding/challenges")({
@@ -7,15 +7,15 @@ export const Route = createFileRoute("/onboarding/challenges")({
 });
 
 const OPTIONS = [
-  "Anxiety / overthinking",
-  "Emotional numbness",
+  "Overthinking",
+  "Numbness",
   "Fear of failure",
-  "Low self-esteem",
-  "Peer pressure",
-  "Relationship issues",
-  "Academic burnout",
+  "Self-doubt",
+  "Pressure",
+  "Relationships",
+  "Burnout",
   "Loneliness",
-  "Mood swings",
+  "Mood shifts",
 ];
 
 function Page() {
@@ -30,14 +30,29 @@ function Page() {
     });
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-aroha-cool text-white">
-      <div className="mx-auto flex min-h-screen w-full max-w-2xl flex-col px-6 pt-16 pb-12">
-        <h1 className="font-display text-[34px] font-bold leading-tight tracking-tight animate-flicker">
-          What's been on your mind?
-        </h1>
-        <p className="mt-2 text-white/80">Select all that feel true. This is private.</p>
+    <div className="aroha-mobile-screen relative overflow-hidden bg-aroha-cool text-white">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,rgba(255,255,255,.24),transparent_32%),radial-gradient(circle_at_15%_72%,rgba(255,255,255,.12),transparent_28%)]" />
+      <div className="relative z-10 mx-auto flex min-h-svh w-full flex-col px-6 pt-11 pb-10">
+        <div className="flex items-center justify-between">
+          <Link to="/onboarding/gender" className="text-sm text-white/85">←</Link>
+          <button
+            type="button"
+            disabled={picked.size === 0}
+            onClick={() => nav({ to: "/assessment" })}
+            className="text-sm font-semibold text-white disabled:opacity-40"
+          >
+            Next →
+          </button>
+        </div>
 
-        <div className="mt-6 flex flex-col gap-3">
+        <h1 className="mt-8 text-center font-seasons text-[38px] leading-[1.05] animate-flicker">
+          What's been<br />on your mind?
+        </h1>
+        <p className="mx-auto mt-4 max-w-[260px] text-center text-[15px] leading-6 text-white/82">
+          Choose what feels closest right now.
+        </p>
+
+        <div className="mt-9 grid grid-cols-2 gap-3">
           {OPTIONS.map((o) => {
             const active = picked.has(o);
             return (
@@ -45,33 +60,22 @@ function Page() {
                 key={o}
                 type="button"
                 onClick={() => toggle(o)}
-                className={`flex items-center justify-between rounded-2xl border px-5 py-4 text-left transition ${
+                className={`group min-h-[86px] rounded-[28px] border px-4 py-4 text-left shadow-lg transition duration-300 active:scale-[.97] ${
                   active
-                    ? "border-white bg-white text-[#0a1340]"
-                    : "border-white/25 bg-white/5 hover:bg-white/10"
+                    ? "border-white bg-white text-[#232178] shadow-white/10"
+                    : "border-white/22 bg-white/[0.075] text-white shadow-black/15 backdrop-blur-sm hover:bg-white/12"
                 }`}
               >
-                <span className="font-medium">{o}</span>
-                <span
-                  className={`flex h-6 w-6 items-center justify-center rounded-full border ${
-                    active ? "border-[#0a1340] bg-[#0a1340] text-white" : "border-white/40"
-                  }`}
-                >
-                  {active ? "✓" : ""}
+                <span className="flex h-full flex-col justify-between gap-4">
+                  <span className="font-seasons text-[22px] leading-tight">{o}</span>
+                  <span data-selected={active} className={`choice-dot ml-auto flex h-6 w-6 items-center justify-center rounded-full border ${active ? "border-[#232178] bg-[#232178]" : "border-white/42 bg-transparent"}`}>
+                    <span className="choice-dot-core h-2.5 w-2.5 rounded-full bg-white" />
+                  </span>
                 </span>
               </button>
             );
           })}
         </div>
-
-        <button
-          type="button"
-          disabled={picked.size === 0}
-          onClick={() => nav({ to: "/assessment" })}
-          className="mt-8 rounded-2xl bg-white px-5 py-4 text-center font-semibold text-[#0a1340] shadow-lg shadow-black/30 disabled:cursor-not-allowed disabled:opacity-50 hover:bg-white/90"
-        >
-          Start my journey
-        </button>
       </div>
     </div>
   );
