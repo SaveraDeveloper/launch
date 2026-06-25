@@ -8,8 +8,8 @@ export const Route = createFileRoute("/welcome")({
 
 function Welcome() {
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-aroha-warm text-white">
-      <div className="relative z-10 flex min-h-screen flex-col px-7 pt-[22vh] pb-[40vh]">
+    <div className="aroha-mobile-screen relative overflow-hidden bg-aroha-warm text-white">
+      <div className="relative z-10 flex min-h-svh flex-col px-7 pt-[22svh] pb-[40svh]">
         <h1 className="font-seasons text-center text-[30px] leading-[1.25] text-white animate-flicker">
           A space that helps you<br />understand yourself,<br />navigate challenges, and<br />build lasting wellbeing.
         </h1>
@@ -35,7 +35,7 @@ function Welcome() {
           src={friends.url}
           alt=""
           aria-hidden
-          className="w-full max-w-md select-none animate-rise"
+          className="w-full max-w-md select-none animate-rise [filter:contrast(1.02)_saturate(1.04)]"
         />
       </div>
     </div>
