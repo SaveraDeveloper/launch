@@ -15,8 +15,8 @@ function Page() {
     setForm((f) => ({ ...f, [k]: e.target.value }));
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-aroha-warm text-white">
-      <div className="relative z-10 flex min-h-screen flex-col px-6 pt-14 pb-10">
+    <div className="aroha-mobile-screen relative overflow-hidden bg-aroha-warm text-white">
+      <div className="relative z-10 flex min-h-svh flex-col px-6 pt-11 pb-10">
         {/* top bar: back + next */}
         <div className="flex items-center justify-between">
           <Link to="/welcome" className="text-sm text-white/80">←</Link>

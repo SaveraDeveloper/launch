@@ -9,8 +9,8 @@ export const Route = createFileRoute("/onboarding/assessment-intro")({
 function Page() {
   const nav = useNavigate();
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-aroha-cool text-white">
-      <div className="relative z-10 flex min-h-screen flex-col px-6 pt-14 pb-[44vh]">
+    <div className="aroha-mobile-screen relative overflow-hidden bg-aroha-cool text-white">
+      <div className="relative z-10 flex min-h-svh flex-col px-6 pt-11 pb-[44svh]">
         <div className="flex items-center justify-between">
           <Link to="/onboarding/location" className="text-sm text-white/85">←</Link>
           <button onClick={() => nav({ to: "/onboarding/gender" })} className="text-sm font-semibold text-white">Next →</button>

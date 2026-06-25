@@ -12,12 +12,12 @@ type G = "Non-Binary" | "Other" | "Male" | "Female";
 
 function Option({ label, selected, onClick, img }: { label: string; selected: boolean; onClick: () => void; img?: string }) {
   return (
-    <button type="button" onClick={onClick} className="flex flex-col items-center gap-2">
-      <span className={`flex h-7 w-7 items-center justify-center rounded-full border-2 border-white ${selected ? "bg-white" : ""}`}>
-        {selected && <span className="h-3 w-3 rounded-full bg-[#2a2880]" />}
+    <button type="button" onClick={onClick} className="group flex flex-col items-center gap-2 transition duration-300 active:scale-95">
+      <span data-selected={selected} className="choice-dot flex h-7 w-7 items-center justify-center rounded-full border-2 border-white bg-white/0">
+        <span className="choice-dot-core h-3 w-3 rounded-full bg-[#2a2880]" />
       </span>
-      <span className="font-seasons text-[22px] text-white">{label}</span>
-      {img && <img src={img} alt="" aria-hidden className="mt-3 h-28 w-auto object-contain" />}
+      <span className={`font-seasons text-[22px] text-white transition duration-300 ${selected ? "opacity-100" : "opacity-[.82]"}`}>{label}</span>
+      {img && <img src={img} alt="" aria-hidden className={`mt-3 h-28 w-auto object-contain transition duration-500 ${selected ? "scale-105 opacity-100 drop-shadow-[0_0_18px_rgba(255,255,255,.25)]" : "scale-100 opacity-80"}`} />}
     </button>
   );
 }
@@ -26,8 +26,8 @@ function Page() {
   const nav = useNavigate();
   const [g, setG] = useState<G | "">("Female");
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-aroha-cool text-white">
-      <div className="relative z-10 flex min-h-screen flex-col px-6 pt-14 pb-10">
+    <div className="aroha-mobile-screen relative overflow-hidden bg-aroha-cool text-white">
+      <div className="relative z-10 flex min-h-svh flex-col px-6 pt-11 pb-10">
         <div className="flex items-center justify-between">
           <Link to="/onboarding/assessment-intro" className="text-sm text-white/85">←</Link>
           <button
