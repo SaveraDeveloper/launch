@@ -78,7 +78,7 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --font-display: "The Seasons", "Fraunces", "Cormorant Garamond", "Times New Roman", serif;
+  --font-display: "The Seasons", "Cormorant Garamond", "Times New Roman", serif;
   --font-body: "DM Sans", system-ui, sans-serif;
 }
 
