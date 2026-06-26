@@ -2,6 +2,56 @@
 @source "../src";
 @import "tw-animate-css";
 
+@font-face {
+  font-family: "The Seasons";
+  src: url("/__l5e/assets-v1/9ec60aa9-1bd4-4e88-b081-9906ec371a0b/TheSeasons-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "The Seasons";
+  src: url("/__l5e/assets-v1/458c00db-03f9-44da-84f1-b7125a4f2e5d/TheSeasons-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "The Seasons";
+  src: url("/__l5e/assets-v1/aae821a3-7da3-4683-be5c-5668e2481dfa/TheSeasons-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "DM Sans";
+  src: url("/__l5e/assets-v1/0ea1c8c5-d077-46cd-87f3-5f952ae365b7/dm-sans-300.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "DM Sans";
+  src: url("/__l5e/assets-v1/822cde97-b99a-498b-b8be-d3d3180be6fb/dm-sans-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "DM Sans";
+  src: url("/__l5e/assets-v1/c52040e7-2178-436c-8103-01665e461d58/dm-sans-500.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "DM Sans";
+  src: url("/__l5e/assets-v1/5719f7f4-1fa4-410b-8969-8781c05617f5/dm-sans-700.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
