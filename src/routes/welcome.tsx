@@ -9,21 +9,21 @@ export const Route = createFileRoute("/welcome")({
 function Welcome() {
   return (
     <div className="aroha-mobile-screen relative overflow-hidden bg-aroha-warm text-white">
-      <div className="relative z-10 flex min-h-svh flex-col px-7 pt-[22svh] pb-[40svh]">
-        <h1 className="font-seasons text-center text-[30px] leading-[1.25] text-white animate-flicker">
+      <div className="relative z-10 flex min-h-svh flex-col px-7 pt-[18svh]">
+        <h1 className="font-seasons text-center text-[28px] font-light leading-[1.3] text-white animate-flicker">
           A space that helps you<br />understand yourself,<br />navigate challenges, and<br />build lasting wellbeing.
         </h1>
 
-        <div className="mt-10 flex flex-col gap-3">
+        <div className="mt-9 flex flex-col gap-3">
           <Link
             to="/onboarding/intro"
-            className="rounded-full bg-white py-4 text-center font-bold tracking-wider text-[#d63384] shadow-lg shadow-black/20"
+            className="rounded-full bg-white py-4 text-center text-[13px] font-bold tracking-[0.18em] text-[#d63384] shadow-lg shadow-black/20"
           >
             GET STARTED
           </Link>
           <Link
             to="/auth/login"
-            className="rounded-full border border-white/80 py-4 text-center font-bold tracking-wider text-white"
+            className="rounded-full border border-white/80 py-4 text-center text-[13px] font-bold tracking-[0.18em] text-white"
           >
             I ALREADY HAVE AN ACCOUNT
           </Link>
@@ -35,7 +35,7 @@ function Welcome() {
           src={friends.url}
           alt=""
           aria-hidden
-          className="w-full max-w-md select-none animate-rise [filter:contrast(1.02)_saturate(1.04)]"
+          className="w-[78%] max-w-[340px] select-none animate-rise translate-y-[2%] [filter:contrast(1.02)_saturate(1.04)]"
         />
       </div>
     </div>
