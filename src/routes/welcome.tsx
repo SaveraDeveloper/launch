@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import friends from "@/assets/friends.png.asset.json";
+import friends from "@/assets/aroha-9.svg.asset.json";
 
 export const Route = createFileRoute("/welcome")({
   head: () => ({ meta: [{ title: "Welcome — Aroha" }] }),
@@ -35,7 +35,7 @@ function Welcome() {
           src={friends.url}
           alt=""
           aria-hidden
-          className="w-[78%] max-w-[340px] select-none animate-rise translate-y-[2%] [filter:contrast(1.02)_saturate(1.04)]"
+          className="w-[72%] max-w-[320px] select-none animate-rise translate-y-[1%]"
         />
       </div>
     </div>

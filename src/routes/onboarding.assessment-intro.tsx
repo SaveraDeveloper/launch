@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import girl from "@/assets/girl.png.asset.json";
+import girl from "@/assets/aroha-10.svg.asset.json";
 
 export const Route = createFileRoute("/onboarding/assessment-intro")({
   head: () => ({ meta: [{ title: "Your Personalized Assessment — Aroha" }] }),
