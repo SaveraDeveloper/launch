@@ -140,7 +140,6 @@
 /* The Seasons-style elegant serif headline */
 .font-seasons {
   font-family: var(--font-display);
-  font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 0;
   font-weight: 400;
   letter-spacing: -0.005em;
 }
