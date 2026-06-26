@@ -111,12 +111,12 @@
     background-color: #1a0b2e;
     color: var(--color-foreground);
     font-family: var(--font-body);
+    font-weight: 300;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
   h1, h2, h3, h4 {
     font-family: var(--font-display);
-    font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 0;
     letter-spacing: -0.005em;
     font-weight: 400;
   }
