@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import friends from "@/assets/aroha-9.svg.asset.json";
+import friends from "@/assets/friends-9.png.asset.json";
 
 export const Route = createFileRoute("/welcome")({
   head: () => ({ meta: [{ title: "Welcome — Aroha" }] }),
