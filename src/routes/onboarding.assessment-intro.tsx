@@ -1,47 +1,47 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import girl from "@/assets/aroha-10.svg.asset.json";
+import { CoffeeScreen } from "@/components/CoffeeScreen";
 
 export const Route = createFileRoute("/onboarding/assessment-intro")({
-  head: () => ({ meta: [{ title: "Your Personalized Assessment — Aroha" }] }),
+  head: () => ({ meta: [{ title: "Your Personalized Assessment — Savera" }] }),
   component: Page,
 });
 
 function Page() {
   const nav = useNavigate();
   return (
-    <div className="aroha-mobile-screen relative overflow-hidden bg-aroha-cool text-white">
-      <div className="relative z-10 flex min-h-svh flex-col px-6 pt-11 pb-[44svh]">
+    <CoffeeScreen>
+      <div className="flex min-h-svh flex-col px-6 pt-11 pb-10">
         <div className="flex items-center justify-between">
-          <Link to="/onboarding/location" className="text-sm text-white/85">←</Link>
-          <button onClick={() => nav({ to: "/onboarding/gender" })} className="text-sm font-semibold text-white">Next →</button>
+          <Link to="/onboarding/location" className="text-sm text-white/90">←</Link>
+          <button onClick={() => nav({ to: "/onboarding/gender" })} className="text-sm font-semibold text-white">
+            Next →
+          </button>
         </div>
 
-        <h1 className="mt-10 text-center font-seasons text-[40px] leading-[1.05] animate-flicker">
-          Your Personalized<br />Assessment
-        </h1>
-        <p className="mt-5 text-center text-[15px] text-white/90">
-          A few thoughtful questions to help us<br />understand you better. About 5 minutes.
-        </p>
+        <div className="mt-auto pb-8 text-center">
+          <h1 className="font-seasons text-[38px] font-light leading-[1.1] text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
+            Your Personalized<br />Assessment
+          </h1>
+          <p className="mx-auto mt-5 max-w-[300px] text-[15px] font-light text-white/90">
+            A few thoughtful questions to help us understand you better. About 5 minutes.
+          </p>
 
-        <div className="mt-12 flex flex-col items-center gap-3">
-          <Link
-            to="/onboarding/gender"
-            className="w-full rounded-full bg-white py-4 text-center font-bold tracking-wider text-[#2a2880] shadow-lg shadow-black/30"
-          >
-            START ASSESMENT
-          </Link>
-          <Link
-            to="/onboarding/gender"
-            className="w-2/3 rounded-full border border-white/80 py-2.5 text-center text-sm font-bold tracking-wider text-white"
-          >
-            SKIP FOR NOW
-          </Link>
+          <div className="mt-10 flex flex-col gap-3">
+            <button
+              onClick={() => nav({ to: "/onboarding/gender" })}
+              className="w-full rounded-full bg-white py-4 text-[13px] font-bold tracking-[0.22em] text-[#7a4a1d] shadow-xl shadow-black/40"
+            >
+              START ASSESSMENT
+            </button>
+            <button
+              onClick={() => nav({ to: "/onboarding/gender" })}
+              className="w-full rounded-full border border-white/80 py-3.5 text-[13px] font-bold tracking-[0.22em] text-white"
+            >
+              SKIP FOR NOW
+            </button>
+          </div>
         </div>
       </div>
-
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-0 flex justify-center">
-        <img src={girl.url} alt="" aria-hidden className="w-[78%] max-w-sm animate-rise" />
-      </div>
-    </div>
+    </CoffeeScreen>
   );
 }
