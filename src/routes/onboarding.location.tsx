@@ -27,7 +27,7 @@ function Page() {
           <Link to="/onboarding/intro" className="text-base text-white/90">←</Link>
           <button
             type="button"
-            onClick={() => nav({ to: "/onboarding/assessment-intro" })}
+            onClick={goNext}
             className="text-sm font-semibold text-white"
           >
             Next →
@@ -83,7 +83,7 @@ function Page() {
 
         <button
           type="button"
-          onClick={() => nav({ to: "/onboarding/assessment-intro" })}
+          onClick={goNext}
           className="relative z-30 mt-6 rounded-full bg-white py-3.5 text-[13px] font-bold tracking-[0.22em] text-[#7a4a1d] shadow-lg shadow-black/40"
         >
           NEXT
