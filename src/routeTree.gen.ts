@@ -14,6 +14,7 @@ import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AssessmentIndexRouteImport } from './routes/assessment.index'
 import { Route as OnboardingSupportRouteImport } from './routes/onboarding.support'
+import { Route as OnboardingReadyRouteImport } from './routes/onboarding.ready'
 import { Route as OnboardingLocationRouteImport } from './routes/onboarding.location'
 import { Route as OnboardingIntroRouteImport } from './routes/onboarding.intro'
 import { Route as OnboardingGoalsRouteImport } from './routes/onboarding.goals'
@@ -88,6 +89,11 @@ const AssessmentIndexRoute = AssessmentIndexRouteImport.update({
 const OnboardingSupportRoute = OnboardingSupportRouteImport.update({
   id: '/onboarding/support',
   path: '/onboarding/support',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingReadyRoute = OnboardingReadyRouteImport.update({
+  id: '/onboarding/ready',
+  path: '/onboarding/ready',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OnboardingLocationRoute = OnboardingLocationRouteImport.update({
@@ -372,6 +378,7 @@ export interface FileRoutesByFullPath {
   '/onboarding/goals': typeof OnboardingGoalsRoute
   '/onboarding/intro': typeof OnboardingIntroRoute
   '/onboarding/location': typeof OnboardingLocationRoute
+  '/onboarding/ready': typeof OnboardingReadyRoute
   '/onboarding/support': typeof OnboardingSupportRoute
   '/assessment/': typeof AssessmentIndexRoute
   '/companion/chat': typeof AppCompanionChatRoute
@@ -428,6 +435,7 @@ export interface FileRoutesByTo {
   '/onboarding/goals': typeof OnboardingGoalsRoute
   '/onboarding/intro': typeof OnboardingIntroRoute
   '/onboarding/location': typeof OnboardingLocationRoute
+  '/onboarding/ready': typeof OnboardingReadyRoute
   '/onboarding/support': typeof OnboardingSupportRoute
   '/assessment': typeof AssessmentIndexRoute
   '/companion/chat': typeof AppCompanionChatRoute
@@ -487,6 +495,7 @@ export interface FileRoutesById {
   '/onboarding/goals': typeof OnboardingGoalsRoute
   '/onboarding/intro': typeof OnboardingIntroRoute
   '/onboarding/location': typeof OnboardingLocationRoute
+  '/onboarding/ready': typeof OnboardingReadyRoute
   '/onboarding/support': typeof OnboardingSupportRoute
   '/assessment/': typeof AssessmentIndexRoute
   '/_app/companion/chat': typeof AppCompanionChatRoute
@@ -546,6 +555,7 @@ export interface FileRouteTypes {
     | '/onboarding/goals'
     | '/onboarding/intro'
     | '/onboarding/location'
+    | '/onboarding/ready'
     | '/onboarding/support'
     | '/assessment/'
     | '/companion/chat'
@@ -602,6 +612,7 @@ export interface FileRouteTypes {
     | '/onboarding/goals'
     | '/onboarding/intro'
     | '/onboarding/location'
+    | '/onboarding/ready'
     | '/onboarding/support'
     | '/assessment'
     | '/companion/chat'
@@ -660,6 +671,7 @@ export interface FileRouteTypes {
     | '/onboarding/goals'
     | '/onboarding/intro'
     | '/onboarding/location'
+    | '/onboarding/ready'
     | '/onboarding/support'
     | '/assessment/'
     | '/_app/companion/chat'
@@ -713,6 +725,7 @@ export interface RootRouteChildren {
   OnboardingGoalsRoute: typeof OnboardingGoalsRoute
   OnboardingIntroRoute: typeof OnboardingIntroRoute
   OnboardingLocationRoute: typeof OnboardingLocationRoute
+  OnboardingReadyRoute: typeof OnboardingReadyRoute
   OnboardingSupportRoute: typeof OnboardingSupportRoute
   AssessmentIndexRoute: typeof AssessmentIndexRoute
 }
@@ -752,6 +765,13 @@ declare module '@tanstack/react-router' {
       path: '/onboarding/support'
       fullPath: '/onboarding/support'
       preLoaderRoute: typeof OnboardingSupportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding/ready': {
+      id: '/onboarding/ready'
+      path: '/onboarding/ready'
+      fullPath: '/onboarding/ready'
+      preLoaderRoute: typeof OnboardingReadyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/onboarding/location': {
@@ -1225,6 +1245,7 @@ const rootRouteChildren: RootRouteChildren = {
   OnboardingGoalsRoute: OnboardingGoalsRoute,
   OnboardingIntroRoute: OnboardingIntroRoute,
   OnboardingLocationRoute: OnboardingLocationRoute,
+  OnboardingReadyRoute: OnboardingReadyRoute,
   OnboardingSupportRoute: OnboardingSupportRoute,
   AssessmentIndexRoute: AssessmentIndexRoute,
 }

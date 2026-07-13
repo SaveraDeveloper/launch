@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { INDIA_DISTRICTS, INDIA_STATES, IndiaZoomMap } from "@/components/IndiaZoomMap";
 import { CoffeeScreen } from "@/components/CoffeeScreen";
+import { saveOnboarding, readOnboarding } from "@/lib/userStore";
 
 export const Route = createFileRoute("/onboarding/location")({
   head: () => ({ meta: [{ title: "Where do you live? — Savera" }] }),
@@ -10,9 +11,14 @@ export const Route = createFileRoute("/onboarding/location")({
 
 function Page() {
   const nav = useNavigate();
-  const [state, setState] = useState("");
-  const [district, setDistrict] = useState("");
+  const existing = readOnboarding();
+  const [state, setState] = useState(existing.state || "");
+  const [district, setDistrict] = useState(existing.district || "");
   const districts = state ? (INDIA_DISTRICTS[state] ?? []) : [];
+  const goNext = () => {
+    saveOnboarding({ state, district });
+    nav({ to: "/onboarding/assessment-intro" });
+  };
 
   return (
     <CoffeeScreen>
