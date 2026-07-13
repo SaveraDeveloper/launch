@@ -42,8 +42,12 @@ function Page() {
             <IndiaZoomMap selectedState={state} className="transition-all duration-700" />
           </div>
 
-          <div className="absolute bottom-0 right-0 z-20 w-[78%] max-w-[300px] rounded-[22px] bg-[#f7ecc9]/95 p-4 text-[#3b2410] shadow-2xl shadow-black/40 backdrop-blur">
+          <div className="absolute right-0 top-6 z-20 w-[78%] max-w-[300px] rounded-[22px] bg-[#f7ecc9]/95 p-4 text-[#3b2410] shadow-2xl shadow-black/40 backdrop-blur">
             <div className="flex flex-col gap-3">
+              <div>
+                <label className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.14em] text-[#7a4a1d]/85">Country</label>
+                <div className="beige-input !py-2.5 !text-[13px]">India</div>
+              </div>
               <div>
                 <label className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.14em] text-[#7a4a1d]/85">State</label>
                 <select
@@ -56,7 +60,7 @@ function Page() {
                 </select>
               </div>
               <div>
-                <label className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.14em] text-[#7a4a1d]/85">District</label>
+                <label className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.14em] text-[#7a4a1d]/85">District (optional)</label>
                 <select
                   className="beige-input appearance-none !py-2.5 !text-[13px] disabled:opacity-60"
                   value={district}
