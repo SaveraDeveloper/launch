@@ -1,28 +1,47 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { CoffeeScreen } from "@/components/CoffeeScreen";
+import { ProgressDots } from "@/components/ProgressDots";
+import { saveOnboarding } from "@/lib/userStore";
 
 export const Route = createFileRoute("/assessment/")({
   head: () => ({ meta: [{ title: "Assessment — Savera" }] }),
   component: Page,
 });
 
-const QUESTIONS = [
-  "I feel emotionally exhausted.",
-  "I have trouble falling or staying asleep.",
-  "I feel disconnected from the people around me.",
-  "I struggle to concentrate on tasks.",
-  "I feel overwhelmed by everyday responsibilities.",
-  "I've lost interest in things I used to enjoy.",
-  "I am hard on myself when I make mistakes.",
-  "I worry about the future often.",
-  "I feel physically drained without a clear reason.",
-  "I find it difficult to ask for help.",
-  "I feel a sense of hope about my future.",
-  "I feel like I am moving forward in life.",
+// Questions 4–8 of 8 total. Warm, conversational tone.
+const QUESTIONS: { q: string; options: string[] }[] = [
+  {
+    q: "When you're feeling overwhelmed, what usually happens first?",
+    options: [
+      "My thoughts race",
+      "I go quiet or numb",
+      "I get irritable",
+      "I try to push through",
+    ],
+  },
+  {
+    q: "How often do you feel truly rested?",
+    options: ["Rarely", "Sometimes", "Often", "Almost every day"],
+  },
+  {
+    q: "How comfortable are you sharing what you feel with others?",
+    options: ["Not at all", "A little", "Somewhat", "Very comfortable"],
+  },
+  {
+    q: "When something goes wrong, how do you usually talk to yourself?",
+    options: ["Very harshly", "A bit harshly", "Fairly kindly", "With real compassion"],
+  },
+  {
+    q: "What feels most true right now?",
+    options: [
+      "I need space to breathe",
+      "I want gentle direction",
+      "I'm ready to grow",
+      "I'm not sure yet",
+    ],
+  },
 ];
-
-const SCALE = ["Never", "Rarely", "Sometimes", "Often", "Always"];
 
 function Page() {
   const nav = useNavigate();
@@ -31,7 +50,7 @@ function Page() {
   const [fading, setFading] = useState(false);
 
   const total = QUESTIONS.length;
-  const q = QUESTIONS[i];
+  const cur = QUESTIONS[i];
   const current = answers[i];
 
   const goTo = (next: number) => {
@@ -39,7 +58,7 @@ function Page() {
     setTimeout(() => {
       setI(next);
       setFading(false);
-    }, 260);
+    }, 300);
   };
 
   const pick = (val: string) => {
@@ -51,18 +70,22 @@ function Page() {
   };
 
   const next = () => {
-    if (i < total - 1) goTo(i + 1);
-    else nav({ to: "/assessment/processing" });
+    if (i < total - 1) return goTo(i + 1);
+    saveOnboarding({ answers });
+    nav({ to: "/assessment/processing" });
   };
   const back = () => {
-    if (i > 0) goTo(i - 1);
+    if (i > 0) return goTo(i - 1);
+    nav({ to: "/onboarding/goals" });
   };
+
+  const stepInFlow = 3 + (i + 1); // Q4..Q8 of 8
 
   return (
     <CoffeeScreen>
       <div className="flex min-h-svh flex-col px-6 pt-11 pb-10">
         <div className="flex items-center justify-between">
-          <button onClick={back} disabled={i === 0} className="text-sm text-white/90 disabled:opacity-30">←</button>
+          <button onClick={back} className="text-sm text-white/90">←</button>
           <button
             onClick={next}
             disabled={!current}
@@ -72,44 +95,30 @@ function Page() {
           </button>
         </div>
 
-        {/* Progress dots */}
-        <div className="mt-4 flex items-center justify-center gap-1.5">
-          {QUESTIONS.map((_, idx) => (
-            <span
-              key={idx}
-              className={`h-1.5 rounded-full transition-all ${
-                idx === i ? "w-6 bg-white" : idx < i ? "w-1.5 bg-white/80" : "w-1.5 bg-white/30"
-              }`}
-            />
-          ))}
+        <div className="mt-4">
+          <ProgressDots step={stepInFlow} total={8} />
         </div>
-        <p className="mt-3 text-center text-[11px] font-semibold uppercase tracking-[0.22em] text-white/85">
-          Question {i + 1} of {total}
-        </p>
 
         <div className={`transition-opacity duration-300 ${fading ? "opacity-0" : "opacity-100"}`}>
-          <h1 className="mt-6 text-center font-seasons text-[28px] font-light leading-[1.25] text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
-            {q}
+          <h1 className="mt-7 text-center font-seasons text-[26px] font-light leading-[1.25] text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
+            {cur.q}
           </h1>
 
-          <div className="mt-8 grid grid-cols-2 gap-3">
-            {SCALE.map((o, idx) => {
+          <div className="mt-7 flex flex-col gap-3">
+            {cur.options.map((o) => {
               const active = current === o;
-              const wide = idx === SCALE.length - 1 && SCALE.length % 2 === 1;
               return (
                 <button
                   key={o}
                   type="button"
                   onClick={() => pick(o)}
-                  className={`min-h-[72px] rounded-[24px] border px-4 py-3 text-left shadow-lg transition duration-300 active:scale-[.97] ${
-                    wide ? "col-span-2" : ""
-                  } ${
+                  className={`min-h-[64px] rounded-[22px] border px-5 py-3.5 text-left shadow-lg transition duration-300 active:scale-[.98] ${
                     active
                       ? "border-white bg-white text-[#7a4a1d] shadow-white/20"
                       : "border-white/30 bg-white/10 text-white shadow-black/25 backdrop-blur-sm hover:bg-white/20"
                   }`}
                 >
-                  <span className="flex h-full items-center justify-between gap-3">
+                  <span className="flex items-center justify-between gap-3">
                     <span className="font-seasons text-[18px] leading-tight">{o}</span>
                     <span
                       data-selected={active}
