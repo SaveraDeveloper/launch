@@ -1,9 +1,9 @@
 import type { ReactNode } from "react";
-import coffee from "@/assets/CoffeeShop.png.asset.json";
+import apartment from "@/assets/ApartmentWithGirl.png.asset.json";
 
 export function CoffeeScreen({
   children,
-  overlay = "bg-black/45",
+  overlay = "bg-black/30",
 }: {
   children: ReactNode;
   overlay?: string;
@@ -11,7 +11,7 @@ export function CoffeeScreen({
   return (
     <div className="aroha-mobile-screen relative overflow-hidden text-white">
       <img
-        src={coffee.url}
+        src={apartment.url}
         alt=""
         aria-hidden
         className="absolute inset-0 h-full w-full object-cover"

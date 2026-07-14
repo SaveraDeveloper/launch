@@ -1,5 +1,28 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import {
+  Wind,
+  ShieldCheck,
+  Brain,
+  Anchor,
+  Sparkles,
+  Smile,
+  Compass,
+  Target,
+  Users,
+  HeartHandshake,
+  MessageCircle,
+  HeartCrack,
+  Flame,
+  Focus,
+  Repeat,
+  Clock,
+  Star,
+  GraduationCap,
+  Scale,
+  Sun,
+  type LucideIcon,
+} from "lucide-react";
 import { CoffeeScreen } from "@/components/CoffeeScreen";
 import { ProgressDots } from "@/components/ProgressDots";
 import { saveOnboarding, readOnboarding } from "@/lib/userStore";
@@ -9,26 +32,53 @@ export const Route = createFileRoute("/onboarding/goals")({
   component: Page,
 });
 
-const CATEGORIES: { title: string; options: string[] }[] = [
+type Goal = { label: string; Icon: LucideIcon };
+
+const CATEGORIES: { title: string; options: Goal[] }[] = [
   {
     title: "Emotional Well-Being",
-    options: ["Feel calmer", "Manage stress", "Stop overthinking", "Build emotional resilience"],
+    options: [
+      { label: "Feel calmer", Icon: Wind },
+      { label: "Manage stress", Icon: ShieldCheck },
+      { label: "Stop overthinking", Icon: Brain },
+      { label: "Build emotional resilience", Icon: Anchor },
+    ],
   },
   {
     title: "Confidence & Identity",
-    options: ["Become more confident", "Improve self-esteem", "Discover myself", "Find my purpose"],
+    options: [
+      { label: "Become more confident", Icon: Sparkles },
+      { label: "Improve self-esteem", Icon: Smile },
+      { label: "Discover myself", Icon: Compass },
+      { label: "Find my purpose", Icon: Target },
+    ],
   },
   {
     title: "Relationships",
-    options: ["Improve friendships", "Build healthier relationships", "Improve communication", "Heal from heartbreak"],
+    options: [
+      { label: "Improve friendships", Icon: Users },
+      { label: "Build healthier relationships", Icon: HeartHandshake },
+      { label: "Improve communication", Icon: MessageCircle },
+      { label: "Heal from heartbreak", Icon: HeartCrack },
+    ],
   },
   {
     title: "Productivity",
-    options: ["Stay motivated", "Focus better", "Build healthy habits", "Manage my time"],
+    options: [
+      { label: "Stay motivated", Icon: Flame },
+      { label: "Focus better", Icon: Focus },
+      { label: "Build healthy habits", Icon: Repeat },
+      { label: "Manage my time", Icon: Clock },
+    ],
   },
   {
     title: "Growth",
-    options: ["Become my best self", "Learn emotional skills", "Create greater balance", "Feel happier"],
+    options: [
+      { label: "Become my best self", Icon: Star },
+      { label: "Learn emotional skills", Icon: GraduationCap },
+      { label: "Create greater balance", Icon: Scale },
+      { label: "Feel happier", Icon: Sun },
+    ],
   },
 ];
 
@@ -82,20 +132,27 @@ function Page() {
                 {cat.title}
               </p>
               <div className="grid grid-cols-2 gap-2">
-                {cat.options.map((o) => {
-                  const active = picked.has(o);
+                {cat.options.map(({ label, Icon }) => {
+                  const active = picked.has(label);
                   return (
                     <button
-                      key={o}
+                      key={label}
                       type="button"
-                      onClick={() => toggle(o)}
-                      className={`min-h-[52px] rounded-2xl border px-3 py-2 text-left text-[13px] leading-tight shadow-md transition duration-300 active:scale-[.97] ${
+                      onClick={() => toggle(label)}
+                      className={`flex min-h-[56px] items-center gap-2.5 rounded-2xl border px-3 py-2 text-left text-[12.5px] leading-tight shadow-md transition duration-300 active:scale-[.97] ${
                         active
                           ? "border-white bg-white text-[#7a4a1d]"
                           : "border-white/30 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
                       }`}
                     >
-                      {o}
+                      <span
+                        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${
+                          active ? "bg-[#7a4a1d]/10 text-[#7a4a1d]" : "bg-white/15 text-white"
+                        }`}
+                      >
+                        <Icon className="h-4 w-4" />
+                      </span>
+                      <span>{label}</span>
                     </button>
                   );
                 })}
