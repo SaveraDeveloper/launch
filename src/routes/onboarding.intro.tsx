@@ -14,23 +14,10 @@ function Page() {
   const nav = useNavigate();
   const [googleMsg, setGoogleMsg] = useState<string | null>(null);
 
-  const handleGoogle = async () => {
-    // Attempt to use Supabase auth if the integration is wired in.
-    try {
-      const mod = await import("@/integrations/supabase/client").catch(() => null);
-      const client = (mod as { supabase?: { auth?: { signInWithOAuth: (opts: unknown) => Promise<{ error?: { message: string } | null }> } } } | null)?.supabase;
-      if (client?.auth?.signInWithOAuth) {
-        const { error } = await client.auth.signInWithOAuth({
-          provider: "google",
-          options: { redirectTo: `${window.location.origin}/onboarding/basic-info` },
-        });
-        if (error) setGoogleMsg(error.message);
-        return;
-      }
-      setGoogleMsg("Google sign-in isn't configured yet. Continue with Email for now.");
-    } catch {
-      setGoogleMsg("Google sign-in isn't configured yet. Continue with Email for now.");
-    }
+  const handleGoogle = () => {
+    setGoogleMsg(
+      "Google sign-in needs Lovable Cloud enabled with the Google provider. Continue with Email for now."
+    );
   };
 
   return (
