@@ -1,141 +1,83 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import sunflowerBg from "@/assets/Sunflower_bckgd.png.asset.json";
 import apartment from "@/assets/ApartmentWithGirl.png.asset.json";
-import apartmentText from "@/assets/ApartmentWithGirlAndText.png.asset.json";
-import brownLogo from "@/assets/SaveraBROWN.png.asset.json";
-import whiteLogo from "@/assets/SaveraWHITE.png.asset.json";
 
 export const Route = createFileRoute("/welcome")({
   head: () => ({ meta: [{ title: "Savera — A space to unwind" }] }),
   component: Welcome,
 });
 
-// Splash → Apartment intro → Continue to sign-in
-type Stage =
-  | "splash"          // sunflower bg, brown logo centered
-  | "rise"            // logo moves up, brown→white, bg fades to apartment
-  | "begin"           // apartment (no girl overlay text), show "Let's Begin"
-  | "apartmentGirl"   // apartment with girl (no bubble)
-  | "apartmentBubble" // apartment with girl + speech bubble (2s read)
-  | "apartmentBack";  // back to apartment-with-girl briefly, then leave
+// Stage 1: apartment only, "Let's Begin" visible.
+// Stage 2: Savera fades in (girl becomes visible) + speech bubble at bottom.
+// Stage 3: continue to sign-in.
+type Stage = "begin" | "reveal" | "leaving";
 
 function Welcome() {
   const nav = useNavigate();
-  const [stage, setStage] = useState<Stage>("splash");
+  const [stage, setStage] = useState<Stage>("begin");
 
-  // Automatic scripted transitions.
   useEffect(() => {
-    if (stage === "splash") {
-      const t = setTimeout(() => setStage("rise"), 1600);
+    if (stage === "reveal") {
+      const t = setTimeout(() => setStage("leaving"), 2600);
       return () => clearTimeout(t);
     }
-    if (stage === "rise") {
-      const t = setTimeout(() => setStage("begin"), 1800);
-      return () => clearTimeout(t);
-    }
-    if (stage === "apartmentGirl") {
-      const t = setTimeout(() => setStage("apartmentBubble"), 700);
-      return () => clearTimeout(t);
-    }
-    if (stage === "apartmentBubble") {
-      const t = setTimeout(() => setStage("apartmentBack"), 2200);
-      return () => clearTimeout(t);
-    }
-    if (stage === "apartmentBack") {
-      const t = setTimeout(() => nav({ to: "/onboarding/intro" }), 1100);
+    if (stage === "leaving") {
+      const t = setTimeout(() => nav({ to: "/onboarding/intro" }), 900);
       return () => clearTimeout(t);
     }
   }, [stage, nav]);
 
-  const showSunflower = stage === "splash";
-  const showApartment = stage !== "splash";
-  // Show the girl overlay whenever we're in the apartment "with girl" moments.
-  const showGirl =
-    stage === "apartmentGirl" ||
-    stage === "apartmentBubble" ||
-    stage === "apartmentBack";
-  const showBubble = stage === "apartmentBubble";
-  const logoUp = stage !== "splash";
+  const saveraVisible = stage !== "begin";
 
   return (
     <div className="aroha-mobile-screen relative overflow-hidden bg-[#f2e6c8] text-white">
-      {/* Cross-fading backgrounds */}
-      <img
-        src={sunflowerBg.url}
-        alt=""
-        aria-hidden
-        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[1600ms] ease-in-out ${
-          showSunflower ? "opacity-100" : "opacity-0"
-        }`}
-      />
+      {/* Apartment background — always visible */}
       <img
         src={apartment.url}
         alt=""
         aria-hidden
-        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[1600ms] ease-in-out ${
-          showApartment ? "opacity-100" : "opacity-0"
-        }`}
-      />
-      {/* Girl-only overlay uses the same image; simulate presence by showing
-          the "with text" image whose girl matches, then bubble. */}
-      <img
-        src={apartment.url}
-        alt=""
-        aria-hidden
-        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[900ms] ease-in-out ${
-          showGirl && !showBubble ? "opacity-100" : "opacity-0"
-        }`}
-      />
-      <img
-        src={apartmentText.url}
-        alt=""
-        aria-hidden
-        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[900ms] ease-in-out ${
-          showBubble ? "opacity-100" : "opacity-0"
-        }`}
+        className="absolute inset-0 h-full w-full object-cover"
       />
 
-      {/* Speech bubble text — soft, rounded, warm brown */}
+      {/* Cover overlay that hides the girl before Begin, fades away on reveal */}
       <div
-        className={`pointer-events-none absolute left-1/2 top-[36%] z-30 -translate-x-1/2 transition-opacity duration-500 ${
-          showBubble ? "opacity-100" : "opacity-0"
+        className={`pointer-events-none absolute inset-x-0 bottom-0 h-[62%] transition-opacity duration-[1400ms] ease-in-out ${
+          saveraVisible ? "opacity-0" : "opacity-100"
         }`}
+        style={{
+          background:
+            "linear-gradient(to top, rgba(20,10,4,0.92) 30%, rgba(20,10,4,0.55) 60%, rgba(20,10,4,0) 100%)",
+        }}
+      />
+
+      {/* Speech bubble — bottom, matches provided UX */}
+      <div
+        className={`pointer-events-none absolute left-1/2 z-30 -translate-x-1/2 transition-all duration-700 ${
+          stage === "reveal"
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 translate-y-3"
+        }`}
+        style={{ bottom: "22svh" }}
       >
-        <p
-          className="text-[18px] leading-tight text-[#6b3a12]"
-          style={{
-            fontFamily:
-              "'Chalkboard SE', 'Comic Sans MS', 'Marker Felt', system-ui, sans-serif",
-            fontWeight: 600,
-          }}
-        >
-          Hi, I'm Savera 🌻
-        </p>
+        <div className="relative rounded-3xl bg-[#fdf6e3]/95 px-5 py-3 shadow-xl shadow-black/40 backdrop-blur">
+          <p
+            className="text-[17px] leading-tight text-[#6b3a12]"
+            style={{
+              fontFamily:
+                "'Chalkboard SE', 'Comic Sans MS', 'Marker Felt', system-ui, sans-serif",
+              fontWeight: 600,
+            }}
+          >
+            Hi, I'm Savera 🌻
+          </p>
+          <span
+            aria-hidden
+            className="absolute -bottom-2 left-10 h-4 w-4 rotate-45 bg-[#fdf6e3]/95"
+          />
+        </div>
       </div>
 
-      {/* Logos — center (brown) → top (white), crossfading during "rise" */}
-      <img
-        src={brownLogo.url}
-        alt="Savera"
-        className={`pointer-events-none absolute left-1/2 z-20 -translate-x-1/2 select-none transition-all duration-[1800ms] ease-in-out ${
-          logoUp
-            ? "top-[5svh] w-[46%] opacity-0"
-            : "top-1/2 w-[62%] -translate-y-1/2 opacity-100"
-        }`}
-      />
-      <img
-        src={whiteLogo.url}
-        alt=""
-        aria-hidden
-        className={`pointer-events-none absolute left-1/2 z-20 -translate-x-1/2 select-none drop-shadow-[0_4px_18px_rgba(0,0,0,0.35)] transition-all duration-[1800ms] ease-in-out ${
-          logoUp
-            ? "top-[5svh] w-[46%] opacity-100"
-            : "top-1/2 w-[62%] -translate-y-1/2 opacity-0"
-        }`}
-      />
-
-      {/* Bottom "Let's Begin" — appears at "begin" stage */}
+      {/* Bottom "Let's Begin" — only in the initial stage */}
       <div className="relative z-10 flex min-h-svh flex-col justify-end px-8 pb-14">
         <div
           className={`transition-opacity duration-700 ${
@@ -143,7 +85,7 @@ function Welcome() {
           }`}
         >
           <button
-            onClick={() => setStage("apartmentGirl")}
+            onClick={() => setStage("reveal")}
             className="w-full rounded-full bg-white py-4 text-[13px] font-bold tracking-[0.22em] text-[#7a4a1d] shadow-xl shadow-black/40"
           >
             LET'S BEGIN

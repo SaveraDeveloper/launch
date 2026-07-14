@@ -13,10 +13,16 @@ function Page() {
       <div className="flex min-h-svh flex-col px-6 pt-11 pb-10">
         <div className="flex items-center justify-between">
           <Link to="/onboarding/location" className="text-sm text-white/90">←</Link>
+          <button
+            type="button"
+            onClick={() => nav({ to: "/onboarding/ready" })}
+            className="text-[12px] font-light text-white/80 underline underline-offset-4 decoration-white/40"
+          >
+            Skip for now
+          </button>
         </div>
 
-        {/* Top content */}
-        <div className="mt-6 text-center">
+        <div className="mt-10 text-center">
           <h1 className="font-seasons text-[34px] font-light leading-[1.1] text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
             Your Personalized<br />Assessment
           </h1>
@@ -25,18 +31,12 @@ function Page() {
           </p>
         </div>
 
-        <div className="mt-auto flex flex-col gap-3 pb-2">
+        <div className="mt-auto">
           <button
             onClick={() => nav({ to: "/onboarding/gender" })}
             className="w-full rounded-full bg-white py-4 text-[13px] font-bold tracking-[0.22em] text-[#7a4a1d] shadow-xl shadow-black/40"
           >
-            START ASSESSMENT
-          </button>
-          <button
-            onClick={() => nav({ to: "/onboarding/gender" })}
-            className="mx-auto text-[12px] font-medium tracking-[0.14em] text-white/75 underline underline-offset-4"
-          >
-            Skip for now
+            BEGIN
           </button>
         </div>
       </div>

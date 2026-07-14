@@ -9,7 +9,7 @@ export const Route = createFileRoute("/onboarding/gender")({
   component: Page,
 });
 
-const OPTIONS = ["Female", "Male", "Non-Binary", "Prefer not to say"];
+const OPTIONS = ["Female", "Male", "Non-binary"];
 
 function Page() {
   const nav = useNavigate();
@@ -38,14 +38,14 @@ function Page() {
           <ProgressDots step={1} total={8} />
         </div>
 
-        <h1 className="mt-8 text-center font-seasons text-[34px] font-light leading-[1.05] text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
+        <h1 className="mt-10 text-center font-seasons text-[34px] font-light leading-[1.05] text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
           How do you<br />identify?
         </h1>
         <p className="mx-auto mt-3 max-w-[260px] text-center text-[13px] font-light leading-6 text-white/85">
           Choose what feels closest to you.
         </p>
 
-        <div className="mt-8 grid grid-cols-2 gap-3">
+        <div className="mt-10 flex flex-col items-center gap-6">
           {OPTIONS.map((o) => {
             const active = g === o;
             return (
@@ -53,22 +53,19 @@ function Page() {
                 key={o}
                 type="button"
                 onClick={() => setG(o)}
-                className={`min-h-[96px] rounded-[24px] border px-4 py-4 text-left shadow-lg transition duration-300 active:scale-[.97] ${
+                className={`font-seasons text-[26px] leading-none transition duration-300 ${
                   active
-                    ? "border-white bg-white text-[#7a4a1d] shadow-white/20"
-                    : "border-white/30 bg-white/10 text-white shadow-black/25 backdrop-blur-sm hover:bg-white/20"
+                    ? "text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]"
+                    : "text-white/60 hover:text-white/85"
                 }`}
               >
-                <span className="flex h-full flex-col justify-between gap-3">
-                  <span className="font-seasons text-[19px] leading-tight">{o}</span>
+                <span className="relative inline-block pb-2">
+                  {o}
                   <span
-                    data-selected={active}
-                    className={`choice-dot ml-auto flex h-5 w-5 items-center justify-center rounded-full border ${
-                      active ? "border-[#7a4a1d] bg-[#7a4a1d]" : "border-white/50 bg-transparent"
+                    className={`absolute -bottom-0.5 left-1/2 h-[2px] -translate-x-1/2 rounded-full bg-white transition-all duration-300 ${
+                      active ? "w-10 opacity-100" : "w-0 opacity-0"
                     }`}
-                  >
-                    <span className="choice-dot-core h-2 w-2 rounded-full bg-white" />
-                  </span>
+                  />
                 </span>
               </button>
             );
