@@ -1,24 +1,30 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import apartment from "@/assets/ApartmentWithGirl.png.asset.json";
+import sunflower from "@/assets/SunflowerTransparent.png.asset.json";
 
 export const Route = createFileRoute("/welcome")({
   head: () => ({ meta: [{ title: "Savera — A space to unwind" }] }),
   component: Welcome,
 });
 
-// Stage 1: apartment only, "Let's Begin" visible.
-// Stage 2: Savera fades in (girl becomes visible) + speech bubble at bottom.
-// Stage 3: continue to sign-in.
-type Stage = "begin" | "reveal" | "leaving";
+// Stage 1: apartment only (no girl, no text) — ~2s
+// Stage 2: girl fades in
+// Stage 3: intro card slides up ("Hi, I'm Savera" + profile)
+// Stage 4: leave
+type Stage = "begin" | "reveal" | "intro" | "leaving";
 
 function Welcome() {
   const nav = useNavigate();
   const [stage, setStage] = useState<Stage>("begin");
 
   useEffect(() => {
+    if (stage === "begin") {
+      const t = setTimeout(() => setStage("reveal"), 2000);
+      return () => clearTimeout(t);
+    }
     if (stage === "reveal") {
-      const t = setTimeout(() => setStage("leaving"), 2600);
+      const t = setTimeout(() => setStage("intro"), 1600);
       return () => clearTimeout(t);
     }
     if (stage === "leaving") {
@@ -27,11 +33,11 @@ function Welcome() {
     }
   }, [stage, nav]);
 
-  const saveraVisible = stage !== "begin";
+  const girlVisible = stage !== "begin";
+  const cardVisible = stage === "intro" || stage === "leaving";
 
   return (
     <div className="aroha-mobile-screen relative overflow-hidden bg-[#f2e6c8] text-white">
-      {/* Apartment background — always visible */}
       <img
         src={apartment.url}
         alt=""
@@ -39,10 +45,10 @@ function Welcome() {
         className="absolute inset-0 h-full w-full object-cover"
       />
 
-      {/* Cover overlay that hides the girl before Begin, fades away on reveal */}
+      {/* Covers the girl until reveal */}
       <div
         className={`pointer-events-none absolute inset-x-0 bottom-0 h-[62%] transition-opacity duration-[1400ms] ease-in-out ${
-          saveraVisible ? "opacity-0" : "opacity-100"
+          girlVisible ? "opacity-0" : "opacity-100"
         }`}
         style={{
           background:
@@ -50,34 +56,37 @@ function Welcome() {
         }}
       />
 
-      {/* Speech bubble — bottom, matches provided UX */}
+      {/* Intro profile card */}
       <div
-        className={`pointer-events-none absolute left-1/2 z-30 -translate-x-1/2 transition-all duration-700 ${
-          stage === "reveal"
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-3"
+        className={`absolute inset-x-6 z-30 transition-all duration-700 ${
+          cardVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6 pointer-events-none"
         }`}
-        style={{ bottom: "22svh" }}
+        style={{ bottom: "16svh" }}
       >
-        <div className="relative rounded-3xl bg-[#fdf6e3]/95 px-5 py-3 shadow-xl shadow-black/40 backdrop-blur">
-          <p
-            className="text-[17px] leading-tight text-[#6b3a12]"
-            style={{
-              fontFamily:
-                "'Chalkboard SE', 'Comic Sans MS', 'Marker Felt', system-ui, sans-serif",
-              fontWeight: 600,
-            }}
+        <div className="rounded-[28px] border border-white/40 bg-white/15 p-4 shadow-2xl shadow-black/40 backdrop-blur-xl">
+          <div className="flex items-center gap-4">
+            <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl border border-white/50 bg-white/25 backdrop-blur">
+              <img src={sunflower.url} alt="" aria-hidden className="absolute inset-0 h-full w-full object-contain p-2" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/80">
+                Your companion
+              </p>
+              <p className="font-seasons text-[24px] leading-tight text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
+                Hi, I'm Savera
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => setStage("leaving")}
+            className="mt-4 w-full rounded-full bg-white py-3 text-[12px] font-bold tracking-[0.22em] text-[#7a4a1d] shadow-lg shadow-black/40"
           >
-            Hi, I'm Savera 🌻
-          </p>
-          <span
-            aria-hidden
-            className="absolute -bottom-2 left-10 h-4 w-4 rotate-45 bg-[#fdf6e3]/95"
-          />
+            CONTINUE
+          </button>
         </div>
       </div>
 
-      {/* Bottom "Let's Begin" — only in the initial stage */}
+      {/* Initial CTA */}
       <div className="relative z-10 flex min-h-svh flex-col justify-end px-8 pb-14">
         <div
           className={`transition-opacity duration-700 ${

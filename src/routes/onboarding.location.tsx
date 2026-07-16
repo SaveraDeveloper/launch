@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { INDIA_DISTRICTS, INDIA_STATES, IndiaZoomMap } from "@/components/IndiaZoomMap";
+import { INDIA_STATES, IndiaZoomMap } from "@/components/IndiaZoomMap";
 import { CoffeeScreen } from "@/components/CoffeeScreen";
 import { saveOnboarding, readOnboarding } from "@/lib/userStore";
 
@@ -12,16 +12,15 @@ export const Route = createFileRoute("/onboarding/location")({
 function Page() {
   const nav = useNavigate();
   const existing = readOnboarding();
-  const [state, setState] = useState(existing.state || "");
-  const [district, setDistrict] = useState(existing.district || "");
-  const districts = state ? (INDIA_DISTRICTS[state] ?? []) : [];
+  // Default to Delhi (per UX). Users can change via dropdown.
+  const [state, setState] = useState(existing.state || "Delhi");
   const goNext = () => {
-    saveOnboarding({ state, district });
+    saveOnboarding({ state });
     nav({ to: "/onboarding/assessment-intro" });
   };
 
   return (
-    <CoffeeScreen>
+    <CoffeeScreen hideGirl>
       <div className="flex min-h-svh flex-col px-6 pt-11 pb-8">
         <div className="flex items-center justify-between">
           <Link to="/onboarding/basic-info" className="text-base text-white/90">←</Link>
@@ -41,37 +40,20 @@ function Page() {
 
         {/* Map fills the middle */}
         <div className="relative mt-3 flex-1">
-          <div className="absolute inset-0 z-0 opacity-90">
-            <IndiaZoomMap selectedState={state} className="transition-all duration-700" />
+          <div className="absolute inset-0 z-0 opacity-95">
+            <IndiaZoomMap selectedState={state} pinColor="#e63946" className="transition-all duration-700" />
           </div>
 
-          {/* Selectors pinned to bottom-right so they don't cover the map */}
+          {/* State selector pinned to bottom-right */}
           <div className="absolute bottom-3 right-0 z-20 w-[70%] max-w-[260px] rounded-[20px] bg-[#f7ecc9]/95 p-3.5 text-[#3b2410] shadow-2xl shadow-black/40 backdrop-blur">
-            <div className="flex flex-col gap-2.5">
-              <div>
-                <label className="mb-1 block text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7a4a1d]/85">State</label>
-                <select
-                  className="beige-input appearance-none !py-2 !text-[13px]"
-                  value={state}
-                  onChange={(e) => { setState(e.target.value); setDistrict(""); }}
-                >
-                  <option value="" disabled>Select state</option>
-                  {INDIA_STATES.map((s) => <option key={s} value={s}>{s}</option>)}
-                </select>
-              </div>
-              <div>
-                <label className="mb-1 block text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7a4a1d]/85">District</label>
-                <select
-                  className="beige-input appearance-none !py-2 !text-[13px] disabled:opacity-60"
-                  value={district}
-                  onChange={(e) => setDistrict(e.target.value)}
-                  disabled={!state || districts.length === 0}
-                >
-                  <option value="">{state ? "Select district" : "Pick state first"}</option>
-                  {districts.map((d) => <option key={d} value={d}>{d}</option>)}
-                </select>
-              </div>
-            </div>
+            <label className="mb-1 block text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7a4a1d]/85">State</label>
+            <select
+              className="beige-input appearance-none !py-2 !text-[13px]"
+              value={state}
+              onChange={(e) => setState(e.target.value)}
+            >
+              {INDIA_STATES.map((s) => <option key={s} value={s}>{s}</option>)}
+            </select>
           </div>
         </div>
 

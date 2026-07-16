@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { CoffeeScreen } from "@/components/CoffeeScreen";
+import sunflower from "@/assets/SunflowerTransparent.png.asset.json";
 import { firstName } from "@/lib/userStore";
 
 export const Route = createFileRoute("/onboarding/ready")({
@@ -16,21 +17,26 @@ function Page() {
   }, []);
 
   return (
-    <CoffeeScreen>
-      <div className="flex min-h-svh flex-col items-center px-8 pt-[42svh] pb-14 text-center animate-soft-in">
-        <h1 className="font-seasons text-[38px] font-light leading-[1.1] text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
-          Welcome, {name}.
-        </h1>
-        <p className="mx-auto mt-4 max-w-[300px] text-[15px] font-light leading-6 text-white/90">
-          We've created a space designed just for you.
-        </p>
+    <CoffeeScreen hideGirl>
+      <div className="flex min-h-svh flex-col items-center justify-center px-6 animate-soft-in">
+        <div className="w-full max-w-[340px] rounded-[32px] border border-white/40 bg-white/12 p-8 text-center shadow-2xl shadow-black/40 backdrop-blur-xl">
+          <div className="mx-auto mb-4 h-16 w-16">
+            <img src={sunflower.url} alt="" aria-hidden className="h-full w-full object-contain drop-shadow-[0_4px_14px_rgba(0,0,0,0.35)]" />
+          </div>
+          <h1 className="font-seasons text-[32px] font-light leading-[1.1] text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
+            Welcome, {name}.
+          </h1>
+          <p className="mx-auto mt-4 max-w-[280px] text-[14px] font-light leading-6 text-white/90">
+            We've created a space designed for you.
+          </p>
 
-        <button
-          onClick={() => nav({ to: "/home" })}
-          className="mt-8 w-full rounded-full bg-white py-4 text-[13px] font-bold tracking-[0.22em] text-[#7a4a1d] shadow-xl shadow-black/40"
-        >
-          START MY JOURNEY
-        </button>
+          <button
+            onClick={() => nav({ to: "/home" })}
+            className="mt-7 w-full rounded-full bg-white py-3.5 text-[12px] font-bold tracking-[0.22em] text-[#7a4a1d] shadow-lg shadow-black/40"
+          >
+            START MY JOURNEY
+          </button>
+        </div>
       </div>
     </CoffeeScreen>
   );
