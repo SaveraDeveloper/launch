@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import apartment from "@/assets/ApartmentWithGirl.png.asset.json";
+import { CoffeeScreen } from "@/components/CoffeeScreen";
 import sunflowerIcon from "@/assets/SunflowerTransparent.png.asset.json";
 import googleIcon from "@/assets/GoogleIcon.webp.asset.json";
 import { Mail } from "lucide-react";
@@ -21,11 +21,8 @@ function Page() {
   };
 
   return (
-    <div className="aroha-mobile-screen relative overflow-hidden text-white animate-soft-in">
-      <img src={apartment.url} alt="" aria-hidden className="absolute inset-0 h-full w-full object-cover" />
-      <div className="pointer-events-none absolute inset-0 bg-black/25" />
-
-      <div className="relative z-10 flex min-h-svh flex-col px-7 pt-14 pb-10">
+    <CoffeeScreen hideGirl>
+      <div className="flex min-h-svh flex-col px-7 pt-14 pb-10 animate-soft-in">
         <div className="mx-auto">
           <img
             src={sunflowerIcon.url}
@@ -65,6 +62,6 @@ function Page() {
           </div>
         </div>
       </div>
-    </div>
+    </CoffeeScreen>
   );
 }
