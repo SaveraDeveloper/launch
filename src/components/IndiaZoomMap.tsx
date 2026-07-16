@@ -3,6 +3,7 @@ import { useMemo } from "react";
 type IndiaZoomMapProps = {
   selectedState: string;
   className?: string;
+  pinColor?: string;
 };
 
 type StateShape = {
