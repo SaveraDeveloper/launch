@@ -3,48 +3,73 @@ import { useEffect, useState } from "react";
 import apartment from "@/assets/Apartment.png.asset.json";
 import apartmentGirl from "@/assets/ApartmentWithGirl.png.asset.json";
 import sunflower from "@/assets/SunflowerTransparent.png.asset.json";
+import sunflowerBg from "@/assets/Sunflower_bckgd.png.asset.json";
+import saveraBrown from "@/assets/SaveraBROWN.png.asset.json";
+import saveraWhite from "@/assets/SaveraWHITE.png.asset.json";
 
 export const Route = createFileRoute("/welcome")({
   head: () => ({ meta: [{ title: "Savera — A space to unwind" }] }),
   component: Welcome,
 });
 
-// Stage 1 (begin): apartment ONLY, no girl — ~2s
-// Stage 2 (reveal): crossfade in ApartmentWithGirl (girl appears)
-// Stage 3 (intro):  Savera profile card slides up
-// Stage 4 (leaving): route away
-type Stage = "begin" | "reveal" | "intro" | "leaving";
+// Stage 0 (splash):   sunflower bg + brown Savera logo centered
+// Stage 1 (rise):     logo moves upward + crossfades brown→white, bg fades to apartment
+// Stage 2 (begin):    empty apartment only, ~2s
+// Stage 3 (reveal):   crossfade in ApartmentWithGirl
+// Stage 4 (intro):    Savera profile card slides up
+// Stage 5 (leaving):  route away
+type Stage = "splash" | "rise" | "begin" | "reveal" | "intro" | "leaving";
 
 function Welcome() {
   const nav = useNavigate();
-  const [stage, setStage] = useState<Stage>("begin");
+  const [stage, setStage] = useState<Stage>("splash");
 
   useEffect(() => {
-    if (stage === "begin") {
-      const t = setTimeout(() => setStage("reveal"), 2000);
-      return () => clearTimeout(t);
-    }
-    if (stage === "reveal") {
-      const t = setTimeout(() => setStage("intro"), 1600);
-      return () => clearTimeout(t);
-    }
+    const timings: Partial<Record<Stage, [Stage, number]>> = {
+      splash:  ["rise", 1400],
+      rise:    ["begin", 1600],
+      begin:   ["reveal", 2000],
+      reveal:  ["intro", 1600],
+      leaving: ["intro" /* unused */, 900],
+    };
     if (stage === "leaving") {
       const t = setTimeout(() => nav({ to: "/onboarding/intro" }), 900);
       return () => clearTimeout(t);
     }
+    const next = timings[stage];
+    if (!next) return;
+    const t = setTimeout(() => setStage(next[0]), next[1]);
+    return () => clearTimeout(t);
   }, [stage, nav]);
 
-  const girlVisible = stage !== "begin";
+  const apartmentVisible = stage !== "splash" && stage !== "rise" ? true : stage === "rise";
+  // Apartment starts fading in during "rise"
+  const apartmentOpacity = stage === "splash" ? 0 : 1;
+  const sunflowerBgVisible = stage === "splash" || stage === "rise";
+  const logoVisible = stage === "splash" || stage === "rise";
+  const logoRaised = stage !== "splash"; // move up starting at rise
+  const whiteLogoVisible = stage !== "splash"; // crossfade to white during rise
+  const girlVisible = stage === "reveal" || stage === "intro" || stage === "leaving";
   const cardVisible = stage === "intro" || stage === "leaving";
 
   return (
     <div className="aroha-mobile-screen relative overflow-hidden bg-[#f2e6c8] text-white">
+      {/* Sunflower background (splash) */}
+      <img
+        src={sunflowerBg.url}
+        alt=""
+        aria-hidden
+        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[1200ms] ease-in-out ${
+          sunflowerBgVisible ? "opacity-100" : "opacity-0"
+        }`}
+      />
       {/* Base: empty apartment */}
       <img
         src={apartment.url}
         alt=""
         aria-hidden
-        className="absolute inset-0 h-full w-full object-cover"
+        style={{ opacity: apartmentOpacity }}
+        className="absolute inset-0 h-full w-full object-cover transition-opacity duration-[1400ms] ease-in-out"
       />
       {/* Crossfade layer: apartment with girl */}
       <img
@@ -55,6 +80,32 @@ function Welcome() {
           girlVisible ? "opacity-100" : "opacity-0"
         }`}
       />
+
+      {/* Savera logo — brown → white, centered → raised */}
+      <div
+        aria-hidden={!logoVisible}
+        className={`pointer-events-none absolute left-1/2 z-20 -translate-x-1/2 transition-all duration-[1400ms] ease-in-out ${
+          logoRaised ? "top-[10svh]" : "top-1/2 -translate-y-1/2"
+        } ${logoVisible ? "opacity-100" : "opacity-0"}`}
+      >
+        <div className="relative h-[180px] w-[240px]">
+          <img
+            src={saveraBrown.url}
+            alt="Savera"
+            className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-[1400ms] ease-in-out ${
+              whiteLogoVisible ? "opacity-0" : "opacity-100"
+            }`}
+          />
+          <img
+            src={saveraWhite.url}
+            alt=""
+            aria-hidden
+            className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-[1400ms] ease-in-out ${
+              whiteLogoVisible ? "opacity-100" : "opacity-0"
+            }`}
+          />
+        </div>
+      </div>
 
       {/* Intro profile card */}
       <div
@@ -82,22 +133,6 @@ function Welcome() {
             className="mt-4 w-full rounded-full bg-white py-3 text-[12px] font-bold tracking-[0.22em] text-[#7a4a1d] shadow-lg shadow-black/40"
           >
             CONTINUE
-          </button>
-        </div>
-      </div>
-
-      {/* Initial CTA */}
-      <div className="relative z-10 flex min-h-svh flex-col justify-end px-8 pb-14">
-        <div
-          className={`transition-opacity duration-700 ${
-            stage === "begin" ? "opacity-100" : "opacity-0 pointer-events-none"
-          }`}
-        >
-          <button
-            onClick={() => setStage("reveal")}
-            className="w-full rounded-full bg-white py-4 text-[13px] font-bold tracking-[0.22em] text-[#7a4a1d] shadow-xl shadow-black/40"
-          >
-            LET'S BEGIN
           </button>
         </div>
       </div>
