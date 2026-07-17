@@ -4,21 +4,21 @@
 
 @font-face {
   font-family: "The Seasons";
-  src: url("/__l5e/assets-v1/9ec60aa9-1bd4-4e88-b081-9906ec371a0b/TheSeasons-Light.otf") format("opentype");
+  src: url("./assets/fonts/TheSeasons-Light.otf") format("opentype");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "The Seasons";
-  src: url("/__l5e/assets-v1/458c00db-03f9-44da-84f1-b7125a4f2e5d/TheSeasons-Regular.otf") format("opentype");
+  src: url("./assets/fonts/TheSeasons-Regular.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "The Seasons";
-  src: url("/__l5e/assets-v1/aae821a3-7da3-4683-be5c-5668e2481dfa/TheSeasons-Bold.otf") format("opentype");
+  src: url("./assets/fonts/TheSeasons-Bold.otf") format("opentype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
