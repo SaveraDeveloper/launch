@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import apartment from "@/assets/ApartmentWithGirl.png.asset.json";
+import apartment from "@/assets/Apartment.png.asset.json";
+import apartmentGirl from "@/assets/ApartmentWithGirl.png.asset.json";
 import sunflower from "@/assets/SunflowerTransparent.png.asset.json";
 
 export const Route = createFileRoute("/welcome")({
@@ -8,10 +9,10 @@ export const Route = createFileRoute("/welcome")({
   component: Welcome,
 });
 
-// Stage 1: apartment only (no girl, no text) — ~2s
-// Stage 2: girl fades in
-// Stage 3: intro card slides up ("Hi, I'm Savera" + profile)
-// Stage 4: leave
+// Stage 1 (begin): apartment ONLY, no girl — ~2s
+// Stage 2 (reveal): crossfade in ApartmentWithGirl (girl appears)
+// Stage 3 (intro):  Savera profile card slides up
+// Stage 4 (leaving): route away
 type Stage = "begin" | "reveal" | "intro" | "leaving";
 
 function Welcome() {
@@ -38,22 +39,21 @@ function Welcome() {
 
   return (
     <div className="aroha-mobile-screen relative overflow-hidden bg-[#f2e6c8] text-white">
+      {/* Base: empty apartment */}
       <img
         src={apartment.url}
         alt=""
         aria-hidden
         className="absolute inset-0 h-full w-full object-cover"
       />
-
-      {/* Covers the girl until reveal */}
-      <div
-        className={`pointer-events-none absolute inset-x-0 bottom-0 h-[62%] transition-opacity duration-[1400ms] ease-in-out ${
-          girlVisible ? "opacity-0" : "opacity-100"
+      {/* Crossfade layer: apartment with girl */}
+      <img
+        src={apartmentGirl.url}
+        alt=""
+        aria-hidden
+        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[1400ms] ease-in-out ${
+          girlVisible ? "opacity-100" : "opacity-0"
         }`}
-        style={{
-          background:
-            "linear-gradient(to top, rgba(20,10,4,0.92) 30%, rgba(20,10,4,0.55) 60%, rgba(20,10,4,0) 100%)",
-        }}
       />
 
       {/* Intro profile card */}
@@ -61,7 +61,7 @@ function Welcome() {
         className={`absolute inset-x-6 z-30 transition-all duration-700 ${
           cardVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6 pointer-events-none"
         }`}
-        style={{ bottom: "16svh" }}
+        style={{ bottom: "14svh" }}
       >
         <div className="rounded-[28px] border border-white/40 bg-white/15 p-4 shadow-2xl shadow-black/40 backdrop-blur-xl">
           <div className="flex items-center gap-4">
