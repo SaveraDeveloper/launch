@@ -20,6 +20,13 @@ function Page() {
     nav({ to: "/onboarding/support" });
   };
 
+  const pick = (o: string) => {
+    setG(o);
+    saveOnboarding({ gender: o });
+    setTimeout(() => nav({ to: "/onboarding/support" }), 450);
+  };
+
+
   return (
     <CoffeeScreen blurBg>
       <div className="flex min-h-svh flex-col px-6 pt-11 pb-10">
