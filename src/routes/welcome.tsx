@@ -107,7 +107,7 @@ function Welcome() {
           logoRaised ? "top-[8svh]" : "top-1/2 -translate-y-1/2"
         } ${logoVisible ? "opacity-100" : "opacity-0"}`}
       >
-        <div className="relative h-[280px] w-[360px]">
+        <div className="relative h-[320px] w-[410px]">
           <img
             src={saveraBrown.url}
             alt="Savera"
