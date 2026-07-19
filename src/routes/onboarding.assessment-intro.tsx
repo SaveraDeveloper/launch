@@ -9,7 +9,7 @@ export const Route = createFileRoute("/onboarding/assessment-intro")({
 function Page() {
   const nav = useNavigate();
   return (
-    <CoffeeScreen hideGirl>
+    <CoffeeScreen hideGirl blurBg>
       <div className="flex min-h-svh flex-col px-6 pt-11 pb-10">
         <div className="flex items-center justify-between">
           <Link to="/onboarding/location" className="text-sm text-white/90">←</Link>
