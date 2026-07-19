@@ -59,7 +59,7 @@ function Page() {
               <button
                 key={o}
                 type="button"
-                onClick={() => setG(o)}
+                onClick={() => pick(o)}
                 className={`font-seasons text-[26px] leading-none transition duration-300 ${
                   active
                     ? "text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]"
