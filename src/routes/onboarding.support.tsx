@@ -34,7 +34,7 @@ function Page() {
   };
 
   return (
-    <CoffeeScreen>
+    <CoffeeScreen blurBg>
       <div className="flex min-h-svh flex-col px-6 pt-11 pb-10">
         <div className="flex items-center justify-between">
           <Link to="/onboarding/gender" className="text-sm text-white/90">←</Link>
