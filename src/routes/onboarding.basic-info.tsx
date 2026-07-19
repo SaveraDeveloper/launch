@@ -38,7 +38,7 @@ function Page() {
         </div>
 
         <div className="mt-2 text-center">
-          <h1 className="font-seasons text-[30px] font-light leading-[1.15] text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
+          <h1 className="font-seasons text-[38px] font-light leading-[1.1] text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
             Let us get to<br />know you
           </h1>
           <p className="mx-auto mt-3 max-w-[280px] text-[13px] font-light text-white/85">
