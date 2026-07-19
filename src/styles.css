@@ -4,21 +4,21 @@
 
 @font-face {
   font-family: "The Seasons";
-  src: url("./assets/fonts/TheSeasons-Light.otf") format("opentype");
+  src: url("/__l5e/assets-v1/f8dbb5b9-ffc2-4469-a14d-96d935b6ac10/CormorantGaramond-Light.ttf") format("truetype");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "The Seasons";
-  src: url("./assets/fonts/TheSeasons-Regular.otf") format("opentype");
+  src: url("/__l5e/assets-v1/9aa86b53-93b2-46c5-aa0b-bf0913aa43b1/CormorantGaramond-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "The Seasons";
-  src: url("./assets/fonts/TheSeasons-Bold.otf") format("opentype");
+  src: url("/__l5e/assets-v1/bcaf4322-247f-44fc-a91f-246ab5d69b3d/CormorantGaramond-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
