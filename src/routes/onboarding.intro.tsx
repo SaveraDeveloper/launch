@@ -12,16 +12,15 @@ function Page() {
 
   return (
     <div
-      className="relative flex h-svh w-full items-center justify-center overflow-hidden"
+      className="relative h-svh w-full overflow-hidden"
       style={{
         backgroundImage: `url(${aspaceBg.url})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
-      {/* Glass card overlay — matches the baked-in card so buttons sit inside it */}
-      <div className="relative flex h-[72%] w-[84%] max-w-[360px] flex-col items-center justify-end rounded-[32px] px-6 pb-10 pt-[38%]">
-        {/* Buttons placed in the empty lower area of the card, under the text */}
+      {/* Buttons sit in the empty lower area of the baked-in glass card */}
+      <div className="absolute bottom-[11%] left-1/2 w-[78%] max-w-[320px] -translate-x-1/2">
         <div className="flex w-full flex-col gap-3">
           <button
             type="button"
