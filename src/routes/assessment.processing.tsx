@@ -71,7 +71,7 @@ function Page() {
           </div>
 
           {/* Rotating status text with crossfade */}
-          <div className="mt-5 flex h-12 items-center justify-center">
+          <div className="relative mt-5 flex h-12 items-center justify-center">
             {MESSAGES.map((m, i) => (
               <p
                 key={m}
