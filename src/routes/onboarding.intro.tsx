@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { CoffeeScreen } from "@/components/CoffeeScreen";
+import aspaceBg from "@/assets/ASpace-4.png.asset.json";
+import googleIcon from "@/assets/GoogleIcon.webp.asset.json";
 
 export const Route = createFileRoute("/onboarding/intro")({
   head: () => ({ meta: [{ title: "Welcome — Savera" }] }),
@@ -10,26 +11,40 @@ function Page() {
   const nav = useNavigate();
 
   return (
-    <CoffeeScreen hideGirl>
-      <div className="flex min-h-svh flex-col items-center justify-center px-6 py-10 animate-soft-in">
-        <button
-          type="button"
-          onClick={() => nav({ to: "/onboarding/basic-info" })}
-          className="relative w-full max-w-[340px] overflow-hidden rounded-[28px] border border-white/70 bg-white/10 px-8 pt-10 pb-9 text-left shadow-[0_20px_60px_-15px_rgba(0,0,0,0.55)] backdrop-blur-[40px] transition active:scale-[0.99]"
-        >
-          {/* Tagline */}
-          <p className="text-center font-seasons text-[22px] font-light leading-[1.35] text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
-            A space that helps you understand yourself, navigate challenges, and build lasting well-being. <span aria-hidden>🌻</span>
-          </p>
+    <div
+      className="relative flex h-svh w-full items-center justify-center overflow-hidden"
+      style={{
+        backgroundImage: `url(${aspaceBg.url})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      {/* Glass card overlay — matches the baked-in card so buttons sit inside it */}
+      <div className="relative flex h-[72%] w-[84%] max-w-[360px] flex-col items-center justify-end rounded-[32px] px-6 pb-10 pt-[38%]">
+        {/* Buttons placed in the empty lower area of the card, under the text */}
+        <div className="flex w-full flex-col gap-3">
+          <button
+            type="button"
+            onClick={() => nav({ to: "/onboarding/basic-info" })}
+            className="flex w-full items-center justify-center gap-2.5 rounded-full bg-white py-3.5 text-[15px] font-medium text-[#3c2a1d] shadow-[0_4px_14px_rgba(0,0,0,0.12)] transition active:scale-[0.98]"
+          >
+            <img
+              src={googleIcon.url}
+              alt=""
+              className="h-[18px] w-[18px]"
+            />
+            Continue with Google
+          </button>
 
-          {/* Bottom decorative divider with sunflower */}
-          <div className="mt-8 flex items-center justify-center gap-3">
-            <span className="h-px flex-1 bg-white/60" />
-            <span aria-hidden className="text-[20px] leading-none">🌻</span>
-            <span className="h-px flex-1 bg-white/60" />
-          </div>
-        </button>
+          <button
+            type="button"
+            onClick={() => nav({ to: "/onboarding/basic-info" })}
+            className="w-full rounded-full border border-white/60 bg-white/15 py-3.5 text-[15px] font-medium text-white shadow-[0_4px_14px_rgba(0,0,0,0.12)] backdrop-blur-md transition active:scale-[0.98]"
+          >
+            Continue with Email
+          </button>
+        </div>
       </div>
-    </CoffeeScreen>
+    </div>
   );
 }
