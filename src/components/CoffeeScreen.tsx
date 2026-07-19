@@ -6,12 +6,12 @@ export function CoffeeScreen({
   children,
   overlay = "bg-black/30",
   hideGirl = true,
+  blurBg = false,
 }: {
   children: ReactNode;
   overlay?: string;
-  // When true (default) use the empty Apartment background — no girl at all.
-  // When false, use the ApartmentWithGirl backdrop.
   hideGirl?: boolean;
+  blurBg?: boolean;
 }) {
   const bg = hideGirl ? apartment.url : apartmentGirl.url;
   return (
@@ -20,7 +20,9 @@ export function CoffeeScreen({
         src={bg}
         alt=""
         aria-hidden
-        className="absolute inset-0 h-full w-full object-cover"
+        className={`absolute inset-0 h-full w-full object-cover ${
+          blurBg ? "scale-110 blur-md" : ""
+        }`}
       />
       <div className={`pointer-events-none absolute inset-0 ${overlay}`} />
       <div className="relative z-10 flex min-h-svh flex-col animate-soft-in">

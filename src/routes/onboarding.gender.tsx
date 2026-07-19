@@ -20,8 +20,15 @@ function Page() {
     nav({ to: "/onboarding/support" });
   };
 
+  const pick = (o: string) => {
+    setG(o);
+    saveOnboarding({ gender: o });
+    setTimeout(() => nav({ to: "/onboarding/support" }), 450);
+  };
+
+
   return (
-    <CoffeeScreen>
+    <CoffeeScreen blurBg>
       <div className="flex min-h-svh flex-col px-6 pt-11 pb-10">
         <div className="flex items-center justify-between">
           <Link to="/onboarding/assessment-intro" className="text-sm text-white/90">←</Link>
@@ -52,7 +59,7 @@ function Page() {
               <button
                 key={o}
                 type="button"
-                onClick={() => setG(o)}
+                onClick={() => pick(o)}
                 className={`font-seasons text-[26px] leading-none transition duration-300 ${
                   active
                     ? "text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]"

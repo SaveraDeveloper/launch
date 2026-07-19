@@ -101,8 +101,8 @@ function Page() {
   };
 
   return (
-    <CoffeeScreen>
-      <div className="flex min-h-svh flex-col px-6 pt-11 pb-10">
+    <CoffeeScreen blurBg>
+      <div className="flex min-h-svh flex-col px-6 pt-11 pb-6">
         <div className="flex items-center justify-between">
           <Link to="/onboarding/support" className="text-sm text-white/90">←</Link>
           <button
@@ -125,50 +125,56 @@ function Page() {
           Choose anything that speaks to you.
         </p>
 
-        <div className="mt-5 flex flex-col gap-5">
-          {CATEGORIES.map((cat) => (
-            <div key={cat.title}>
-              <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/80">
-                {cat.title}
-              </p>
-              <div className="grid grid-cols-2 gap-2">
-                {cat.options.map(({ label, Icon }) => {
-                  const active = picked.has(label);
-                  return (
-                    <button
-                      key={label}
-                      type="button"
-                      onClick={() => toggle(label)}
-                      className={`flex min-h-[56px] items-center gap-2.5 rounded-2xl border px-3 py-2 text-left text-[12.5px] leading-tight shadow-md transition duration-300 active:scale-[.97] ${
-                        active
-                          ? "border-white bg-white text-[#7a4a1d]"
-                          : "border-white/30 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
-                      }`}
-                    >
-                      <span
-                        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${
-                          active ? "bg-[#7a4a1d]/10 text-[#7a4a1d]" : "bg-white/15 text-white"
+        {/* Scrollable options area */}
+        <div className="mt-5 -mx-6 flex-1 overflow-y-auto px-6 pb-24">
+          <div className="flex flex-col gap-5">
+            {CATEGORIES.map((cat) => (
+              <div key={cat.title}>
+                <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/80">
+                  {cat.title}
+                </p>
+                <div className="grid grid-cols-2 gap-2">
+                  {cat.options.map(({ label, Icon }) => {
+                    const active = picked.has(label);
+                    return (
+                      <button
+                        key={label}
+                        type="button"
+                        onClick={() => toggle(label)}
+                        className={`flex min-h-[56px] items-center gap-2.5 rounded-2xl border px-3 py-2 text-left text-[12.5px] leading-tight shadow-md transition duration-300 active:scale-[.97] ${
+                          active
+                            ? "border-white bg-white text-[#7a4a1d]"
+                            : "border-white/30 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
                         }`}
                       >
-                        <Icon className="h-4 w-4" />
-                      </span>
-                      <span>{label}</span>
-                    </button>
-                  );
-                })}
+                        <span
+                          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${
+                            active ? "bg-[#7a4a1d]/10 text-[#7a4a1d]" : "bg-white/15 text-white"
+                          }`}
+                        >
+                          <Icon className="h-4 w-4" />
+                        </span>
+                        <span>{label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
-        <button
-          type="button"
-          disabled={picked.size === 0}
-          onClick={next}
-          className="mt-8 rounded-full bg-white py-3.5 text-[13px] font-bold tracking-[0.22em] text-[#7a4a1d] shadow-lg shadow-black/40 disabled:opacity-50"
-        >
-          NEXT
-        </button>
+        {/* Sticky Next button */}
+        <div className="pointer-events-none sticky bottom-0 -mx-6 bg-gradient-to-t from-black/70 via-black/40 to-transparent px-6 pt-6 pb-4">
+          <button
+            type="button"
+            disabled={picked.size === 0}
+            onClick={next}
+            className="pointer-events-auto w-full rounded-full bg-white py-3.5 text-[13px] font-bold tracking-[0.22em] text-[#7a4a1d] shadow-lg shadow-black/40 disabled:opacity-50"
+          >
+            NEXT
+          </button>
+        </div>
       </div>
     </CoffeeScreen>
   );

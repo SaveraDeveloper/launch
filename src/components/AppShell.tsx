@@ -13,19 +13,19 @@ const tabs = [
 export function AppShell() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   return (
-    <div className="relative min-h-screen text-white">
-      {/* Apartment background — no girl (blurred bottom via gradient) */}
-      <div className="fixed inset-0 -z-10">
+    <div className="relative min-h-full text-white">
+      {/* Apartment background — sticks in view within scroll container */}
+      <div className="pointer-events-none sticky top-0 -mb-[100svh] h-svh w-full">
         <img src={apartment.url} alt="" aria-hidden className="h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/55 to-black/80" />
       </div>
 
-      <div className="pb-32">
+      <div className="relative pb-32">
         <Outlet />
       </div>
 
-      {/* Floating liquid-glass nav */}
-      <nav className="fixed inset-x-0 bottom-4 z-40 flex justify-center px-4">
+      {/* Floating liquid-glass nav (sticks to phone-frame bottom) */}
+      <nav className="sticky bottom-4 z-40 flex justify-center px-4">
         <div className="relative flex w-full max-w-[420px] items-end justify-between rounded-full border border-white/20 bg-white/10 px-4 py-2 shadow-[0_10px_40px_rgba(0,0,0,0.45)] backdrop-blur-2xl">
           {tabs.map(({ to, label, Icon, primary }) => {
             const active = pathname === to || pathname.startsWith(to + "/");

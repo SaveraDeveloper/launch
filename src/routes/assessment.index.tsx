@@ -67,6 +67,19 @@ function Page() {
       copy[i] = val;
       return copy;
     });
+    // Auto-advance with fade after brief pause
+    setFading(true);
+    setTimeout(() => {
+      if (i < total - 1) {
+        setI(i + 1);
+        setFading(false);
+      } else {
+        const finalAnswers = [...answers];
+        finalAnswers[i] = val;
+        saveOnboarding({ answers: finalAnswers });
+        nav({ to: "/assessment/processing" });
+      }
+    }, 450);
   };
 
   const next = () => {
@@ -82,7 +95,7 @@ function Page() {
   const stepInFlow = 3 + (i + 1); // Q4..Q8 of 8
 
   return (
-    <CoffeeScreen>
+    <CoffeeScreen blurBg>
       <div className="flex min-h-svh flex-col px-6 pt-11 pb-10">
         <div className="flex items-center justify-between">
           <button onClick={back} className="text-sm text-white/90">←</button>

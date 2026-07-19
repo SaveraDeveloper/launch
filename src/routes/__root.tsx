@@ -116,7 +116,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Phone frame: constrains the app to mobile dimensions and centers it */}
-      <div className="mx-auto h-svh w-full max-w-[390px] overflow-hidden bg-black shadow-[0_0_0_12px_#1a1714,0_25px_60px_-15px_rgba(0,0,0,0.7)]">
+      <div className="relative mx-auto h-svh w-full max-w-[390px] overflow-y-auto overflow-x-hidden bg-black shadow-[0_0_0_12px_#1a1714,0_25px_60px_-15px_rgba(0,0,0,0.7)]">
         <Outlet />
       </div>
     </QueryClientProvider>
