@@ -12,20 +12,23 @@ export const Route = createFileRoute("/onboarding/location")({
 function Page() {
   const nav = useNavigate();
   const existing = readOnboarding();
-  const [state, setState] = useState(existing.state || "Delhi");
-  const districts = useMemo(() => INDIA_DISTRICTS[state] || [], [state]);
+  const [state, setState] = useState(existing.state || "");
+  const districts = useMemo(() => (state ? INDIA_DISTRICTS[state] || [] : []), [state]);
   const [district, setDistrict] = useState(
     existing.district && (INDIA_DISTRICTS[existing.state || ""] || []).includes(existing.district)
       ? existing.district
-      : (INDIA_DISTRICTS[state]?.[0] || "")
+      : ""
   );
 
   const onStateChange = (s: string) => {
     setState(s);
-    setDistrict(INDIA_DISTRICTS[s]?.[0] || "");
+    setDistrict("");
   };
 
+  const canProceed = Boolean(state && district);
+
   const goNext = () => {
+    if (!canProceed) return;
     saveOnboarding({ state, district });
     nav({ to: "/onboarding/assessment-intro" });
   };
