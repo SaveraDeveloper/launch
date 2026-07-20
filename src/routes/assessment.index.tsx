@@ -77,6 +77,7 @@ function Page() {
         const finalAnswers = [...answers];
         finalAnswers[i] = val;
         saveOnboarding({ answers: finalAnswers });
+        saveSaveraMemory(QUESTIONS, finalAnswers);
         nav({ to: "/assessment/processing" });
       }
     }, 450);
@@ -85,6 +86,7 @@ function Page() {
   const next = () => {
     if (i < total - 1) return goTo(i + 1);
     saveOnboarding({ answers });
+    saveSaveraMemory(QUESTIONS, answers);
     nav({ to: "/assessment/processing" });
   };
   const back = () => {
