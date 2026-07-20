@@ -20,7 +20,7 @@ function Page() {
       }}
     >
       {/* Buttons — 5% smaller, positioned lower on the page */}
-      <div className="absolute inset-x-0 bottom-[22%] flex justify-center px-8">
+      <div className="absolute inset-x-0 bottom-[30%] flex justify-center px-8">
         <div className="flex w-full max-w-[285px] flex-col gap-2.5">
           <button
             type="button"
