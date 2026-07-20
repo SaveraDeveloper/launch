@@ -87,13 +87,13 @@ function Page() {
             <Field label="What do I call you?">
               <input className="beige-input" placeholder="Ex: Priya" value={form.name} onChange={set("name")} required />
             </Field>
-            <Field label="Date of Birth">
+            <Field label="Date of Birth" error={errors.dob}>
               <input type="date" className="beige-input" value={form.dob} onChange={set("dob")} required />
             </Field>
-            <Field label="Email">
+            <Field label="Email" error={errors.email}>
               <input type="email" className="beige-input" placeholder="you@example.com" value={form.email} onChange={set("email")} required />
             </Field>
-            <Field label="Phone Number">
+            <Field label="Phone Number" error={errors.phone}>
               <input type="tel" className="beige-input" placeholder="+91 98765 43210" value={form.phone} onChange={set("phone")} />
             </Field>
             <Field label="Password">
