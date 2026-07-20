@@ -58,6 +58,10 @@ import { Route as AppResourcesSavedRouteImport } from './routes/_app.resources.s
 import { Route as AppResourcesIdRouteImport } from './routes/_app.resources.$id'
 import { Route as AppProgressMilestonesRouteImport } from './routes/_app.progress.milestones'
 import { Route as AppProgressAchievementsRouteImport } from './routes/_app.progress.achievements'
+import { Route as AppProfileSnapshotRouteImport } from './routes/_app.profile.snapshot'
+import { Route as AppProfileSettingsRouteImport } from './routes/_app.profile.settings'
+import { Route as AppProfileProgressRouteImport } from './routes/_app.profile.progress'
+import { Route as AppProfileGoalsRouteImport } from './routes/_app.profile.goals'
 import { Route as AppCompanionReflectionRouteImport } from './routes/_app.companion.reflection'
 import { Route as AppCompanionChatRouteImport } from './routes/_app.companion.chat'
 import { Route as AppExperiencesIdIndexRouteImport } from './routes/_app.experiences.$id.index'
@@ -316,6 +320,26 @@ const AppProgressAchievementsRoute = AppProgressAchievementsRouteImport.update({
   path: '/progress/achievements',
   getParentRoute: () => AppRoute,
 } as any)
+const AppProfileSnapshotRoute = AppProfileSnapshotRouteImport.update({
+  id: '/snapshot',
+  path: '/snapshot',
+  getParentRoute: () => AppProfileRoute,
+} as any)
+const AppProfileSettingsRoute = AppProfileSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppProfileRoute,
+} as any)
+const AppProfileProgressRoute = AppProfileProgressRouteImport.update({
+  id: '/progress',
+  path: '/progress',
+  getParentRoute: () => AppProfileRoute,
+} as any)
+const AppProfileGoalsRoute = AppProfileGoalsRouteImport.update({
+  id: '/goals',
+  path: '/goals',
+  getParentRoute: () => AppProfileRoute,
+} as any)
 const AppCompanionReflectionRoute = AppCompanionReflectionRouteImport.update({
   id: '/companion/reflection',
   path: '/companion/reflection',
@@ -377,7 +401,7 @@ export interface FileRoutesByFullPath {
   '/home': typeof AppHomeRoute
   '/insights': typeof AppInsightsRoute
   '/notifications': typeof AppNotificationsRoute
-  '/profile': typeof AppProfileRoute
+  '/profile': typeof AppProfileRouteWithChildren
   '/tracking': typeof AppTrackingRouteWithChildren
   '/assessment/discovery': typeof AssessmentDiscoveryRoute
   '/assessment/processing': typeof AssessmentProcessingRoute
@@ -397,6 +421,10 @@ export interface FileRoutesByFullPath {
   '/assessment/': typeof AssessmentIndexRoute
   '/companion/chat': typeof AppCompanionChatRoute
   '/companion/reflection': typeof AppCompanionReflectionRoute
+  '/profile/goals': typeof AppProfileGoalsRoute
+  '/profile/progress': typeof AppProfileProgressRoute
+  '/profile/settings': typeof AppProfileSettingsRoute
+  '/profile/snapshot': typeof AppProfileSnapshotRoute
   '/progress/achievements': typeof AppProgressAchievementsRoute
   '/progress/milestones': typeof AppProgressMilestonesRoute
   '/resources/$id': typeof AppResourcesIdRoute
@@ -437,7 +465,7 @@ export interface FileRoutesByTo {
   '/home': typeof AppHomeRoute
   '/insights': typeof AppInsightsRoute
   '/notifications': typeof AppNotificationsRoute
-  '/profile': typeof AppProfileRoute
+  '/profile': typeof AppProfileRouteWithChildren
   '/assessment/discovery': typeof AssessmentDiscoveryRoute
   '/assessment/processing': typeof AssessmentProcessingRoute
   '/assessment/recommendations': typeof AssessmentRecommendationsRoute
@@ -456,6 +484,10 @@ export interface FileRoutesByTo {
   '/assessment': typeof AssessmentIndexRoute
   '/companion/chat': typeof AppCompanionChatRoute
   '/companion/reflection': typeof AppCompanionReflectionRoute
+  '/profile/goals': typeof AppProfileGoalsRoute
+  '/profile/progress': typeof AppProfileProgressRoute
+  '/profile/settings': typeof AppProfileSettingsRoute
+  '/profile/snapshot': typeof AppProfileSnapshotRoute
   '/progress/achievements': typeof AppProgressAchievementsRoute
   '/progress/milestones': typeof AppProgressMilestonesRoute
   '/resources/$id': typeof AppResourcesIdRoute
@@ -498,7 +530,7 @@ export interface FileRoutesById {
   '/_app/home': typeof AppHomeRoute
   '/_app/insights': typeof AppInsightsRoute
   '/_app/notifications': typeof AppNotificationsRoute
-  '/_app/profile': typeof AppProfileRoute
+  '/_app/profile': typeof AppProfileRouteWithChildren
   '/_app/tracking': typeof AppTrackingRouteWithChildren
   '/assessment/discovery': typeof AssessmentDiscoveryRoute
   '/assessment/processing': typeof AssessmentProcessingRoute
@@ -518,6 +550,10 @@ export interface FileRoutesById {
   '/assessment/': typeof AssessmentIndexRoute
   '/_app/companion/chat': typeof AppCompanionChatRoute
   '/_app/companion/reflection': typeof AppCompanionReflectionRoute
+  '/_app/profile/goals': typeof AppProfileGoalsRoute
+  '/_app/profile/progress': typeof AppProfileProgressRoute
+  '/_app/profile/settings': typeof AppProfileSettingsRoute
+  '/_app/profile/snapshot': typeof AppProfileSnapshotRoute
   '/_app/progress/achievements': typeof AppProgressAchievementsRoute
   '/_app/progress/milestones': typeof AppProgressMilestonesRoute
   '/_app/resources/$id': typeof AppResourcesIdRoute
@@ -580,6 +616,10 @@ export interface FileRouteTypes {
     | '/assessment/'
     | '/companion/chat'
     | '/companion/reflection'
+    | '/profile/goals'
+    | '/profile/progress'
+    | '/profile/settings'
+    | '/profile/snapshot'
     | '/progress/achievements'
     | '/progress/milestones'
     | '/resources/$id'
@@ -639,6 +679,10 @@ export interface FileRouteTypes {
     | '/assessment'
     | '/companion/chat'
     | '/companion/reflection'
+    | '/profile/goals'
+    | '/profile/progress'
+    | '/profile/settings'
+    | '/profile/snapshot'
     | '/progress/achievements'
     | '/progress/milestones'
     | '/resources/$id'
@@ -700,6 +744,10 @@ export interface FileRouteTypes {
     | '/assessment/'
     | '/_app/companion/chat'
     | '/_app/companion/reflection'
+    | '/_app/profile/goals'
+    | '/_app/profile/progress'
+    | '/_app/profile/settings'
+    | '/_app/profile/snapshot'
     | '/_app/progress/achievements'
     | '/_app/progress/milestones'
     | '/_app/resources/$id'
@@ -1101,6 +1149,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppProgressAchievementsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/profile/snapshot': {
+      id: '/_app/profile/snapshot'
+      path: '/snapshot'
+      fullPath: '/profile/snapshot'
+      preLoaderRoute: typeof AppProfileSnapshotRouteImport
+      parentRoute: typeof AppProfileRoute
+    }
+    '/_app/profile/settings': {
+      id: '/_app/profile/settings'
+      path: '/settings'
+      fullPath: '/profile/settings'
+      preLoaderRoute: typeof AppProfileSettingsRouteImport
+      parentRoute: typeof AppProfileRoute
+    }
+    '/_app/profile/progress': {
+      id: '/_app/profile/progress'
+      path: '/progress'
+      fullPath: '/profile/progress'
+      preLoaderRoute: typeof AppProfileProgressRouteImport
+      parentRoute: typeof AppProfileRoute
+    }
+    '/_app/profile/goals': {
+      id: '/_app/profile/goals'
+      path: '/goals'
+      fullPath: '/profile/goals'
+      preLoaderRoute: typeof AppProfileGoalsRouteImport
+      parentRoute: typeof AppProfileRoute
+    }
     '/_app/companion/reflection': {
       id: '/_app/companion/reflection'
       path: '/companion/reflection'
@@ -1174,6 +1250,24 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AppProfileRouteChildren {
+  AppProfileGoalsRoute: typeof AppProfileGoalsRoute
+  AppProfileProgressRoute: typeof AppProfileProgressRoute
+  AppProfileSettingsRoute: typeof AppProfileSettingsRoute
+  AppProfileSnapshotRoute: typeof AppProfileSnapshotRoute
+}
+
+const AppProfileRouteChildren: AppProfileRouteChildren = {
+  AppProfileGoalsRoute: AppProfileGoalsRoute,
+  AppProfileProgressRoute: AppProfileProgressRoute,
+  AppProfileSettingsRoute: AppProfileSettingsRoute,
+  AppProfileSnapshotRoute: AppProfileSnapshotRoute,
+}
+
+const AppProfileRouteWithChildren = AppProfileRoute._addFileChildren(
+  AppProfileRouteChildren,
+)
+
 interface AppTrackingRouteChildren {
   AppTrackingHabitRoute: typeof AppTrackingHabitRoute
   AppTrackingInsightsRoute: typeof AppTrackingInsightsRoute
@@ -1199,7 +1293,7 @@ interface AppRouteChildren {
   AppHomeRoute: typeof AppHomeRoute
   AppInsightsRoute: typeof AppInsightsRoute
   AppNotificationsRoute: typeof AppNotificationsRoute
-  AppProfileRoute: typeof AppProfileRoute
+  AppProfileRoute: typeof AppProfileRouteWithChildren
   AppTrackingRoute: typeof AppTrackingRouteWithChildren
   AppCompanionChatRoute: typeof AppCompanionChatRoute
   AppCompanionReflectionRoute: typeof AppCompanionReflectionRoute
@@ -1237,7 +1331,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppHomeRoute: AppHomeRoute,
   AppInsightsRoute: AppInsightsRoute,
   AppNotificationsRoute: AppNotificationsRoute,
-  AppProfileRoute: AppProfileRoute,
+  AppProfileRoute: AppProfileRouteWithChildren,
   AppTrackingRoute: AppTrackingRouteWithChildren,
   AppCompanionChatRoute: AppCompanionChatRoute,
   AppCompanionReflectionRoute: AppCompanionReflectionRoute,
