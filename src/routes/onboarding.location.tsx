@@ -11,14 +11,11 @@ export const Route = createFileRoute("/onboarding/location")({
 
 function Page() {
   const nav = useNavigate();
-  const existing = readOnboarding();
-  const [state, setState] = useState(existing.state || "");
+  // Always start blank — full India view. Ignore any previously-stored value.
+  const [state, setState] = useState("");
   const districts = useMemo(() => (state ? INDIA_DISTRICTS[state] || [] : []), [state]);
-  const [district, setDistrict] = useState(
-    existing.district && (INDIA_DISTRICTS[existing.state || ""] || []).includes(existing.district)
-      ? existing.district
-      : ""
-  );
+  const [district, setDistrict] = useState("");
+  void readOnboarding;
 
   const onStateChange = (s: string) => {
     setState(s);

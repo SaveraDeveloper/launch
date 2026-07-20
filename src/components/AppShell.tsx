@@ -1,6 +1,6 @@
 import { Outlet, Link, useRouterState } from "@tanstack/react-router";
 import { Backpack, Compass, Home, Coffee, User } from "lucide-react";
-import apartment from "@/assets/ApartmentWithGirl.png.asset.json";
+import { apartmentByHour } from "@/lib/apartmentBg";
 
 const tabs = [
   { to: "/experiences", label: "Journey Kit", Icon: Backpack },
@@ -19,22 +19,37 @@ export function AppShell() {
     ),
   );
 
+  const bgUrl = apartmentByHour();
+
+  // Per-route blur intensity
+  let blurClass = "";
+  let overlayClass = "bg-gradient-to-b from-black/40 via-black/55 to-black/80";
+  if (pathname.startsWith("/experiences")) {
+    blurClass = "blur-[6px] scale-105"; // ~25%
+    overlayClass = "bg-black/45";
+  } else if (pathname.startsWith("/profile")) {
+    blurClass = "blur-[3px] scale-[1.03]"; // ~15%
+    overlayClass = "bg-black/45";
+  }
+
   return (
     <div className="relative min-h-full text-white">
-      {/* Apartment background — sticks in view within scroll container */}
-      <div className="pointer-events-none sticky top-0 -mb-[100svh] h-svh w-full">
-        <img src={apartment.url} alt="" aria-hidden className="h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/55 to-black/80" />
+      <div className="pointer-events-none sticky top-0 -mb-[100svh] h-svh w-full overflow-hidden">
+        <img
+          src={bgUrl}
+          alt=""
+          aria-hidden
+          className={`h-full w-full object-cover transition-all duration-700 ${blurClass}`}
+        />
+        <div className={`absolute inset-0 ${overlayClass}`} />
       </div>
 
       <div className="relative pb-32">
         <Outlet />
       </div>
 
-      {/* Apple-style liquid-glass nav */}
       <nav className="sticky bottom-4 z-40 flex justify-center px-4">
         <div className="relative flex w-full max-w-[420px] items-center justify-between rounded-full border border-white/25 bg-white/10 px-2 py-2 shadow-[0_10px_40px_rgba(0,0,0,0.45)] backdrop-blur-2xl">
-          {/* Animated glass pill highlighting the active tab */}
           <span
             aria-hidden
             className="pointer-events-none absolute top-1 bottom-1 rounded-full border border-white/40 bg-white/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_6px_20px_rgba(0,0,0,0.25)] backdrop-blur-xl transition-[left,width,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
