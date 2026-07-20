@@ -1,34 +1,32 @@
 import { Outlet, Link, useRouterState } from "@tanstack/react-router";
-import { Backpack, Compass, Home, Coffee, User } from "lucide-react";
+import { Compass, Home, Coffee, User } from "lucide-react";
 import { apartmentByHour } from "@/lib/apartmentBg";
 
 const tabs = [
-  { to: "/experiences", label: "Journey Kit", Icon: Backpack },
-  { to: "/experiences", label: "Explore", Icon: Compass },
-  { to: "/home", label: "Home", Icon: Home },
-  { to: "/companion", label: "Cafe", Icon: Coffee },
-  { to: "/profile", label: "Profile", Icon: User },
-];
+  { to: "/experiences", label: "Explore", Icon: Compass, match: "/experiences" },
+  { to: "/home", label: "Home", Icon: Home, match: "/home" },
+  { to: "/companion", label: "Cafe", Icon: Coffee, match: "/companion" },
+  { to: "/profile", label: "Profile", Icon: User, match: "/profile" },
+] as const;
 
 export function AppShell() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const activeIndex = Math.max(
     0,
     tabs.findIndex(
-      (t) => pathname === t.to || pathname.startsWith(t.to + "/"),
+      (t) => pathname === t.match || pathname.startsWith(t.match + "/"),
     ),
   );
 
   const bgUrl = apartmentByHour();
 
-  // Per-route blur intensity
   let blurClass = "";
   let overlayClass = "bg-gradient-to-b from-black/40 via-black/55 to-black/80";
   if (pathname.startsWith("/experiences")) {
-    blurClass = "blur-[6px] scale-105"; // ~25%
+    blurClass = "blur-[6px] scale-105";
     overlayClass = "bg-black/45";
   } else if (pathname.startsWith("/profile")) {
-    blurClass = "blur-[3px] scale-[1.03]"; // ~15%
+    blurClass = "blur-[3px] scale-[1.03]";
     overlayClass = "bg-black/45";
   }
 
