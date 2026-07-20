@@ -38,7 +38,12 @@ function Page() {
       <div className="flex min-h-svh flex-col px-6 pt-11 pb-8">
         <div className="flex items-center justify-between">
           <Link to="/onboarding/basic-info" className="text-base text-white/90">←</Link>
-          <button type="button" onClick={goNext} className="text-sm font-semibold text-white">
+          <button
+            type="button"
+            onClick={goNext}
+            disabled={!canProceed}
+            className="text-sm font-semibold text-white disabled:opacity-40"
+          >
             Next →
           </button>
         </div>
