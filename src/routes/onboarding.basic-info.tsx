@@ -18,17 +18,53 @@ function Page() {
     phone: existing.phone || "",
     password: existing.password || "",
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const set =
     (k: keyof typeof form) =>
     (e: React.ChangeEvent<HTMLInputElement>) =>
       setForm((f) => ({ ...f, [k]: e.target.value }));
 
+  const validate = () => {
+    const errs: Record<string, string> = {};
+
+    // DOB: not younger than 4, not older than 120
+    if (!form.dob) errs.dob = "Please enter your date of birth.";
+    else {
+      const dob = new Date(form.dob);
+      if (isNaN(dob.getTime())) errs.dob = "Invalid date.";
+      else {
+        const now = new Date();
+        let age = now.getFullYear() - dob.getFullYear();
+        const m = now.getMonth() - dob.getMonth();
+        if (m < 0 || (m === 0 && now.getDate() < dob.getDate())) age--;
+        if (age < 5) errs.dob = "You must be older than 4 years.";
+        else if (age > 120) errs.dob = "Please enter a valid date of birth.";
+      }
+    }
+
+    // Email: basic name@domain.tld
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    if (!emailRe.test(form.email)) errs.email = "Enter a valid email (name@domain).";
+
+    // Phone: digits + optional +, 7–15 digits
+    if (form.phone) {
+      const digits = form.phone.replace(/[^\d]/g, "");
+      if (digits.length < 7 || digits.length > 15)
+        errs.phone = "Enter a valid phone number.";
+    }
+
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
+
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validate()) return;
     saveOnboarding(form);
     nav({ to: "/onboarding/location" });
   };
+
 
   return (
     <CoffeeScreen>
