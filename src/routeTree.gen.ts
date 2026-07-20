@@ -66,6 +66,8 @@ import { Route as AppExperiencesIdCompleteRouteImport } from './routes/_app.expe
 import { Route as AppExperiencesIdActiveRouteImport } from './routes/_app.experiences.$id.active'
 import { Route as AppActivitiesIdCompleteRouteImport } from './routes/_app.activities.$id.complete'
 import { Route as AppActivitiesIdActiveRouteImport } from './routes/_app.activities.$id.active'
+import { Route as AppExperiencesIdPracticePracticeIdRouteImport } from './routes/_app.experiences.$id.practice.$practiceId'
+import { Route as AppExperiencesIdJourneyJourneyIdRouteImport } from './routes/_app.experiences.$id.journey.$journeyId'
 
 const WelcomeRoute = WelcomeRouteImport.update({
   id: '/welcome',
@@ -355,6 +357,18 @@ const AppActivitiesIdActiveRoute = AppActivitiesIdActiveRouteImport.update({
   path: '/activities/$id/active',
   getParentRoute: () => AppRoute,
 } as any)
+const AppExperiencesIdPracticePracticeIdRoute =
+  AppExperiencesIdPracticePracticeIdRouteImport.update({
+    id: '/experiences/$id/practice/$practiceId',
+    path: '/experiences/$id/practice/$practiceId',
+    getParentRoute: () => AppRoute,
+  } as any)
+const AppExperiencesIdJourneyJourneyIdRoute =
+  AppExperiencesIdJourneyJourneyIdRouteImport.update({
+    id: '/experiences/$id/journey/$journeyId',
+    path: '/experiences/$id/journey/$journeyId',
+    getParentRoute: () => AppRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -413,6 +427,8 @@ export interface FileRoutesByFullPath {
   '/experiences/$id/complete': typeof AppExperiencesIdCompleteRoute
   '/activities/$id/': typeof AppActivitiesIdIndexRoute
   '/experiences/$id/': typeof AppExperiencesIdIndexRoute
+  '/experiences/$id/journey/$journeyId': typeof AppExperiencesIdJourneyJourneyIdRoute
+  '/experiences/$id/practice/$practiceId': typeof AppExperiencesIdPracticePracticeIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -470,6 +486,8 @@ export interface FileRoutesByTo {
   '/experiences/$id/complete': typeof AppExperiencesIdCompleteRoute
   '/activities/$id': typeof AppActivitiesIdIndexRoute
   '/experiences/$id': typeof AppExperiencesIdIndexRoute
+  '/experiences/$id/journey/$journeyId': typeof AppExperiencesIdJourneyJourneyIdRoute
+  '/experiences/$id/practice/$practiceId': typeof AppExperiencesIdPracticePracticeIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -530,6 +548,8 @@ export interface FileRoutesById {
   '/_app/experiences/$id/complete': typeof AppExperiencesIdCompleteRoute
   '/_app/activities/$id/': typeof AppActivitiesIdIndexRoute
   '/_app/experiences/$id/': typeof AppExperiencesIdIndexRoute
+  '/_app/experiences/$id/journey/$journeyId': typeof AppExperiencesIdJourneyJourneyIdRoute
+  '/_app/experiences/$id/practice/$practiceId': typeof AppExperiencesIdPracticePracticeIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -590,6 +610,8 @@ export interface FileRouteTypes {
     | '/experiences/$id/complete'
     | '/activities/$id/'
     | '/experiences/$id/'
+    | '/experiences/$id/journey/$journeyId'
+    | '/experiences/$id/practice/$practiceId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -647,6 +669,8 @@ export interface FileRouteTypes {
     | '/experiences/$id/complete'
     | '/activities/$id'
     | '/experiences/$id'
+    | '/experiences/$id/journey/$journeyId'
+    | '/experiences/$id/practice/$practiceId'
   id:
     | '__root__'
     | '/'
@@ -706,6 +730,8 @@ export interface FileRouteTypes {
     | '/_app/experiences/$id/complete'
     | '/_app/activities/$id/'
     | '/_app/experiences/$id/'
+    | '/_app/experiences/$id/journey/$journeyId'
+    | '/_app/experiences/$id/practice/$practiceId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -1131,6 +1157,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppActivitiesIdActiveRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/experiences/$id/practice/$practiceId': {
+      id: '/_app/experiences/$id/practice/$practiceId'
+      path: '/experiences/$id/practice/$practiceId'
+      fullPath: '/experiences/$id/practice/$practiceId'
+      preLoaderRoute: typeof AppExperiencesIdPracticePracticeIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/experiences/$id/journey/$journeyId': {
+      id: '/_app/experiences/$id/journey/$journeyId'
+      path: '/experiences/$id/journey/$journeyId'
+      fullPath: '/experiences/$id/journey/$journeyId'
+      preLoaderRoute: typeof AppExperiencesIdJourneyJourneyIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
@@ -1188,6 +1228,8 @@ interface AppRouteChildren {
   AppExperiencesIdCompleteRoute: typeof AppExperiencesIdCompleteRoute
   AppActivitiesIdIndexRoute: typeof AppActivitiesIdIndexRoute
   AppExperiencesIdIndexRoute: typeof AppExperiencesIdIndexRoute
+  AppExperiencesIdJourneyJourneyIdRoute: typeof AppExperiencesIdJourneyJourneyIdRoute
+  AppExperiencesIdPracticePracticeIdRoute: typeof AppExperiencesIdPracticePracticeIdRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
@@ -1224,6 +1266,9 @@ const AppRouteChildren: AppRouteChildren = {
   AppExperiencesIdCompleteRoute: AppExperiencesIdCompleteRoute,
   AppActivitiesIdIndexRoute: AppActivitiesIdIndexRoute,
   AppExperiencesIdIndexRoute: AppExperiencesIdIndexRoute,
+  AppExperiencesIdJourneyJourneyIdRoute: AppExperiencesIdJourneyJourneyIdRoute,
+  AppExperiencesIdPracticePracticeIdRoute:
+    AppExperiencesIdPracticePracticeIdRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)

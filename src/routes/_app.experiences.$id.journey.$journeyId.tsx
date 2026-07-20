@@ -8,7 +8,7 @@ export const Route = createFileRoute("/_app/experiences/$id/journey/$journeyId")
 
 function Page() {
   const { id, journeyId } = Route.useParams();
-  const title = journeyId.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+  const title = journeyId.replace(/-/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase());
 
   return (
     <div className="mx-auto w-full max-w-[430px] px-5 pt-8 pb-6 animate-soft-in">
