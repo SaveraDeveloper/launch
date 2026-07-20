@@ -1,4 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { CoffeeScreen } from "@/components/CoffeeScreen";
 
 export const Route = createFileRoute("/onboarding/assessment-intro")({
