@@ -32,13 +32,21 @@ function Page() {
       <div className="flex min-h-svh flex-col px-6 pt-11 pb-10">
         <div className="flex items-center justify-between">
           <Link to="/onboarding/assessment-intro" className="text-sm text-white/90">←</Link>
-          <button
-            disabled={!g}
-            onClick={next}
-            className="text-sm font-semibold text-white disabled:opacity-40"
-          >
-            Next →
-          </button>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => nav({ to: "/onboarding/support" })}
+              className="text-xs font-light uppercase tracking-[0.18em] text-white/70 hover:text-white"
+            >
+              Skip
+            </button>
+            <button
+              disabled={!g}
+              onClick={next}
+              className="text-sm font-semibold text-white disabled:opacity-40"
+            >
+              Next →
+            </button>
+          </div>
         </div>
 
         <div className="mt-4">

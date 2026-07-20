@@ -105,13 +105,21 @@ function Page() {
       <div className="flex min-h-svh flex-col px-6 pt-11 pb-6">
         <div className="flex items-center justify-between">
           <Link to="/onboarding/support" className="text-sm text-white/90">←</Link>
-          <button
-            disabled={picked.size === 0}
-            onClick={next}
-            className="text-sm font-semibold text-white disabled:opacity-40"
-          >
-            Next →
-          </button>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => nav({ to: "/assessment" })}
+              className="text-xs font-light uppercase tracking-[0.18em] text-white/70 hover:text-white"
+            >
+              Skip
+            </button>
+            <button
+              disabled={picked.size === 0}
+              onClick={next}
+              className="text-sm font-semibold text-white disabled:opacity-40"
+            >
+              Next →
+            </button>
+          </div>
         </div>
 
         <div className="mt-4">
