@@ -56,7 +56,7 @@ function Page() {
   useEffect(() => setName(firstName()), []);
 
   return (
-    <div className="mx-auto w-full max-w-[430px] px-5 pt-10">
+    <div className="mx-auto w-full max-w-[430px] px-5 pt-10 animate-soft-in">
       {/* Header — breathing room shows apartment behind */}
       <header className="mb-8">
         <h1 className="font-seasons text-[28px] font-light leading-tight text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">

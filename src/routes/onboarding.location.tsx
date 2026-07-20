@@ -12,20 +12,23 @@ export const Route = createFileRoute("/onboarding/location")({
 function Page() {
   const nav = useNavigate();
   const existing = readOnboarding();
-  const [state, setState] = useState(existing.state || "Delhi");
-  const districts = useMemo(() => INDIA_DISTRICTS[state] || [], [state]);
+  const [state, setState] = useState(existing.state || "");
+  const districts = useMemo(() => (state ? INDIA_DISTRICTS[state] || [] : []), [state]);
   const [district, setDistrict] = useState(
     existing.district && (INDIA_DISTRICTS[existing.state || ""] || []).includes(existing.district)
       ? existing.district
-      : (INDIA_DISTRICTS[state]?.[0] || "")
+      : ""
   );
 
   const onStateChange = (s: string) => {
     setState(s);
-    setDistrict(INDIA_DISTRICTS[s]?.[0] || "");
+    setDistrict("");
   };
 
+  const canProceed = Boolean(state && district);
+
   const goNext = () => {
+    if (!canProceed) return;
     saveOnboarding({ state, district });
     nav({ to: "/onboarding/assessment-intro" });
   };
@@ -35,7 +38,12 @@ function Page() {
       <div className="flex min-h-svh flex-col px-6 pt-11 pb-8">
         <div className="flex items-center justify-between">
           <Link to="/onboarding/basic-info" className="text-base text-white/90">←</Link>
-          <button type="button" onClick={goNext} className="text-sm font-semibold text-white">
+          <button
+            type="button"
+            onClick={goNext}
+            disabled={!canProceed}
+            className="text-sm font-semibold text-white disabled:opacity-40"
+          >
             Next →
           </button>
         </div>
@@ -64,6 +72,7 @@ function Page() {
                 value={state}
                 onChange={(e) => onStateChange(e.target.value)}
               >
+                <option value="">Select state</option>
                 {INDIA_STATES.map((s) => <option key={s} value={s}>{s}</option>)}
               </select>
             </div>
@@ -73,13 +82,10 @@ function Page() {
                 className="beige-input appearance-none !py-2 !text-[13px]"
                 value={district}
                 onChange={(e) => setDistrict(e.target.value)}
-                disabled={districts.length === 0}
+                disabled={!state || districts.length === 0}
               >
-                {districts.length === 0 ? (
-                  <option value="">—</option>
-                ) : (
-                  districts.map((d) => <option key={d} value={d}>{d}</option>)
-                )}
+                <option value="">Select district</option>
+                {districts.map((d) => <option key={d} value={d}>{d}</option>)}
               </select>
             </div>
           </div>
@@ -88,7 +94,8 @@ function Page() {
         <button
           type="button"
           onClick={goNext}
-          className="relative z-30 mt-6 rounded-full bg-white py-3.5 text-[13px] font-bold tracking-[0.22em] text-[#7a4a1d] shadow-lg shadow-black/40"
+          disabled={!canProceed}
+          className="relative z-30 mt-6 rounded-full bg-white py-3.5 text-[13px] font-bold tracking-[0.22em] text-[#7a4a1d] shadow-lg shadow-black/40 disabled:opacity-50"
         >
           NEXT
         </button>
