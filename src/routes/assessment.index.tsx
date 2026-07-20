@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { CoffeeScreen } from "@/components/CoffeeScreen";
 import { ProgressDots } from "@/components/ProgressDots";
-import { saveOnboarding } from "@/lib/userStore";
+import { saveOnboarding, saveSaveraMemory } from "@/lib/userStore";
 
 export const Route = createFileRoute("/assessment/")({
   head: () => ({ meta: [{ title: "Assessment — Savera" }] }),
