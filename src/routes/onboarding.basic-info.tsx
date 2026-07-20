@@ -113,11 +113,12 @@ function Page() {
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
   return (
     <label className="block">
       <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.16em] text-[#7a4a1d]/85">{label}</span>
       {children}
+      {error && <span className="mt-1 block text-[11px] font-medium text-red-700">{error}</span>}
     </label>
   );
 }
