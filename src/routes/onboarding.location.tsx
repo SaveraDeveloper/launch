@@ -82,13 +82,10 @@ function Page() {
                 className="beige-input appearance-none !py-2 !text-[13px]"
                 value={district}
                 onChange={(e) => setDistrict(e.target.value)}
-                disabled={districts.length === 0}
+                disabled={!state || districts.length === 0}
               >
-                {districts.length === 0 ? (
-                  <option value="">—</option>
-                ) : (
-                  districts.map((d) => <option key={d} value={d}>{d}</option>)
-                )}
+                <option value="">Select district</option>
+                {districts.map((d) => <option key={d} value={d}>{d}</option>)}
               </select>
             </div>
           </div>
