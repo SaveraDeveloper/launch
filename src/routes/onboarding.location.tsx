@@ -72,6 +72,7 @@ function Page() {
                 value={state}
                 onChange={(e) => onStateChange(e.target.value)}
               >
+                <option value="">Select state</option>
                 {INDIA_STATES.map((s) => <option key={s} value={s}>{s}</option>)}
               </select>
             </div>
