@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { CoffeeScreen } from "@/components/CoffeeScreen";
 import { ProgressDots } from "@/components/ProgressDots";
-import { saveOnboarding } from "@/lib/userStore";
+import { saveOnboarding, saveSaveraMemory } from "@/lib/userStore";
 
 export const Route = createFileRoute("/assessment/")({
   head: () => ({ meta: [{ title: "Assessment — Savera" }] }),
@@ -77,6 +77,7 @@ function Page() {
         const finalAnswers = [...answers];
         finalAnswers[i] = val;
         saveOnboarding({ answers: finalAnswers });
+        saveSaveraMemory(QUESTIONS, finalAnswers);
         nav({ to: "/assessment/processing" });
       }
     }, 450);
@@ -85,6 +86,7 @@ function Page() {
   const next = () => {
     if (i < total - 1) return goTo(i + 1);
     saveOnboarding({ answers });
+    saveSaveraMemory(QUESTIONS, answers);
     nav({ to: "/assessment/processing" });
   };
   const back = () => {

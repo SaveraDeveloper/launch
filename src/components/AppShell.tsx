@@ -5,13 +5,20 @@ import apartment from "@/assets/ApartmentWithGirl.png.asset.json";
 const tabs = [
   { to: "/experiences", label: "Journey Kit", Icon: Backpack },
   { to: "/experiences", label: "Explore", Icon: Compass },
-  { to: "/home", label: "Home", Icon: Home, primary: true },
+  { to: "/home", label: "Home", Icon: Home },
   { to: "/companion", label: "Cafe", Icon: Coffee },
   { to: "/profile", label: "Profile", Icon: User },
 ];
 
 export function AppShell() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const activeIndex = Math.max(
+    0,
+    tabs.findIndex(
+      (t) => pathname === t.to || pathname.startsWith(t.to + "/"),
+    ),
+  );
+
   return (
     <div className="relative min-h-full text-white">
       {/* Apartment background — sticks in view within scroll container */}
@@ -24,43 +31,34 @@ export function AppShell() {
         <Outlet />
       </div>
 
-      {/* Floating liquid-glass nav (sticks to phone-frame bottom) */}
+      {/* Apple-style liquid-glass nav */}
       <nav className="sticky bottom-4 z-40 flex justify-center px-4">
-        <div className="relative flex w-full max-w-[420px] items-end justify-between rounded-full border border-white/20 bg-white/10 px-4 py-2 shadow-[0_10px_40px_rgba(0,0,0,0.45)] backdrop-blur-2xl">
-          {tabs.map(({ to, label, Icon, primary }) => {
-            const active = pathname === to || pathname.startsWith(to + "/");
-            if (primary) {
-              return (
-                <Link
-                  key={label}
-                  to={to}
-                  className="flex flex-col items-center"
-                >
-                  <span
-                    className={`-mt-6 flex h-14 w-14 items-center justify-center rounded-full border shadow-[0_0_24px_rgba(255,200,120,0.55)] transition ${
-                      active
-                        ? "border-amber-200/70 bg-gradient-to-b from-amber-100/40 to-amber-300/25 text-amber-100"
-                        : "border-white/25 bg-white/15 text-white"
-                    }`}
-                  >
-                    <Icon className="h-6 w-6" strokeWidth={1.6} />
-                  </span>
-                  <span className={`mt-1 text-[11px] ${active ? "text-amber-100" : "text-white/80"}`}>
-                    {label}
-                  </span>
-                </Link>
-              );
-            }
+        <div className="relative flex w-full max-w-[420px] items-center justify-between rounded-full border border-white/25 bg-white/10 px-2 py-2 shadow-[0_10px_40px_rgba(0,0,0,0.45)] backdrop-blur-2xl">
+          {/* Animated glass pill highlighting the active tab */}
+          <span
+            aria-hidden
+            className="pointer-events-none absolute top-1 bottom-1 rounded-full border border-white/40 bg-white/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_6px_20px_rgba(0,0,0,0.25)] backdrop-blur-xl transition-[left,width,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+            style={{
+              width: `calc((100% - 1rem) / ${tabs.length})`,
+              left: `calc(0.5rem + ((100% - 1rem) / ${tabs.length}) * ${activeIndex})`,
+            }}
+          />
+          {tabs.map(({ to, label, Icon }, idx) => {
+            const active = idx === activeIndex;
             return (
               <Link
                 key={label}
                 to={to}
-                className={`flex flex-1 flex-col items-center gap-1 py-1 text-[11px] transition ${
+                className={`relative z-10 flex flex-1 flex-col items-center gap-1 py-1.5 text-[10.5px] transition-colors duration-300 ${
                   active ? "text-white" : "text-white/70 hover:text-white"
                 }`}
               >
-                <Icon className="h-5 w-5" strokeWidth={1.5} />
-                {label}
+                <Icon
+                  className="h-[22px] w-[22px] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                  style={{ transform: active ? "scale(1.08)" : "scale(1)" }}
+                  strokeWidth={1.6}
+                />
+                <span className="leading-none">{label}</span>
               </Link>
             );
           })}

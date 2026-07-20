@@ -18,17 +18,53 @@ function Page() {
     phone: existing.phone || "",
     password: existing.password || "",
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const set =
     (k: keyof typeof form) =>
     (e: React.ChangeEvent<HTMLInputElement>) =>
       setForm((f) => ({ ...f, [k]: e.target.value }));
 
+  const validate = () => {
+    const errs: Record<string, string> = {};
+
+    // DOB: not younger than 4, not older than 120
+    if (!form.dob) errs.dob = "Please enter your date of birth.";
+    else {
+      const dob = new Date(form.dob);
+      if (isNaN(dob.getTime())) errs.dob = "Invalid date.";
+      else {
+        const now = new Date();
+        let age = now.getFullYear() - dob.getFullYear();
+        const m = now.getMonth() - dob.getMonth();
+        if (m < 0 || (m === 0 && now.getDate() < dob.getDate())) age--;
+        if (age < 5) errs.dob = "You must be older than 4 years.";
+        else if (age > 120) errs.dob = "Please enter a valid date of birth.";
+      }
+    }
+
+    // Email: basic name@domain.tld
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    if (!emailRe.test(form.email)) errs.email = "Enter a valid email (name@domain).";
+
+    // Phone: digits + optional +, 7–15 digits
+    if (form.phone) {
+      const digits = form.phone.replace(/[^\d]/g, "");
+      if (digits.length < 7 || digits.length > 15)
+        errs.phone = "Enter a valid phone number.";
+    }
+
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
+
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validate()) return;
     saveOnboarding(form);
     nav({ to: "/onboarding/location" });
   };
+
 
   return (
     <CoffeeScreen>
@@ -51,13 +87,13 @@ function Page() {
             <Field label="What do I call you?">
               <input className="beige-input" placeholder="Ex: Priya" value={form.name} onChange={set("name")} required />
             </Field>
-            <Field label="Date of Birth">
+            <Field label="Date of Birth" error={errors.dob}>
               <input type="date" className="beige-input" value={form.dob} onChange={set("dob")} required />
             </Field>
-            <Field label="Email">
+            <Field label="Email" error={errors.email}>
               <input type="email" className="beige-input" placeholder="you@example.com" value={form.email} onChange={set("email")} required />
             </Field>
-            <Field label="Phone Number">
+            <Field label="Phone Number" error={errors.phone}>
               <input type="tel" className="beige-input" placeholder="+91 98765 43210" value={form.phone} onChange={set("phone")} />
             </Field>
             <Field label="Password">
@@ -77,11 +113,12 @@ function Page() {
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
   return (
     <label className="block">
       <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.16em] text-[#7a4a1d]/85">{label}</span>
       {children}
+      {error && <span className="mt-1 block text-[11px] font-medium text-red-700">{error}</span>}
     </label>
   );
 }
