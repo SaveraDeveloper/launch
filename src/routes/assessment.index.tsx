@@ -101,13 +101,24 @@ function Page() {
       <div className="flex min-h-svh flex-col px-6 pt-11 pb-10">
         <div className="flex items-center justify-between">
           <button onClick={back} className="text-sm text-white/90">←</button>
-          <button
-            onClick={next}
-            disabled={!current}
-            className="text-sm font-semibold text-white disabled:opacity-40"
-          >
-            {i === total - 1 ? "Finish →" : "Next →"}
-          </button>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => {
+                if (i < total - 1) goTo(i + 1);
+                else nav({ to: "/assessment/processing" });
+              }}
+              className="text-xs font-light uppercase tracking-[0.18em] text-white/70 hover:text-white"
+            >
+              Skip
+            </button>
+            <button
+              onClick={next}
+              disabled={!current}
+              className="text-sm font-semibold text-white disabled:opacity-40"
+            >
+              {i === total - 1 ? "Finish →" : "Next →"}
+            </button>
+          </div>
         </div>
 
         <div className="mt-4">
