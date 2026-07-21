@@ -3,7 +3,7 @@ import { ArrowLeft, Play, Clock } from "lucide-react";
 import { VIDEOS, formatDuration } from "@/lib/journeyKitCatalog";
 
 export const Route = createFileRoute("/_app/journey-kit/videos/$id")({
-  head: ({ loaderData }) => ({
+  head: ({ loaderData }: { loaderData?: (typeof VIDEOS)[number] }) => ({
     meta: [{ title: loaderData ? `${loaderData.title} — Videos` : "Video — Journey Kit" }],
   }),
   loader: ({ params }) => {

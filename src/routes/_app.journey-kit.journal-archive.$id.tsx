@@ -3,7 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import { JOURNALS, relativeDate } from "@/lib/journeyKitCatalog";
 
 export const Route = createFileRoute("/_app/journey-kit/journal-archive/$id")({
-  head: ({ loaderData }) => ({
+  head: ({ loaderData }: { loaderData?: (typeof JOURNALS)[number] }) => ({
     meta: [{ title: loaderData ? `${loaderData.title} — Journal` : "Journal — Journey Kit" }],
   }),
   loader: ({ params }) => {

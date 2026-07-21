@@ -4,7 +4,7 @@ import { ArrowLeft, BookOpen, Bookmark, BookMarked } from "lucide-react";
 import { BOOKS } from "@/lib/journeyKitCatalog";
 
 export const Route = createFileRoute("/_app/journey-kit/books/$id")({
-  head: ({ loaderData }) => ({
+  head: ({ loaderData }: { loaderData?: (typeof BOOKS)[number] }) => ({
     meta: [{ title: loaderData ? `${loaderData.title} — Books` : "Book — Journey Kit" }],
   }),
   loader: ({ params }) => {
