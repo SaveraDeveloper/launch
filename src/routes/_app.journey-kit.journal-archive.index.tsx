@@ -1,7 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
-import { ArrowLeft, Search, Heart, NotebookPen } from "lucide-react";
-import { JOURNALS, relativeDate, isThisWeek, isThisMonth } from "@/lib/journeyKitCatalog";
+import { useEffect, useMemo, useState } from "react";
+import { ArrowLeft, Search, Heart, NotebookPen, Plus } from "lucide-react";
+import {
+  journalsStore,
+  newId,
+  relativeDate,
+  isThisWeek,
+  isThisMonth,
+  type JournalItem,
+} from "@/lib/journeyKitCatalog";
+import { AddItemDialog, type AddItemResult } from "@/components/AddItemDialog";
 
 type Filter = "all" | "favorites" | "week" | "month";
 
@@ -18,29 +26,64 @@ const TABS: { id: Filter; label: string }[] = [
 ];
 
 function Page() {
+  const [items, setItems] = useState<JournalItem[]>([]);
   const [filter, setFilter] = useState<Filter>("all");
   const [q, setQ] = useState("");
-  const [favorites, setFavorites] = useState<Record<string, boolean>>(() =>
-    Object.fromEntries(JOURNALS.map((j) => [j.id, j.isFavorite])),
-  );
+  const [adding, setAdding] = useState(false);
+
+  useEffect(() => setItems(journalsStore.read()), []);
+
+  const persist = (next: JournalItem[]) => {
+    setItems(next);
+    journalsStore.write(next);
+  };
 
   const list = useMemo(() => {
-    let l = JOURNALS.slice().sort((a, b) => (b.date < a.date ? -1 : 1));
-    if (filter === "favorites") l = l.filter((j) => favorites[j.id]);
+    let l = items.slice().sort((a, b) => (b.date < a.date ? -1 : 1));
+    if (filter === "favorites") l = l.filter((j) => j.isFavorite);
     if (filter === "week") l = l.filter((j) => isThisWeek(j.date));
     if (filter === "month") l = l.filter((j) => isThisMonth(j.date));
     const query = q.trim().toLowerCase();
-    if (query) l = l.filter((j) => j.title.toLowerCase().includes(query) || j.preview.toLowerCase().includes(query));
+    if (query)
+      l = l.filter(
+        (j) =>
+          j.title.toLowerCase().includes(query) || j.body.toLowerCase().includes(query),
+      );
     return l;
-  }, [filter, q, favorites]);
+  }, [items, filter, q]);
+
+  const handleAdd = (r: AddItemResult) => {
+    const j: JournalItem = {
+      id: newId(),
+      title: r.title,
+      body: r.body ?? "",
+      mood: r.mood,
+      date: new Date().toISOString(),
+      isFavorite: false,
+    };
+    persist([j, ...items]);
+    setAdding(false);
+  };
+
+  const toggleFav = (id: string) =>
+    persist(items.map((j) => (j.id === id ? { ...j, isFavorite: !j.isFavorite } : j)));
 
   return (
     <div className="mx-auto w-full max-w-[430px] px-5 pt-10 pb-10 animate-soft-in">
-      <header className="mb-5 flex items-center gap-3">
-        <Link to="/journey-kit" className="rounded-full border border-white/30 bg-white/20 p-2 backdrop-blur-xl">
-          <ArrowLeft className="h-4 w-4 text-white" />
-        </Link>
-        <h1 className="font-seasons text-[24px] font-light text-white">📝 Journal Archive</h1>
+      <header className="mb-5 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <Link to="/journey-kit" className="rounded-full border border-white/30 bg-white/20 p-2 backdrop-blur-xl">
+            <ArrowLeft className="h-4 w-4 text-white" />
+          </Link>
+          <h1 className="font-seasons text-[24px] font-light text-white">📝 Journal Archive</h1>
+        </div>
+        <button
+          onClick={() => setAdding(true)}
+          aria-label="New journal entry"
+          className="rounded-full border border-white/35 bg-white/25 p-2 backdrop-blur-xl active:scale-95"
+        >
+          <Plus className="h-4 w-4 text-white" />
+        </button>
       </header>
 
       <div className="mb-3 flex items-center gap-3 rounded-full border border-white/30 bg-white/25 px-4 py-3 backdrop-blur-2xl shadow-[0_8px_24px_rgba(0,0,0,0.28)]">
@@ -77,47 +120,50 @@ function Page() {
           <NotebookPen className="mx-auto mb-2 h-6 w-6 text-white/80" strokeWidth={1.3} />
           <p className="font-seasons text-[15px] text-white">Your notebooks will live here</p>
           <p className="mt-1 text-[12px] font-light text-white/80">
-            Journals are written in Café — they'll appear here after.
+            Tap + to start an entry.
           </p>
         </div>
       ) : (
         <div className="flex flex-col gap-3">
-          {list.map((j) => {
-            const fav = favorites[j.id];
-            return (
-              <div
-                key={j.id}
-                className="relative rounded-[22px] border border-white/30 bg-white/25 p-4 backdrop-blur-2xl shadow-[0_8px_24px_rgba(0,0,0,0.28)]"
+          {list.map((j) => (
+            <div
+              key={j.id}
+              className="relative rounded-[22px] border border-white/30 bg-white/25 p-4 backdrop-blur-2xl shadow-[0_8px_24px_rgba(0,0,0,0.28)]"
+            >
+              <Link
+                to="/journey-kit/journal-archive/$id"
+                params={{ id: j.id }}
+                className="block pr-8"
               >
-                <Link
-                  to="/journey-kit/journal-archive/$id"
-                  params={{ id: j.id }}
-                  className="block pr-8"
-                >
-                  <div className="flex items-baseline justify-between gap-2">
-                    <p className="font-seasons text-[16px] leading-tight text-white">{j.title}</p>
-                    <span className="shrink-0 text-[10.5px] text-white/70">{relativeDate(j.date)}</span>
-                  </div>
+                <div className="flex items-baseline justify-between gap-2">
+                  <p className="font-seasons text-[16px] leading-tight text-white">{j.title}</p>
+                  <span className="shrink-0 text-[10.5px] text-white/70">{relativeDate(j.date)}</span>
+                </div>
+                {j.mood && (
                   <p className="mt-1 text-[11px] uppercase tracking-[0.14em] text-amber-100/80">{j.mood}</p>
+                )}
+                {j.body && (
                   <p className="mt-2 line-clamp-2 text-[12.5px] font-light leading-snug text-white/85">
-                    {j.preview}
+                    {j.body}
                   </p>
-                </Link>
-                <button
-                  aria-label={fav ? "Unfavorite" : "Favorite"}
-                  onClick={() => setFavorites((s) => ({ ...s, [j.id]: !s[j.id] }))}
-                  className="absolute right-3 top-3 rounded-full border border-white/30 bg-white/20 p-1.5 backdrop-blur-xl"
-                >
-                  <Heart
-                    className={`h-3.5 w-3.5 ${fav ? "fill-rose-300 text-rose-300" : "text-white/80"}`}
-                    strokeWidth={1.6}
-                  />
-                </button>
-              </div>
-            );
-          })}
+                )}
+              </Link>
+              <button
+                aria-label={j.isFavorite ? "Unfavorite" : "Favorite"}
+                onClick={() => toggleFav(j.id)}
+                className="absolute right-3 top-3 rounded-full border border-white/30 bg-white/20 p-1.5 backdrop-blur-xl"
+              >
+                <Heart
+                  className={`h-3.5 w-3.5 ${j.isFavorite ? "fill-rose-300 text-rose-300" : "text-white/80"}`}
+                  strokeWidth={1.6}
+                />
+              </button>
+            </div>
+          ))}
         </div>
       )}
+
+      <AddItemDialog open={adding} kind="journal" onClose={() => setAdding(false)} onSubmit={handleAdd} />
     </div>
   );
 }
