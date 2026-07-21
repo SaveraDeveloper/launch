@@ -18,7 +18,7 @@ function Page() {
     <div className="mx-auto w-full max-w-[430px] px-5 pt-10 pb-4 animate-soft-in">
       {/* Header */}
       <header className="mb-6 flex items-center gap-4">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full border border-white/30 bg-white/15 backdrop-blur-xl font-seasons text-[24px] text-white shadow-[0_8px_24px_rgba(0,0,0,0.35)]">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full border border-white/30 bg-white/30 backdrop-blur-xl font-seasons text-[24px] text-white shadow-[0_8px_24px_rgba(0,0,0,0.35)]">
           {initials}
         </div>
         <div className="min-w-0">
@@ -43,7 +43,7 @@ function Page() {
           {traits.map((t) => (
             <span
               key={t}
-              className="rounded-full border border-white/25 bg-white/10 px-2.5 py-1 text-[11px] font-light text-white/90"
+              className="rounded-full border border-white/35 bg-white/25 px-2.5 py-1 text-[11px] font-light text-white/90"
             >
               {t}
             </span>
@@ -112,9 +112,9 @@ function SectionCard({
   children?: React.ReactNode;
 }) {
   return (
-    <section className="mb-4 rounded-[26px] border border-white/25 bg-white/10 p-4 shadow-[0_10px_30px_rgba(0,0,0,0.32)] backdrop-blur-2xl">
+    <section className="mb-4 rounded-[26px] border border-white/35 bg-white/25 p-4 shadow-[0_10px_30px_rgba(0,0,0,0.32)] backdrop-blur-2xl">
       <div className="mb-3 flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/25 bg-white/15">
+        <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/35 bg-white/30">
           {icon}
         </div>
         <div className="min-w-0 flex-1">
@@ -125,7 +125,7 @@ function SectionCard({
       {children && <div className="mb-3">{children}</div>}
       <Link
         to={to}
-        className="flex items-center justify-between rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[12px] font-light text-white/95 hover:bg-white/15"
+        className="flex items-center justify-between rounded-full border border-white/35 bg-white/25 px-4 py-2 text-[12px] font-light text-white/95 hover:bg-white/30"
       >
         {cta}
         <ChevronRight className="h-4 w-4 text-white/80" />

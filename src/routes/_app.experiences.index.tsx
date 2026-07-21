@@ -96,7 +96,7 @@ function Page() {
       </header>
 
       {/* Search */}
-      <div className="mb-5 flex items-center gap-3 rounded-full border border-white/25 bg-white/15 px-4 py-3 backdrop-blur-2xl shadow-[0_8px_24px_rgba(0,0,0,0.28)]">
+      <div className="mb-5 flex items-center gap-3 rounded-full border border-white/35 bg-white/30 px-4 py-3 backdrop-blur-2xl shadow-[0_8px_24px_rgba(0,0,0,0.28)]">
         <Search className="h-4 w-4 text-white/80" />
         <input
           value={q}
@@ -117,7 +117,7 @@ function Page() {
 
       {/* Search results */}
       {query && filtered.matches.length > 0 && (
-        <div className="mb-5 rounded-[22px] border border-white/20 bg-white/10 p-3 backdrop-blur-xl">
+        <div className="mb-5 rounded-[22px] border border-white/35 bg-white/25 p-3 backdrop-blur-xl">
           <p className="mb-2 px-1 text-[11px] uppercase tracking-[0.18em] text-white/70">Matches</p>
           <div className="flex flex-col">
             {filtered.matches.map((m) => (
@@ -125,7 +125,7 @@ function Page() {
                 key={`${m.kind}-${m.id}`}
                 to={m.kind === "journey" ? "/experiences/$id/journey/$journeyId" : "/experiences/$id/practice/$practiceId"}
                 params={m.kind === "journey" ? { id: m.catId, journeyId: m.id } : { id: m.catId, practiceId: m.id }}
-                className="flex items-center justify-between rounded-xl px-2 py-2 hover:bg-white/10"
+                className="flex items-center justify-between rounded-xl px-2 py-2 hover:bg-white/25"
               >
                 <span className="text-[13px] text-white">{m.title}</span>
                 <span className="text-[10.5px] uppercase tracking-[0.14em] text-white/60">{m.kind}</span>
@@ -136,12 +136,12 @@ function Page() {
       )}
 
       {/* Todo checklist */}
-      <section className="mb-6 rounded-[26px] border border-white/25 bg-white/10 p-4 shadow-[0_10px_30px_rgba(0,0,0,0.32)] backdrop-blur-2xl">
+      <section className="mb-6 rounded-[26px] border border-white/35 bg-white/25 p-4 shadow-[0_10px_30px_rgba(0,0,0,0.32)] backdrop-blur-2xl">
         <div className="mb-3 flex items-center justify-between">
           <h2 className="font-seasons text-[17px] text-white">Today's To-Do</h2>
           <span className="text-[11px] text-white/70">{doneCount}/{todos.length}</span>
         </div>
-        <div className="mb-3 h-1 w-full overflow-hidden rounded-full bg-white/15">
+        <div className="mb-3 h-1 w-full overflow-hidden rounded-full bg-white/30">
           <div
             className="h-full rounded-full bg-amber-200/90 transition-[width] duration-500"
             style={{ width: `${(doneCount / todos.length) * 100}%` }}
@@ -182,9 +182,9 @@ function Page() {
               key={id}
               to="/experiences/$id"
               params={{ id }}
-              className={`group flex items-center gap-4 rounded-[26px] border border-white/25 bg-gradient-to-br ${tint} bg-white/10 p-4 shadow-[0_10px_30px_rgba(0,0,0,0.35)] backdrop-blur-2xl transition active:scale-[.985] hover:bg-white/15`}
+              className={`group flex items-center gap-4 rounded-[26px] border border-white/35 bg-gradient-to-br ${tint} bg-white/25 p-4 shadow-[0_10px_30px_rgba(0,0,0,0.35)] backdrop-blur-2xl transition active:scale-[.985] hover:bg-white/30`}
             >
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/25 bg-white/15">
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/35 bg-white/30">
                 <Icon className="h-6 w-6 text-white" strokeWidth={1.5} />
               </div>
               <div className="min-w-0 flex-1">
@@ -202,7 +202,7 @@ function Page() {
           );
         })}
         {query && filtered.categories.length === 0 && (
-          <p className="rounded-2xl border border-white/15 bg-white/5 p-4 text-center text-[12.5px] font-light text-white/75">
+          <p className="rounded-2xl border border-white/30 bg-white/5 p-4 text-center text-[12.5px] font-light text-white/75">
             No matches for "{q}". Try a different word.
           </p>
         )}
@@ -218,7 +218,7 @@ function Page() {
                 key={r.label}
                 to="/experiences/$id"
                 params={{ id: r.id }}
-                className="shrink-0 rounded-2xl border border-white/20 bg-white/10 p-3 backdrop-blur-xl w-[160px]"
+                className="shrink-0 rounded-2xl border border-white/35 bg-white/25 p-3 backdrop-blur-xl w-[160px]"
               >
                 <p className="font-seasons text-[14px] leading-tight text-white">{r.label}</p>
                 <p className="mt-1 inline-flex items-center gap-1 text-[11px] text-white/70">

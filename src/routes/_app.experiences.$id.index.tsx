@@ -44,7 +44,7 @@ function Page() {
               key={j.id}
               to="/experiences/$id/journey/$journeyId"
               params={{ id, journeyId: j.id }}
-              className="rounded-[24px] border border-white/25 bg-white/10 p-4 backdrop-blur-2xl shadow-[0_10px_28px_rgba(0,0,0,0.32)] active:scale-[.99]"
+              className="rounded-[24px] border border-white/35 bg-white/25 p-4 backdrop-blur-2xl shadow-[0_10px_28px_rgba(0,0,0,0.32)] active:scale-[.99]"
             >
               <p className="font-seasons text-[18px] leading-tight text-white">{j.title}</p>
               <p className="mt-1 text-[12px] font-light leading-snug text-white/80">{j.desc}</p>
@@ -53,7 +53,7 @@ function Page() {
                 <span className="inline-flex items-center gap-1"><Clock className="h-3 w-3" /> {j.time}</span>
                 <span>{j.progress}%</span>
               </div>
-              <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-white/15">
+              <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-white/30">
                 <div className="h-full rounded-full bg-white/80" style={{ width: `${j.progress}%` }} />
               </div>
             </Link>
@@ -72,13 +72,13 @@ function Page() {
               key={p.id}
               to="/experiences/$id/practice/$practiceId"
               params={{ id, practiceId: p.id }}
-              className="flex items-center justify-between gap-3 rounded-[22px] border border-white/20 bg-white/10 px-4 py-3 backdrop-blur-xl active:scale-[.99]"
+              className="flex items-center justify-between gap-3 rounded-[22px] border border-white/35 bg-white/25 px-4 py-3 backdrop-blur-xl active:scale-[.99]"
             >
               <div className="min-w-0">
                 <p className="font-seasons text-[15px] leading-tight text-white">{p.title}</p>
                 <p className="mt-0.5 truncate text-[11.5px] font-light text-white/75">{p.summary}</p>
               </div>
-              <span className="shrink-0 rounded-full border border-white/25 bg-white/10 px-2.5 py-1 text-[10.5px] text-white/85">
+              <span className="shrink-0 rounded-full border border-white/35 bg-white/25 px-2.5 py-1 text-[10.5px] text-white/85">
                 {p.time}
               </span>
             </Link>

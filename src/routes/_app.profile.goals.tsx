@@ -111,7 +111,7 @@ function Page() {
                   setAdding(false);
                   setDraft("");
                 }}
-                className="rounded-full border border-white/25 px-4 py-2 text-[12px] text-white/80"
+                className="rounded-full border border-white/35 px-4 py-2 text-[12px] text-white/80"
               >
                 Cancel
               </button>
@@ -120,7 +120,7 @@ function Page() {
         ) : (
           <button
             onClick={() => setAdding(true)}
-            className="flex items-center justify-center gap-2 rounded-full border border-dashed border-white/30 bg-white/5 py-3 text-[12.5px] font-light text-white/85 backdrop-blur-xl hover:bg-white/10"
+            className="flex items-center justify-center gap-2 rounded-full border border-dashed border-white/30 bg-white/5 py-3 text-[12.5px] font-light text-white/85 backdrop-blur-xl hover:bg-white/25"
           >
             <Plus className="h-4 w-4" /> Add a Goal
           </button>
@@ -135,7 +135,7 @@ function GoalCard({ goal, onChange }: { goal: Goal; onChange: (p: Partial<Goal>)
   const isDone = goal.status === "complete";
   return (
     <article
-      className={`rounded-[26px] border border-white/25 bg-white/10 p-4 shadow-[0_10px_30px_rgba(0,0,0,0.3)] backdrop-blur-2xl transition ${
+      className={`rounded-[26px] border border-white/35 bg-white/25 p-4 shadow-[0_10px_30px_rgba(0,0,0,0.3)] backdrop-blur-2xl transition ${
         isDone ? "opacity-70" : ""
       }`}
     >
@@ -158,7 +158,7 @@ function GoalCard({ goal, onChange }: { goal: Goal; onChange: (p: Partial<Goal>)
             {goal.suggested.map((s) => (
               <span
                 key={s}
-                className="rounded-full border border-white/25 bg-white/10 px-2.5 py-1 text-[11px] font-light text-white/90"
+                className="rounded-full border border-white/35 bg-white/25 px-2.5 py-1 text-[11px] font-light text-white/90"
               >
                 {s}
               </span>
@@ -171,7 +171,7 @@ function GoalCard({ goal, onChange }: { goal: Goal; onChange: (p: Partial<Goal>)
         {!isDone && (
           <button
             onClick={() => onChange({ status: isPaused ? "active" : "paused" })}
-            className="flex flex-1 items-center justify-center gap-1.5 rounded-full border border-white/25 bg-white/10 py-2 text-[11.5px] font-light text-white/90 hover:bg-white/15"
+            className="flex flex-1 items-center justify-center gap-1.5 rounded-full border border-white/35 bg-white/25 py-2 text-[11.5px] font-light text-white/90 hover:bg-white/30"
           >
             {isPaused ? <Play className="h-3.5 w-3.5" /> : <Pause className="h-3.5 w-3.5" />}
             {isPaused ? "Resume" : "Pause"}
@@ -180,7 +180,7 @@ function GoalCard({ goal, onChange }: { goal: Goal; onChange: (p: Partial<Goal>)
         {!isDone && (
           <button
             onClick={() => onChange({ status: "complete", progress: 100 })}
-            className="flex flex-1 items-center justify-center gap-1.5 rounded-full border border-white/25 bg-white/10 py-2 text-[11.5px] font-light text-white/90 hover:bg-white/15"
+            className="flex flex-1 items-center justify-center gap-1.5 rounded-full border border-white/35 bg-white/25 py-2 text-[11.5px] font-light text-white/90 hover:bg-white/30"
           >
             <Check className="h-3.5 w-3.5" /> Complete
           </button>
@@ -188,7 +188,7 @@ function GoalCard({ goal, onChange }: { goal: Goal; onChange: (p: Partial<Goal>)
         {isDone && (
           <button
             onClick={() => onChange({ status: "active" })}
-            className="flex flex-1 items-center justify-center gap-1.5 rounded-full border border-white/25 bg-white/10 py-2 text-[11.5px] font-light text-white/90 hover:bg-white/15"
+            className="flex flex-1 items-center justify-center gap-1.5 rounded-full border border-white/35 bg-white/25 py-2 text-[11.5px] font-light text-white/90 hover:bg-white/30"
           >
             <X className="h-3.5 w-3.5" /> Reopen
           </button>

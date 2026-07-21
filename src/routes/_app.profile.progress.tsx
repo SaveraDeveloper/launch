@@ -71,7 +71,7 @@ function Page() {
 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="mb-3 rounded-[24px] border border-white/25 bg-white/10 p-4 shadow-[0_10px_30px_rgba(0,0,0,0.3)] backdrop-blur-2xl">
+    <section className="mb-3 rounded-[24px] border border-white/35 bg-white/25 p-4 shadow-[0_10px_30px_rgba(0,0,0,0.3)] backdrop-blur-2xl">
       <h2 className="mb-2 text-[10.5px] font-semibold uppercase tracking-[0.2em] text-white/70">
         {title}
       </h2>
@@ -114,7 +114,7 @@ function DotRow({ data }: { data: number[] }) {
         <span
           key={i}
           className={`h-3 w-3 rounded-full ${
-            v ? "bg-emerald-200/80" : "bg-white/15 border border-white/20"
+            v ? "bg-emerald-200/80" : "bg-white/30 border border-white/35"
           }`}
         />
       ))}
