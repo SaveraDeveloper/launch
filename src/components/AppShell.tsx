@@ -35,7 +35,7 @@ export function AppShell() {
   }
 
   return (
-    <div className="relative min-h-full text-white">
+    <div className="relative flex min-h-svh flex-col text-white">
       <div className="pointer-events-none sticky top-0 -mb-[100svh] h-svh w-full overflow-hidden">
         <img
           src={bgUrl}
