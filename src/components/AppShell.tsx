@@ -46,7 +46,7 @@ export function AppShell() {
         <div className={`absolute inset-0 ${overlayClass}`} />
       </div>
 
-      <div className="relative pb-32">
+      <div className="relative flex-1 pb-32">
         <Outlet />
       </div>
 
