@@ -56,7 +56,7 @@ function Page() {
       {GROUPS.map((g) => (
         <section
           key={g.title}
-          className="mb-3 rounded-[24px] border border-white/25 bg-white/10 p-2 shadow-[0_10px_30px_rgba(0,0,0,0.3)] backdrop-blur-2xl"
+          className="mb-3 rounded-[24px] border border-white/35 bg-white/25 p-2 shadow-[0_10px_30px_rgba(0,0,0,0.3)] backdrop-blur-2xl"
         >
           <h2 className="px-3 pt-2 pb-1 text-[10.5px] font-semibold uppercase tracking-[0.2em] text-white/70">
             {g.title}

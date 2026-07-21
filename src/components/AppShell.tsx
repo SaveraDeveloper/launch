@@ -1,8 +1,9 @@
 import { Outlet, Link, useRouterState } from "@tanstack/react-router";
-import { Compass, Home, Coffee, User } from "lucide-react";
+import { Backpack, Compass, Home, Coffee, User } from "lucide-react";
 import { apartmentByHour } from "@/lib/apartmentBg";
 
 const tabs = [
+  { to: "/journey-kit", label: "Kit", Icon: Backpack, match: "/journey-kit" },
   { to: "/experiences", label: "Explore", Icon: Compass, match: "/experiences" },
   { to: "/home", label: "Home", Icon: Home, match: "/home" },
   { to: "/companion", label: "Cafe", Icon: Coffee, match: "/companion" },
@@ -28,6 +29,9 @@ export function AppShell() {
   } else if (pathname.startsWith("/profile")) {
     blurClass = "blur-[3px] scale-[1.03]";
     overlayClass = "bg-black/45";
+  } else if (pathname.startsWith("/journey-kit")) {
+    blurClass = "blur-[4px] scale-[1.04]";
+    overlayClass = "bg-black/50";
   }
 
   return (

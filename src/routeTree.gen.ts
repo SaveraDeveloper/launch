@@ -40,6 +40,7 @@ import { Route as AppSettingsIndexRouteImport } from './routes/_app.settings.ind
 import { Route as AppSafetyIndexRouteImport } from './routes/_app.safety.index'
 import { Route as AppResourcesIndexRouteImport } from './routes/_app.resources.index'
 import { Route as AppProgressIndexRouteImport } from './routes/_app.progress.index'
+import { Route as AppJourneyKitIndexRouteImport } from './routes/_app.journey-kit.index'
 import { Route as AppExperiencesIndexRouteImport } from './routes/_app.experiences.index'
 import { Route as AppCompanionIndexRouteImport } from './routes/_app.companion.index'
 import { Route as AppWellbeingSelectRouteImport } from './routes/_app.wellbeing.select'
@@ -62,10 +63,17 @@ import { Route as AppProfileSnapshotRouteImport } from './routes/_app.profile.sn
 import { Route as AppProfileSettingsRouteImport } from './routes/_app.profile.settings'
 import { Route as AppProfileProgressRouteImport } from './routes/_app.profile.progress'
 import { Route as AppProfileGoalsRouteImport } from './routes/_app.profile.goals'
+import { Route as AppJourneyKitSavedRouteImport } from './routes/_app.journey-kit.saved'
 import { Route as AppCompanionReflectionRouteImport } from './routes/_app.companion.reflection'
 import { Route as AppCompanionChatRouteImport } from './routes/_app.companion.chat'
+import { Route as AppJourneyKitVideosIndexRouteImport } from './routes/_app.journey-kit.videos.index'
+import { Route as AppJourneyKitJournalArchiveIndexRouteImport } from './routes/_app.journey-kit.journal-archive.index'
+import { Route as AppJourneyKitBooksIndexRouteImport } from './routes/_app.journey-kit.books.index'
 import { Route as AppExperiencesIdIndexRouteImport } from './routes/_app.experiences.$id.index'
 import { Route as AppActivitiesIdIndexRouteImport } from './routes/_app.activities.$id.index'
+import { Route as AppJourneyKitVideosIdRouteImport } from './routes/_app.journey-kit.videos.$id'
+import { Route as AppJourneyKitJournalArchiveIdRouteImport } from './routes/_app.journey-kit.journal-archive.$id'
+import { Route as AppJourneyKitBooksIdRouteImport } from './routes/_app.journey-kit.books.$id'
 import { Route as AppExperiencesIdCompleteRouteImport } from './routes/_app.experiences.$id.complete'
 import { Route as AppExperiencesIdActiveRouteImport } from './routes/_app.experiences.$id.active'
 import { Route as AppActivitiesIdCompleteRouteImport } from './routes/_app.activities.$id.complete'
@@ -229,6 +237,11 @@ const AppProgressIndexRoute = AppProgressIndexRouteImport.update({
   path: '/progress/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppJourneyKitIndexRoute = AppJourneyKitIndexRouteImport.update({
+  id: '/journey-kit/',
+  path: '/journey-kit/',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppExperiencesIndexRoute = AppExperiencesIndexRouteImport.update({
   id: '/experiences/',
   path: '/experiences/',
@@ -340,6 +353,11 @@ const AppProfileGoalsRoute = AppProfileGoalsRouteImport.update({
   path: '/goals',
   getParentRoute: () => AppProfileRoute,
 } as any)
+const AppJourneyKitSavedRoute = AppJourneyKitSavedRouteImport.update({
+  id: '/journey-kit/saved',
+  path: '/journey-kit/saved',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppCompanionReflectionRoute = AppCompanionReflectionRouteImport.update({
   id: '/companion/reflection',
   path: '/companion/reflection',
@@ -350,6 +368,23 @@ const AppCompanionChatRoute = AppCompanionChatRouteImport.update({
   path: '/companion/chat',
   getParentRoute: () => AppRoute,
 } as any)
+const AppJourneyKitVideosIndexRoute =
+  AppJourneyKitVideosIndexRouteImport.update({
+    id: '/journey-kit/videos/',
+    path: '/journey-kit/videos/',
+    getParentRoute: () => AppRoute,
+  } as any)
+const AppJourneyKitJournalArchiveIndexRoute =
+  AppJourneyKitJournalArchiveIndexRouteImport.update({
+    id: '/journey-kit/journal-archive/',
+    path: '/journey-kit/journal-archive/',
+    getParentRoute: () => AppRoute,
+  } as any)
+const AppJourneyKitBooksIndexRoute = AppJourneyKitBooksIndexRouteImport.update({
+  id: '/journey-kit/books/',
+  path: '/journey-kit/books/',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppExperiencesIdIndexRoute = AppExperiencesIdIndexRouteImport.update({
   id: '/experiences/$id/',
   path: '/experiences/$id/',
@@ -358,6 +393,22 @@ const AppExperiencesIdIndexRoute = AppExperiencesIdIndexRouteImport.update({
 const AppActivitiesIdIndexRoute = AppActivitiesIdIndexRouteImport.update({
   id: '/activities/$id/',
   path: '/activities/$id/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppJourneyKitVideosIdRoute = AppJourneyKitVideosIdRouteImport.update({
+  id: '/journey-kit/videos/$id',
+  path: '/journey-kit/videos/$id',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppJourneyKitJournalArchiveIdRoute =
+  AppJourneyKitJournalArchiveIdRouteImport.update({
+    id: '/journey-kit/journal-archive/$id',
+    path: '/journey-kit/journal-archive/$id',
+    getParentRoute: () => AppRoute,
+  } as any)
+const AppJourneyKitBooksIdRoute = AppJourneyKitBooksIdRouteImport.update({
+  id: '/journey-kit/books/$id',
+  path: '/journey-kit/books/$id',
   getParentRoute: () => AppRoute,
 } as any)
 const AppExperiencesIdCompleteRoute =
@@ -421,6 +472,7 @@ export interface FileRoutesByFullPath {
   '/assessment/': typeof AssessmentIndexRoute
   '/companion/chat': typeof AppCompanionChatRoute
   '/companion/reflection': typeof AppCompanionReflectionRoute
+  '/journey-kit/saved': typeof AppJourneyKitSavedRoute
   '/profile/goals': typeof AppProfileGoalsRoute
   '/profile/progress': typeof AppProfileProgressRoute
   '/profile/settings': typeof AppProfileSettingsRoute
@@ -443,6 +495,7 @@ export interface FileRoutesByFullPath {
   '/wellbeing/select': typeof AppWellbeingSelectRoute
   '/companion/': typeof AppCompanionIndexRoute
   '/experiences/': typeof AppExperiencesIndexRoute
+  '/journey-kit/': typeof AppJourneyKitIndexRoute
   '/progress/': typeof AppProgressIndexRoute
   '/resources/': typeof AppResourcesIndexRoute
   '/safety/': typeof AppSafetyIndexRoute
@@ -453,8 +506,14 @@ export interface FileRoutesByFullPath {
   '/activities/$id/complete': typeof AppActivitiesIdCompleteRoute
   '/experiences/$id/active': typeof AppExperiencesIdActiveRoute
   '/experiences/$id/complete': typeof AppExperiencesIdCompleteRoute
+  '/journey-kit/books/$id': typeof AppJourneyKitBooksIdRoute
+  '/journey-kit/journal-archive/$id': typeof AppJourneyKitJournalArchiveIdRoute
+  '/journey-kit/videos/$id': typeof AppJourneyKitVideosIdRoute
   '/activities/$id/': typeof AppActivitiesIdIndexRoute
   '/experiences/$id/': typeof AppExperiencesIdIndexRoute
+  '/journey-kit/books/': typeof AppJourneyKitBooksIndexRoute
+  '/journey-kit/journal-archive/': typeof AppJourneyKitJournalArchiveIndexRoute
+  '/journey-kit/videos/': typeof AppJourneyKitVideosIndexRoute
   '/experiences/$id/journey/$journeyId': typeof AppExperiencesIdJourneyJourneyIdRoute
   '/experiences/$id/practice/$practiceId': typeof AppExperiencesIdPracticePracticeIdRoute
 }
@@ -484,6 +543,7 @@ export interface FileRoutesByTo {
   '/assessment': typeof AssessmentIndexRoute
   '/companion/chat': typeof AppCompanionChatRoute
   '/companion/reflection': typeof AppCompanionReflectionRoute
+  '/journey-kit/saved': typeof AppJourneyKitSavedRoute
   '/profile/goals': typeof AppProfileGoalsRoute
   '/profile/progress': typeof AppProfileProgressRoute
   '/profile/settings': typeof AppProfileSettingsRoute
@@ -506,6 +566,7 @@ export interface FileRoutesByTo {
   '/wellbeing/select': typeof AppWellbeingSelectRoute
   '/companion': typeof AppCompanionIndexRoute
   '/experiences': typeof AppExperiencesIndexRoute
+  '/journey-kit': typeof AppJourneyKitIndexRoute
   '/progress': typeof AppProgressIndexRoute
   '/resources': typeof AppResourcesIndexRoute
   '/safety': typeof AppSafetyIndexRoute
@@ -516,8 +577,14 @@ export interface FileRoutesByTo {
   '/activities/$id/complete': typeof AppActivitiesIdCompleteRoute
   '/experiences/$id/active': typeof AppExperiencesIdActiveRoute
   '/experiences/$id/complete': typeof AppExperiencesIdCompleteRoute
+  '/journey-kit/books/$id': typeof AppJourneyKitBooksIdRoute
+  '/journey-kit/journal-archive/$id': typeof AppJourneyKitJournalArchiveIdRoute
+  '/journey-kit/videos/$id': typeof AppJourneyKitVideosIdRoute
   '/activities/$id': typeof AppActivitiesIdIndexRoute
   '/experiences/$id': typeof AppExperiencesIdIndexRoute
+  '/journey-kit/books': typeof AppJourneyKitBooksIndexRoute
+  '/journey-kit/journal-archive': typeof AppJourneyKitJournalArchiveIndexRoute
+  '/journey-kit/videos': typeof AppJourneyKitVideosIndexRoute
   '/experiences/$id/journey/$journeyId': typeof AppExperiencesIdJourneyJourneyIdRoute
   '/experiences/$id/practice/$practiceId': typeof AppExperiencesIdPracticePracticeIdRoute
 }
@@ -550,6 +617,7 @@ export interface FileRoutesById {
   '/assessment/': typeof AssessmentIndexRoute
   '/_app/companion/chat': typeof AppCompanionChatRoute
   '/_app/companion/reflection': typeof AppCompanionReflectionRoute
+  '/_app/journey-kit/saved': typeof AppJourneyKitSavedRoute
   '/_app/profile/goals': typeof AppProfileGoalsRoute
   '/_app/profile/progress': typeof AppProfileProgressRoute
   '/_app/profile/settings': typeof AppProfileSettingsRoute
@@ -572,6 +640,7 @@ export interface FileRoutesById {
   '/_app/wellbeing/select': typeof AppWellbeingSelectRoute
   '/_app/companion/': typeof AppCompanionIndexRoute
   '/_app/experiences/': typeof AppExperiencesIndexRoute
+  '/_app/journey-kit/': typeof AppJourneyKitIndexRoute
   '/_app/progress/': typeof AppProgressIndexRoute
   '/_app/resources/': typeof AppResourcesIndexRoute
   '/_app/safety/': typeof AppSafetyIndexRoute
@@ -582,8 +651,14 @@ export interface FileRoutesById {
   '/_app/activities/$id/complete': typeof AppActivitiesIdCompleteRoute
   '/_app/experiences/$id/active': typeof AppExperiencesIdActiveRoute
   '/_app/experiences/$id/complete': typeof AppExperiencesIdCompleteRoute
+  '/_app/journey-kit/books/$id': typeof AppJourneyKitBooksIdRoute
+  '/_app/journey-kit/journal-archive/$id': typeof AppJourneyKitJournalArchiveIdRoute
+  '/_app/journey-kit/videos/$id': typeof AppJourneyKitVideosIdRoute
   '/_app/activities/$id/': typeof AppActivitiesIdIndexRoute
   '/_app/experiences/$id/': typeof AppExperiencesIdIndexRoute
+  '/_app/journey-kit/books/': typeof AppJourneyKitBooksIndexRoute
+  '/_app/journey-kit/journal-archive/': typeof AppJourneyKitJournalArchiveIndexRoute
+  '/_app/journey-kit/videos/': typeof AppJourneyKitVideosIndexRoute
   '/_app/experiences/$id/journey/$journeyId': typeof AppExperiencesIdJourneyJourneyIdRoute
   '/_app/experiences/$id/practice/$practiceId': typeof AppExperiencesIdPracticePracticeIdRoute
 }
@@ -616,6 +691,7 @@ export interface FileRouteTypes {
     | '/assessment/'
     | '/companion/chat'
     | '/companion/reflection'
+    | '/journey-kit/saved'
     | '/profile/goals'
     | '/profile/progress'
     | '/profile/settings'
@@ -638,6 +714,7 @@ export interface FileRouteTypes {
     | '/wellbeing/select'
     | '/companion/'
     | '/experiences/'
+    | '/journey-kit/'
     | '/progress/'
     | '/resources/'
     | '/safety/'
@@ -648,8 +725,14 @@ export interface FileRouteTypes {
     | '/activities/$id/complete'
     | '/experiences/$id/active'
     | '/experiences/$id/complete'
+    | '/journey-kit/books/$id'
+    | '/journey-kit/journal-archive/$id'
+    | '/journey-kit/videos/$id'
     | '/activities/$id/'
     | '/experiences/$id/'
+    | '/journey-kit/books/'
+    | '/journey-kit/journal-archive/'
+    | '/journey-kit/videos/'
     | '/experiences/$id/journey/$journeyId'
     | '/experiences/$id/practice/$practiceId'
   fileRoutesByTo: FileRoutesByTo
@@ -679,6 +762,7 @@ export interface FileRouteTypes {
     | '/assessment'
     | '/companion/chat'
     | '/companion/reflection'
+    | '/journey-kit/saved'
     | '/profile/goals'
     | '/profile/progress'
     | '/profile/settings'
@@ -701,6 +785,7 @@ export interface FileRouteTypes {
     | '/wellbeing/select'
     | '/companion'
     | '/experiences'
+    | '/journey-kit'
     | '/progress'
     | '/resources'
     | '/safety'
@@ -711,8 +796,14 @@ export interface FileRouteTypes {
     | '/activities/$id/complete'
     | '/experiences/$id/active'
     | '/experiences/$id/complete'
+    | '/journey-kit/books/$id'
+    | '/journey-kit/journal-archive/$id'
+    | '/journey-kit/videos/$id'
     | '/activities/$id'
     | '/experiences/$id'
+    | '/journey-kit/books'
+    | '/journey-kit/journal-archive'
+    | '/journey-kit/videos'
     | '/experiences/$id/journey/$journeyId'
     | '/experiences/$id/practice/$practiceId'
   id:
@@ -744,6 +835,7 @@ export interface FileRouteTypes {
     | '/assessment/'
     | '/_app/companion/chat'
     | '/_app/companion/reflection'
+    | '/_app/journey-kit/saved'
     | '/_app/profile/goals'
     | '/_app/profile/progress'
     | '/_app/profile/settings'
@@ -766,6 +858,7 @@ export interface FileRouteTypes {
     | '/_app/wellbeing/select'
     | '/_app/companion/'
     | '/_app/experiences/'
+    | '/_app/journey-kit/'
     | '/_app/progress/'
     | '/_app/resources/'
     | '/_app/safety/'
@@ -776,8 +869,14 @@ export interface FileRouteTypes {
     | '/_app/activities/$id/complete'
     | '/_app/experiences/$id/active'
     | '/_app/experiences/$id/complete'
+    | '/_app/journey-kit/books/$id'
+    | '/_app/journey-kit/journal-archive/$id'
+    | '/_app/journey-kit/videos/$id'
     | '/_app/activities/$id/'
     | '/_app/experiences/$id/'
+    | '/_app/journey-kit/books/'
+    | '/_app/journey-kit/journal-archive/'
+    | '/_app/journey-kit/videos/'
     | '/_app/experiences/$id/journey/$journeyId'
     | '/_app/experiences/$id/practice/$practiceId'
   fileRoutesById: FileRoutesById
@@ -1023,6 +1122,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppProgressIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/journey-kit/': {
+      id: '/_app/journey-kit/'
+      path: '/journey-kit'
+      fullPath: '/journey-kit/'
+      preLoaderRoute: typeof AppJourneyKitIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/experiences/': {
       id: '/_app/experiences/'
       path: '/experiences'
@@ -1177,6 +1283,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppProfileGoalsRouteImport
       parentRoute: typeof AppProfileRoute
     }
+    '/_app/journey-kit/saved': {
+      id: '/_app/journey-kit/saved'
+      path: '/journey-kit/saved'
+      fullPath: '/journey-kit/saved'
+      preLoaderRoute: typeof AppJourneyKitSavedRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/companion/reflection': {
       id: '/_app/companion/reflection'
       path: '/companion/reflection'
@@ -1191,6 +1304,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCompanionChatRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/journey-kit/videos/': {
+      id: '/_app/journey-kit/videos/'
+      path: '/journey-kit/videos'
+      fullPath: '/journey-kit/videos/'
+      preLoaderRoute: typeof AppJourneyKitVideosIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/journey-kit/journal-archive/': {
+      id: '/_app/journey-kit/journal-archive/'
+      path: '/journey-kit/journal-archive'
+      fullPath: '/journey-kit/journal-archive/'
+      preLoaderRoute: typeof AppJourneyKitJournalArchiveIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/journey-kit/books/': {
+      id: '/_app/journey-kit/books/'
+      path: '/journey-kit/books'
+      fullPath: '/journey-kit/books/'
+      preLoaderRoute: typeof AppJourneyKitBooksIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/experiences/$id/': {
       id: '/_app/experiences/$id/'
       path: '/experiences/$id'
@@ -1203,6 +1337,27 @@ declare module '@tanstack/react-router' {
       path: '/activities/$id'
       fullPath: '/activities/$id/'
       preLoaderRoute: typeof AppActivitiesIdIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/journey-kit/videos/$id': {
+      id: '/_app/journey-kit/videos/$id'
+      path: '/journey-kit/videos/$id'
+      fullPath: '/journey-kit/videos/$id'
+      preLoaderRoute: typeof AppJourneyKitVideosIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/journey-kit/journal-archive/$id': {
+      id: '/_app/journey-kit/journal-archive/$id'
+      path: '/journey-kit/journal-archive/$id'
+      fullPath: '/journey-kit/journal-archive/$id'
+      preLoaderRoute: typeof AppJourneyKitJournalArchiveIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/journey-kit/books/$id': {
+      id: '/_app/journey-kit/books/$id'
+      path: '/journey-kit/books/$id'
+      fullPath: '/journey-kit/books/$id'
+      preLoaderRoute: typeof AppJourneyKitBooksIdRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/experiences/$id/complete': {
@@ -1297,6 +1452,7 @@ interface AppRouteChildren {
   AppTrackingRoute: typeof AppTrackingRouteWithChildren
   AppCompanionChatRoute: typeof AppCompanionChatRoute
   AppCompanionReflectionRoute: typeof AppCompanionReflectionRoute
+  AppJourneyKitSavedRoute: typeof AppJourneyKitSavedRoute
   AppProgressAchievementsRoute: typeof AppProgressAchievementsRoute
   AppProgressMilestonesRoute: typeof AppProgressMilestonesRoute
   AppResourcesIdRoute: typeof AppResourcesIdRoute
@@ -1311,6 +1467,7 @@ interface AppRouteChildren {
   AppWellbeingSelectRoute: typeof AppWellbeingSelectRoute
   AppCompanionIndexRoute: typeof AppCompanionIndexRoute
   AppExperiencesIndexRoute: typeof AppExperiencesIndexRoute
+  AppJourneyKitIndexRoute: typeof AppJourneyKitIndexRoute
   AppProgressIndexRoute: typeof AppProgressIndexRoute
   AppResourcesIndexRoute: typeof AppResourcesIndexRoute
   AppSafetyIndexRoute: typeof AppSafetyIndexRoute
@@ -1320,8 +1477,14 @@ interface AppRouteChildren {
   AppActivitiesIdCompleteRoute: typeof AppActivitiesIdCompleteRoute
   AppExperiencesIdActiveRoute: typeof AppExperiencesIdActiveRoute
   AppExperiencesIdCompleteRoute: typeof AppExperiencesIdCompleteRoute
+  AppJourneyKitBooksIdRoute: typeof AppJourneyKitBooksIdRoute
+  AppJourneyKitJournalArchiveIdRoute: typeof AppJourneyKitJournalArchiveIdRoute
+  AppJourneyKitVideosIdRoute: typeof AppJourneyKitVideosIdRoute
   AppActivitiesIdIndexRoute: typeof AppActivitiesIdIndexRoute
   AppExperiencesIdIndexRoute: typeof AppExperiencesIdIndexRoute
+  AppJourneyKitBooksIndexRoute: typeof AppJourneyKitBooksIndexRoute
+  AppJourneyKitJournalArchiveIndexRoute: typeof AppJourneyKitJournalArchiveIndexRoute
+  AppJourneyKitVideosIndexRoute: typeof AppJourneyKitVideosIndexRoute
   AppExperiencesIdJourneyJourneyIdRoute: typeof AppExperiencesIdJourneyJourneyIdRoute
   AppExperiencesIdPracticePracticeIdRoute: typeof AppExperiencesIdPracticePracticeIdRoute
 }
@@ -1335,6 +1498,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppTrackingRoute: AppTrackingRouteWithChildren,
   AppCompanionChatRoute: AppCompanionChatRoute,
   AppCompanionReflectionRoute: AppCompanionReflectionRoute,
+  AppJourneyKitSavedRoute: AppJourneyKitSavedRoute,
   AppProgressAchievementsRoute: AppProgressAchievementsRoute,
   AppProgressMilestonesRoute: AppProgressMilestonesRoute,
   AppResourcesIdRoute: AppResourcesIdRoute,
@@ -1349,6 +1513,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppWellbeingSelectRoute: AppWellbeingSelectRoute,
   AppCompanionIndexRoute: AppCompanionIndexRoute,
   AppExperiencesIndexRoute: AppExperiencesIndexRoute,
+  AppJourneyKitIndexRoute: AppJourneyKitIndexRoute,
   AppProgressIndexRoute: AppProgressIndexRoute,
   AppResourcesIndexRoute: AppResourcesIndexRoute,
   AppSafetyIndexRoute: AppSafetyIndexRoute,
@@ -1358,8 +1523,14 @@ const AppRouteChildren: AppRouteChildren = {
   AppActivitiesIdCompleteRoute: AppActivitiesIdCompleteRoute,
   AppExperiencesIdActiveRoute: AppExperiencesIdActiveRoute,
   AppExperiencesIdCompleteRoute: AppExperiencesIdCompleteRoute,
+  AppJourneyKitBooksIdRoute: AppJourneyKitBooksIdRoute,
+  AppJourneyKitJournalArchiveIdRoute: AppJourneyKitJournalArchiveIdRoute,
+  AppJourneyKitVideosIdRoute: AppJourneyKitVideosIdRoute,
   AppActivitiesIdIndexRoute: AppActivitiesIdIndexRoute,
   AppExperiencesIdIndexRoute: AppExperiencesIdIndexRoute,
+  AppJourneyKitBooksIndexRoute: AppJourneyKitBooksIndexRoute,
+  AppJourneyKitJournalArchiveIndexRoute: AppJourneyKitJournalArchiveIndexRoute,
+  AppJourneyKitVideosIndexRoute: AppJourneyKitVideosIndexRoute,
   AppExperiencesIdJourneyJourneyIdRoute: AppExperiencesIdJourneyJourneyIdRoute,
   AppExperiencesIdPracticePracticeIdRoute:
     AppExperiencesIdPracticePracticeIdRoute,

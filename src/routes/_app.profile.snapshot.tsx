@@ -62,7 +62,7 @@ function Page() {
       <button
         onClick={refresh}
         disabled={refreshing}
-        className="mt-2 flex w-full items-center justify-center gap-2 rounded-full border border-white/25 bg-white/10 py-3 text-[12.5px] font-light text-white backdrop-blur-xl transition hover:bg-white/15 disabled:opacity-60"
+        className="mt-2 flex w-full items-center justify-center gap-2 rounded-full border border-white/35 bg-white/25 py-3 text-[12.5px] font-light text-white backdrop-blur-xl transition hover:bg-white/30 disabled:opacity-60"
       >
         <RefreshCw className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`} />
         {refreshing ? "Refreshing…" : "Refresh Snapshot"}
@@ -73,7 +73,7 @@ function Page() {
 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="mb-3 rounded-[24px] border border-white/25 bg-white/10 p-4 shadow-[0_10px_30px_rgba(0,0,0,0.3)] backdrop-blur-2xl">
+    <section className="mb-3 rounded-[24px] border border-white/35 bg-white/25 p-4 shadow-[0_10px_30px_rgba(0,0,0,0.3)] backdrop-blur-2xl">
       <h2 className="mb-2 text-[10.5px] font-semibold uppercase tracking-[0.2em] text-white/70">
         {title}
       </h2>

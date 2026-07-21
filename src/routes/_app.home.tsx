@@ -43,7 +43,7 @@ const QUICK = [
 function GlassCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
     <div
-      className={`rounded-[28px] border border-white/20 bg-white/[0.07] p-5 shadow-[0_8px_32px_rgba(0,0,0,0.35)] backdrop-blur-xl ${className}`}
+      className={`rounded-[28px] border border-white/35 bg-white/25 p-5 shadow-[0_8px_32px_rgba(0,0,0,0.35)] backdrop-blur-xl ${className}`}
     >
       {children}
     </div>
@@ -81,7 +81,7 @@ function Page() {
                 className={`flex h-14 w-14 items-center justify-center rounded-full border text-[26px] leading-none backdrop-blur-xl transition ${
                   active
                     ? "border-white/70 bg-white/25 scale-105 shadow-[0_0_20px_rgba(255,255,255,0.35)]"
-                    : "border-white/20 bg-white/10"
+                    : "border-white/35 bg-white/25"
                 }`}
               >
                 {e.emoji}
@@ -99,7 +99,7 @@ function Page() {
           <h2 className="font-seasons text-[18px] text-white">Today's Recommendation</h2>
         </div>
         <div className="flex gap-4">
-          <div className="flex h-28 w-24 shrink-0 items-center justify-center rounded-2xl border border-white/15 bg-white/10 text-white/40">
+          <div className="flex h-28 w-24 shrink-0 items-center justify-center rounded-2xl border border-white/30 bg-white/25 text-white/40">
             <ImageIcon className="h-8 w-8" strokeWidth={1.2} />
           </div>
           <div className="min-w-0 flex-1">
@@ -108,10 +108,10 @@ function Page() {
               Let's untangle what's been on your mind today.
             </p>
             <div className="mt-3 flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1 rounded-full border border-white/20 px-2.5 py-1 text-[11px] text-white/85">
+              <span className="inline-flex items-center gap-1 rounded-full border border-white/35 px-2.5 py-1 text-[11px] text-white/85">
                 <Brain className="h-3 w-3" /> Reflection
               </span>
-              <span className="inline-flex items-center gap-1 rounded-full border border-white/20 px-2.5 py-1 text-[11px] text-white/85">
+              <span className="inline-flex items-center gap-1 rounded-full border border-white/35 px-2.5 py-1 text-[11px] text-white/85">
                 <Clock className="h-3 w-3" /> 15 min
               </span>
               <Link
@@ -139,13 +139,13 @@ function Page() {
         </div>
         <div className="grid grid-cols-3 gap-2.5">
           {JOURNEY.map((j) => (
-            <div key={j.title} className="rounded-2xl border border-white/15 bg-white/10 p-2.5 backdrop-blur">
-              <div className="mb-2 flex aspect-square items-center justify-center rounded-xl border border-white/15 bg-white/10 text-white/40">
+            <div key={j.title} className="rounded-2xl border border-white/30 bg-white/25 p-2.5 backdrop-blur">
+              <div className="mb-2 flex aspect-square items-center justify-center rounded-xl border border-white/30 bg-white/25 text-white/40">
                 <ImageIcon className="h-5 w-5" strokeWidth={1.2} />
               </div>
               <p className="font-seasons text-[13px] leading-tight text-white">{j.title}</p>
               <p className="mt-0.5 text-[10px] font-light text-white/70">{j.subtitle}</p>
-              <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-white/15">
+              <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-white/30">
                 <div className="h-full w-0 rounded-full bg-white/80" />
               </div>
               <p className="mt-1 text-[10px] text-white/60">0%</p>
@@ -165,7 +165,7 @@ function Page() {
             <Link
               key={title}
               to={to}
-              className="flex flex-col gap-2 rounded-2xl border border-white/15 bg-white/10 p-3 backdrop-blur transition hover:bg-white/15"
+              className="flex flex-col gap-2 rounded-2xl border border-white/30 bg-white/25 p-3 backdrop-blur transition hover:bg-white/30"
             >
               <Icon className="h-5 w-5 text-amber-100" strokeWidth={1.5} />
               <div>
