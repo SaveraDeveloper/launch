@@ -1,8 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { ChevronLeft, Layers, Clock, Gauge, Sprout, Bookmark, BookmarkCheck } from "lucide-react";
 import { JOURNEYS } from "@/lib/experiencesCatalog";
 import { savedStore, newId, type SavedLink } from "@/lib/journeyKitCatalog";
+import { ThoughtLabRunner } from "@/components/ThoughtLabRunner";
+import { GenericJourneyRunner } from "@/components/GenericJourneyRunner";
 
 export const Route = createFileRoute("/_app/experiences/$id/journey/$journeyId")({
   head: () => ({ meta: [{ title: "Guided Journey — Savera" }] }),
@@ -15,6 +18,7 @@ function Page() {
   const journey = JOURNEYS[journeyId];
   const title = journey?.title ?? journeyId.replace(/-/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase());
   const [saved, setSaved] = useState(false);
+  const [runnerOpen, setRunnerOpen] = useState(false);
 
   useEffect(() => {
     setSaved(savedStore.read().some((s) => s.url === `savera://journey/${journeyId}`));
@@ -39,7 +43,7 @@ function Page() {
     }
   };
 
-  const begin = () => navigate({ to: "/experiences/$id/journey/$journeyId/run", params: { id, journeyId } });
+  const begin = () => setRunnerOpen(true);
 
   return (
     <div className="mx-auto w-full max-w-[430px] px-5 pt-8 pb-6 animate-soft-in">
@@ -116,7 +120,34 @@ function Page() {
       <p className="mt-5 text-center text-[11px] font-light text-white/65">
         You can pause and resume at any time — this is your pace.
       </p>
+
+      {runnerOpen && <JourneyRunnerSheet journeyId={journeyId} onClose={() => setRunnerOpen(false)} />}
     </div>
+  );
+}
+
+function JourneyRunnerSheet({ journeyId, onClose }: { journeyId: string; onClose: () => void }) {
+  useEffect(() => {
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, []);
+
+  if (typeof document === "undefined") return null;
+
+  return createPortal(
+    <div className="fixed inset-0 z-[9998] flex items-end justify-center bg-[#2f1b0f]/55 px-0 pt-10 backdrop-blur-[3px]">
+      <div className="h-[88svh] w-full max-w-[430px] animate-journey-sheet-up overflow-hidden rounded-t-[34px] border-x border-t border-white/35 bg-[#3d2415]">
+        {journeyId === "thought-lab" ? (
+          <ThoughtLabRunner onExit={onClose} display="sheet" />
+        ) : (
+          <GenericJourneyRunner journeyId={journeyId} onExit={onClose} display="sheet" />
+        )}
+      </div>
+    </div>,
+    document.body,
   );
 }
 
