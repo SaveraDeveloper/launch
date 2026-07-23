@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { X, Link as LinkIcon } from "lucide-react";
+
 import { deriveThumbnail } from "@/lib/journeyKitCatalog";
 
 export type AddItemKind = "video" | "book" | "journal" | "link";
