@@ -31,7 +31,15 @@ const CHAPTERS = [
   },
 ];
 
-export function GenericJourneyRunner({ journeyId, onExit }: { journeyId: string; onExit: () => void }) {
+export function GenericJourneyRunner({
+  journeyId,
+  onExit,
+  display = "fullscreen",
+}: {
+  journeyId: string;
+  onExit: () => void;
+  display?: "fullscreen" | "sheet";
+}) {
   const j = JOURNEYS[journeyId];
   const title = j?.title ?? journeyId;
   const [step, setStep] = useState(0);
@@ -58,8 +66,15 @@ export function GenericJourneyRunner({ journeyId, onExit }: { journeyId: string;
   };
 
   return (
-    <div className="fixed inset-0 z-40 flex flex-col bg-gradient-to-b from-[#2b1a0f]/85 via-[#3d2415]/85 to-[#1a0f08]/95 backdrop-blur-2xl">
-      <div className="flex items-center justify-between px-5 pt-5">
+    <div
+      className={`${
+        display === "fullscreen"
+          ? "fixed inset-0 z-40"
+          : "relative h-full rounded-t-[34px] shadow-[0_-22px_70px_rgba(35,18,9,0.55)]"
+      } flex flex-col overflow-hidden bg-gradient-to-b from-[#5d3923]/95 via-[#3d2415]/96 to-[#1a0f08]/98 backdrop-blur-2xl`}
+    >
+      {display === "sheet" && <div className="mx-auto mt-3 h-1.5 w-12 rounded-full bg-white/45" />}
+      <div className={`flex items-center justify-between px-5 ${display === "sheet" ? "pt-4" : "pt-5"}`}>
         <button onClick={onExit} aria-label="Exit" className="rounded-full border border-white/25 bg-white/10 p-2 backdrop-blur-xl">
           <X className="h-4 w-4 text-white" />
         </button>
