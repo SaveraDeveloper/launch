@@ -88,39 +88,39 @@ export function AddItemDialog({
   };
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-end justify-center bg-black/50 backdrop-blur-sm sm:items-center">
-      <div className="w-full max-w-[420px] rounded-t-[26px] border border-white/25 bg-neutral-900/85 p-5 pb-7 text-white shadow-[0_20px_60px_rgba(0,0,0,0.55)] backdrop-blur-2xl sm:rounded-[26px]">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="font-seasons text-[19px] font-light">{heading}</h2>
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-[#3d2415]/45 backdrop-blur-md">
+      <div className="w-[92%] max-w-[420px] rounded-[28px] border border-white/60 bg-gradient-to-br from-[#fffaf5]/95 via-[#fff0e6]/92 to-[#f7e8d9]/88 p-7 pb-8 text-[#4a2e1a] shadow-[0_24px_70px_rgba(62,35,20,0.35)] backdrop-blur-2xl">
+        <div className="mb-6 flex items-center justify-between">
+          <h2 className="font-seasons text-[22px] font-light">{heading}</h2>
           <button
             onClick={onClose}
-            className="rounded-full border border-white/25 bg-white/10 p-1.5"
+            className="rounded-full border border-[#c4a882]/60 bg-[#fff8f0]/70 p-2 text-[#5a3a2a] transition hover:bg-[#fff8f0]"
             aria-label="Close"
           >
             <X className="h-4 w-4" />
           </button>
         </div>
 
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-4">
           {showsUrl && (
-            <label className="flex flex-col gap-1.5">
-              <span className="text-[10.5px] uppercase tracking-[0.16em] text-white/60">
+            <label className="flex flex-col gap-2">
+              <span className="text-[11px] uppercase tracking-[0.14em] text-[#8b6b4f]">
                 URL (optional)
               </span>
-              <div className="flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-3 py-2.5">
-                <LinkIcon className="h-3.5 w-3.5 text-white/60" />
+              <div className="flex items-center gap-3 rounded-2xl border border-[#d4bfa8] bg-white/70 px-4 py-3.5 shadow-[inset_0_1px_2px_rgba(90,58,42,0.05)]">
+                <LinkIcon className="h-4 w-4 text-[#a07d5a]" />
                 <input
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
                   placeholder="https://…"
-                  className="w-full bg-transparent text-[13px] font-light placeholder:text-white/40 focus:outline-none"
+                  className="w-full bg-transparent text-[14px] font-light text-[#4a2e1a] placeholder:text-[#b09a7a] focus:outline-none"
                 />
               </div>
             </label>
           )}
 
-          <label className="flex flex-col gap-1.5">
-            <span className="text-[10.5px] uppercase tracking-[0.16em] text-white/60">
+          <label className="flex flex-col gap-2">
+            <span className="text-[11px] uppercase tracking-[0.14em] text-[#8b6b4f]">
               Title {kind === "journal" || !url ? "" : "(optional)"}
             </span>
             <input
@@ -133,39 +133,39 @@ export function AddItemDialog({
                     ? "A quieter morning"
                     : "What's this called?"
               }
-              className="rounded-xl border border-white/20 bg-white/10 px-3 py-2.5 text-[13px] font-light placeholder:text-white/40 focus:outline-none"
+              className="rounded-2xl border border-[#d4bfa8] bg-white/70 px-4 py-3.5 text-[14px] font-light text-[#4a2e1a] placeholder:text-[#b09a7a] shadow-[inset_0_1px_2px_rgba(90,58,42,0.05)] focus:outline-none"
             />
           </label>
 
           {showsAuthor && (
-            <label className="flex flex-col gap-1.5">
-              <span className="text-[10.5px] uppercase tracking-[0.16em] text-white/60">
+            <label className="flex flex-col gap-2">
+              <span className="text-[11px] uppercase tracking-[0.14em] text-[#8b6b4f]">
                 Author (optional)
               </span>
               <input
                 value={author}
                 onChange={(e) => setAuthor(e.target.value)}
                 placeholder="Kristin Neff"
-                className="rounded-xl border border-white/20 bg-white/10 px-3 py-2.5 text-[13px] font-light placeholder:text-white/40 focus:outline-none"
+                className="rounded-2xl border border-[#d4bfa8] bg-white/70 px-4 py-3.5 text-[14px] font-light text-[#4a2e1a] placeholder:text-[#b09a7a] shadow-[inset_0_1px_2px_rgba(90,58,42,0.05)] focus:outline-none"
               />
             </label>
           )}
 
           {showsBody && (
             <>
-              <label className="flex flex-col gap-1.5">
-                <span className="text-[10.5px] uppercase tracking-[0.16em] text-white/60">
+              <label className="flex flex-col gap-2">
+                <span className="text-[11px] uppercase tracking-[0.14em] text-[#8b6b4f]">
                   Mood (optional)
                 </span>
                 <input
                   value={mood}
                   onChange={(e) => setMood(e.target.value)}
                   placeholder="Calm, Tender, Low…"
-                  className="rounded-xl border border-white/20 bg-white/10 px-3 py-2.5 text-[13px] font-light placeholder:text-white/40 focus:outline-none"
+                  className="rounded-2xl border border-[#d4bfa8] bg-white/70 px-4 py-3.5 text-[14px] font-light text-[#4a2e1a] placeholder:text-[#b09a7a] shadow-[inset_0_1px_2px_rgba(90,58,42,0.05)] focus:outline-none"
                 />
               </label>
-              <label className="flex flex-col gap-1.5">
-                <span className="text-[10.5px] uppercase tracking-[0.16em] text-white/60">
+              <label className="flex flex-col gap-2">
+                <span className="text-[11px] uppercase tracking-[0.14em] text-[#8b6b4f]">
                   Entry
                 </span>
                 <textarea
@@ -173,15 +173,15 @@ export function AddItemDialog({
                   onChange={(e) => setBody(e.target.value)}
                   placeholder="Let it out…"
                   rows={5}
-                  className="resize-none rounded-xl border border-white/20 bg-white/10 px-3 py-2.5 text-[13px] font-light placeholder:text-white/40 focus:outline-none"
+                  className="resize-none rounded-2xl border border-[#d4bfa8] bg-white/70 px-4 py-3.5 text-[14px] font-light text-[#4a2e1a] placeholder:text-[#b09a7a] shadow-[inset_0_1px_2px_rgba(90,58,42,0.05)] focus:outline-none"
                 />
               </label>
             </>
           )}
 
           {!showsBody && (
-            <label className="flex flex-col gap-1.5">
-              <span className="text-[10.5px] uppercase tracking-[0.16em] text-white/60">
+            <label className="flex flex-col gap-2">
+              <span className="text-[11px] uppercase tracking-[0.14em] text-[#8b6b4f]">
                 Note (optional)
               </span>
               <textarea
@@ -189,23 +189,23 @@ export function AddItemDialog({
                 onChange={(e) => setNote(e.target.value)}
                 placeholder="Why does this matter to you?"
                 rows={3}
-                className="resize-none rounded-xl border border-white/20 bg-white/10 px-3 py-2.5 text-[13px] font-light placeholder:text-white/40 focus:outline-none"
+                className="resize-none rounded-2xl border border-[#d4bfa8] bg-white/70 px-4 py-3.5 text-[14px] font-light text-[#4a2e1a] placeholder:text-[#b09a7a] shadow-[inset_0_1px_2px_rgba(90,58,42,0.05)] focus:outline-none"
               />
             </label>
           )}
 
-          {err && <p className="text-[12px] text-rose-300">{err}</p>}
+          {err && <p className="text-[13px] text-[#b85c5c]">{err}</p>}
 
-          <div className="mt-2 flex gap-2">
+          <div className="mt-3 flex gap-3">
             <button
               onClick={onClose}
-              className="flex-1 rounded-full border border-white/25 bg-white/10 py-2.5 text-[13px]"
+              className="flex-1 rounded-full border border-[#c4a882] bg-[#fff8f0]/80 py-3 text-[14px] font-medium text-[#5a3a2a] transition hover:bg-[#fff8f0]"
             >
               Cancel
             </button>
             <button
               onClick={submit}
-              className="flex-1 rounded-full bg-gradient-to-b from-amber-200 to-amber-400 py-2.5 text-[13px] font-semibold text-[#5a3410] shadow-[0_4px_16px_rgba(255,190,90,0.45)]"
+              className="flex-1 rounded-full bg-gradient-to-b from-[#c69c6d] to-[#a67c52] py-3 text-[14px] font-semibold text-white shadow-[0_6px_20px_rgba(139,94,60,0.35)] transition hover:brightness-105"
             >
               Save
             </button>
