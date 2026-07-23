@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { X, Link as LinkIcon } from "lucide-react";
+
 import { deriveThumbnail } from "@/lib/journeyKitCatalog";
 
 export type AddItemKind = "video" | "book" | "journal" | "link";
@@ -87,9 +89,11 @@ export function AddItemDialog({
     });
   };
 
-  return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-[#3d2415]/45 backdrop-blur-md">
-      <div className="w-[92%] max-w-[420px] rounded-[28px] border border-white/60 bg-gradient-to-br from-[#fffaf5]/95 via-[#fff0e6]/92 to-[#f7e8d9]/88 p-7 pb-8 text-[#4a2e1a] shadow-[0_24px_70px_rgba(62,35,20,0.35)] backdrop-blur-2xl">
+  if (typeof document === "undefined") return null;
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center overflow-y-auto bg-[#3d2415]/45 p-4 backdrop-blur-md">
+      <div className="my-auto w-full max-w-[420px] rounded-[28px] border border-white/60 bg-gradient-to-br from-[#fffaf5]/95 via-[#fff0e6]/92 to-[#f7e8d9]/88 p-7 pb-8 text-[#4a2e1a] shadow-[0_24px_70px_rgba(62,35,20,0.35)] backdrop-blur-2xl">
+
         <div className="mb-6 flex items-center justify-between">
           <h2 className="font-seasons text-[22px] font-light">{heading}</h2>
           <button
@@ -212,6 +216,8 @@ export function AddItemDialog({
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
+
