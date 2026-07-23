@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { ChevronLeft, Layers, Clock, Gauge, Sprout, Bookmark, BookmarkCheck } from "lucide-react";
@@ -14,7 +14,6 @@ export const Route = createFileRoute("/_app/experiences/$id/journey/$journeyId")
 
 function Page() {
   const { id, journeyId } = Route.useParams();
-  const navigate = useNavigate();
   const journey = JOURNEYS[journeyId];
   const title = journey?.title ?? journeyId.replace(/-/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase());
   const [saved, setSaved] = useState(false);

@@ -260,6 +260,12 @@
 @keyframes aroha-fade { from { opacity: 0; transform: translateY(8px);} to { opacity: 1; transform: none;} }
 .animate-soft-in { animation: aroha-fade 700ms ease-out both; }
 
+@keyframes journey-sheet-up {
+  from { opacity: 0; transform: translateY(34%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-journey-sheet-up { animation: journey-sheet-up 520ms cubic-bezier(.2,.85,.2,1) both; }
+
 /* Yellowish-beige form input on Coffee Shop bg */
 .beige-input {
   width: 100%;
