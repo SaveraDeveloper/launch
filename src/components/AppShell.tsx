@@ -1,5 +1,5 @@
 import { Outlet, Link, useRouterState } from "@tanstack/react-router";
-import { apartmentByHour } from "@/lib/apartmentBg";
+import { useApartmentBg } from "@/hooks/useApartmentBg";
 import kitIcon from "@/assets/Kit.png.asset.json";
 import exploreIcon from "@/assets/MagnifyingGlass.png.asset.json";
 import homeIcon from "@/assets/Home.png.asset.json";
