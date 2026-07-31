@@ -64,7 +64,7 @@ export function AppShell() {
               left: `calc(0.5rem + ((100% - 1rem) / ${tabs.length}) * ${activeIndex})`,
             }}
           />
-          {tabs.map(({ to, label, Icon }, idx) => {
+          {tabs.map(({ to, label, icon }, idx) => {
             const active = idx === activeIndex;
             return (
               <Link
@@ -74,11 +74,14 @@ export function AppShell() {
                   active ? "text-white" : "text-white/70 hover:text-white"
                 }`}
               >
-                <Icon
-                  className="h-[22px] w-[22px] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
-                  style={{ transform: active ? "scale(1.08)" : "scale(1)" }}
-                  strokeWidth={1.6}
+                <img
+                  src={icon}
+                  alt=""
+                  aria-hidden
+                  className="h-[22px] w-[22px] object-contain transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                  style={{ transform: active ? "scale(1.08)" : "scale(1)", opacity: active ? 1 : 0.75 }}
                 />
+
                 <span className="leading-none">{label}</span>
               </Link>
             );
