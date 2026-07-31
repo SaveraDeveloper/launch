@@ -40,15 +40,18 @@ export function AppShell() {
 
   return (
     <div className="relative flex min-h-svh flex-col text-white">
-      <div className="pointer-events-none sticky top-0 -mb-[100svh] h-svh w-full overflow-hidden">
-        <img
-          src={bgUrl}
-          alt=""
-          aria-hidden
-          className={`h-full w-full object-cover transition-all duration-700 ${blurClass}`}
-        />
+      <div className="pointer-events-none sticky top-0 -mb-[100svh] h-svh w-full overflow-hidden bg-[#1a1410]">
+        {bgUrl && (
+          <img
+            src={bgUrl}
+            alt=""
+            aria-hidden
+            className={`h-full w-full object-cover transition-all duration-700 ${blurClass}`}
+          />
+        )}
         <div className={`absolute inset-0 ${overlayClass}`} />
       </div>
+
 
       <div className="relative flex-1 pb-32">
         <Outlet />
