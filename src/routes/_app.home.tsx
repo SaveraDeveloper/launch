@@ -4,16 +4,28 @@ import {
   Sparkles,
   BookOpen,
   ChevronRight,
-  Zap,
-  NotebookPen,
-  Coffee,
-  TrendingUp,
   Clock,
   Brain,
   ArrowRight,
   ImageIcon,
 } from "lucide-react";
 import { firstName } from "@/lib/userStore";
+import journalIcon from "@/assets/Journal.png.asset.json";
+import talkIcon from "@/assets/TalkToSavera.png.asset.json";
+import progressIcon from "@/assets/ViewProgress.png.asset.json";
+import quickActionsIcon from "@/assets/QuickActions.png.asset.json";
+import morningPagesImg from "@/assets/MorningPages.webp.asset.json";
+import selfCompassionImg from "@/assets/SelfCompassionNotes.webp.asset.json";
+
+function greetingFor(d = new Date()): string {
+  const h = d.getHours();
+  const m = d.getMinutes();
+  if (h < 5) return "It's Midnight. Make sure you're getting some sleep.";
+  if (h < 12) return "Good Morning";
+  if (h === 12 && m === 0) return "Good Noon";
+  if (h < 17) return "Good Afternoon";
+  return "Good Evening";
+}
 
 export const Route = createFileRoute("/_app/home")({
   head: () => ({ meta: [{ title: "Home — Savera" }] }),
