@@ -3,6 +3,7 @@ const KEY = "savera_onboarding";
 
 export type OnboardingData = {
   name?: string;
+  bio?: string;
   dob?: string;
   email?: string;
   phone?: string;
@@ -14,6 +15,7 @@ export type OnboardingData = {
   goals?: string[];
   answers?: (string | null)[];
 };
+
 
 export function readOnboarding(): OnboardingData {
   if (typeof window === "undefined") return {};
