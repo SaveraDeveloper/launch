@@ -169,17 +169,17 @@ function Page() {
       {/* Quick Actions */}
       <GlassCard className="mb-6">
         <div className="mb-4 flex items-center gap-2">
-          <Zap className="h-4 w-4 text-amber-200" />
+          <img src={quickActionsIcon.url} alt="" aria-hidden className="h-4 w-4 object-contain" />
           <h2 className="font-seasons text-[18px] text-white">Quick Actions</h2>
         </div>
         <div className="grid grid-cols-3 gap-2.5">
-          {QUICK.map(({ title, desc, Icon, to }) => (
+          {QUICK.map(({ title, desc, icon, to }) => (
             <Link
               key={title}
               to={to}
               className="flex flex-col gap-2 rounded-2xl border border-white/30 bg-white/25 p-3 backdrop-blur transition hover:bg-white/30"
             >
-              <Icon className="h-5 w-5 text-amber-100" strokeWidth={1.5} />
+              <img src={icon} alt="" aria-hidden className="h-5 w-5 object-contain" />
               <div>
                 <p className="font-seasons text-[13px] leading-tight text-white">{title}</p>
                 <p className="mt-0.5 text-[10px] font-light leading-snug text-white/70">{desc}</p>
