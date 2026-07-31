@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Search,
   Brain,
@@ -11,6 +11,7 @@ import {
   Clock,
   CheckCircle2,
   Circle,
+  X,
 } from "lucide-react";
 import { CATEGORIES, JOURNEYS, PRACTICES } from "@/lib/experiencesCatalog";
 
@@ -43,44 +44,94 @@ const RECENT = [
   { id: "lifestyle", label: "Calm Rhythm", time: "4 min" },
 ];
 
-const INITIAL_TODOS = [
-  { id: "checkin", label: "Morning check-in", done: true },
-  { id: "breath", label: "One Calm Rhythm breath", done: true },
+const TODO_KEY = "savera_explore_todos";
+const todayKey = () => new Date().toLocaleDateString("en-CA");
+
+const DEFAULT_TODOS = [
+  { id: "checkin", label: "Morning check-in", done: false },
+  { id: "breath", label: "One Calm Rhythm breath", done: false },
   { id: "journey", label: "Continue Thought Lab · Ch. 2", done: false },
   { id: "reflect", label: "Evening reflection", done: false },
 ];
 
 function Page() {
   const [q, setQ] = useState("");
-  const [todos, setTodos] = useState(INITIAL_TODOS);
+  const [todos, setTodos] = useState(DEFAULT_TODOS);
+
+  // Daily reset: regenerate a fresh checklist whenever the calendar day changes.
+  useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem(TODO_KEY);
+      const saved = raw ? JSON.parse(raw) : null;
+      if (saved && saved.date === todayKey() && Array.isArray(saved.todos)) {
+        const byId = new Map<string, boolean>(saved.todos.map((t: { id: string; done: boolean }) => [t.id, t.done]));
+        setTodos(DEFAULT_TODOS.map((t) => ({ ...t, done: byId.get(t.id) ?? false })));
+      } else {
+        setTodos(DEFAULT_TODOS.map((t) => ({ ...t, done: false })));
+        window.localStorage.setItem(TODO_KEY, JSON.stringify({ date: todayKey(), todos: DEFAULT_TODOS.map((t) => ({ id: t.id, done: false })) }));
+      }
+    } catch {
+      /* ignore */
+    }
+  }, []);
 
   const query = q.trim().toLowerCase();
   const filtered = useMemo(() => {
-    if (!query) return { categories: CATEGORIES, matches: [] as { kind: "journey" | "practice"; id: string; title: string; catId: string }[] };
-    const matchesCat = (c: (typeof CATEGORIES)[number]) =>
-      c.title.toLowerCase().includes(query) ||
-      c.desc.toLowerCase().includes(query) ||
-      c.journeyIds.some((jid) => JOURNEYS[jid]?.concerns.some((k) => k.toLowerCase().includes(query))) ||
-      c.practiceIds.some((pid) => PRACTICES[pid]?.concerns.some((k) => k.toLowerCase().includes(query)));
+    if (!query)
+      return {
+        categories: CATEGORIES,
+        matches: [] as { kind: "journey" | "practice"; id: string; title: string; catId: string }[],
+      };
 
-    const cats = CATEGORIES.filter(matchesCat);
+    const has = (v?: string | null) => (v ?? "").toLowerCase().includes(query);
+    const hasAny = (arr?: string[]) => (arr ?? []).some((k) => has(k));
+
+    const journeyMatches = (j: (typeof JOURNEYS)[string]) =>
+      has(j.title) || has(j.desc) || has(j.framework) || hasAny(j.concerns);
+    const practiceMatches = (p: (typeof PRACTICES)[string]) =>
+      has(p.title) || has(p.summary) || has(p.framework) || hasAny(p.concerns);
+
+    const cats = CATEGORIES.filter(
+      (c) =>
+        has(c.title) ||
+        has(c.desc) ||
+        has(c.intro) ||
+        c.journeyIds.some((jid) => JOURNEYS[jid] && journeyMatches(JOURNEYS[jid])) ||
+        c.practiceIds.some((pid) => PRACTICES[pid] && practiceMatches(PRACTICES[pid])),
+    );
+
     const jHits = Object.values(JOURNEYS)
-      .filter((j) => j.title.toLowerCase().includes(query) || j.concerns.some((k) => k.toLowerCase().includes(query)))
+      .filter(journeyMatches)
       .map((j) => {
-        const cat = CATEGORIES.find((c) => c.journeyIds.includes(j.id))!;
-        return { kind: "journey" as const, id: j.id, title: j.title, catId: cat.id };
-      });
+        const cat = CATEGORIES.find((c) => c.journeyIds.includes(j.id));
+        return cat ? { kind: "journey" as const, id: j.id, title: j.title, catId: cat.id } : null;
+      })
+      .filter((x): x is { kind: "journey"; id: string; title: string; catId: string } => x !== null);
+
     const pHits = Object.values(PRACTICES)
-      .filter((p) => p.title.toLowerCase().includes(query) || p.concerns.some((k) => k.toLowerCase().includes(query)))
+      .filter(practiceMatches)
       .map((p) => {
-        const cat = CATEGORIES.find((c) => c.practiceIds.includes(p.id))!;
-        return { kind: "practice" as const, id: p.id, title: p.title, catId: cat.id };
-      });
+        const cat = CATEGORIES.find((c) => c.practiceIds.includes(p.id));
+        return cat ? { kind: "practice" as const, id: p.id, title: p.title, catId: cat.id } : null;
+      })
+      .filter((x): x is { kind: "practice"; id: string; title: string; catId: string } => x !== null);
+
     return { categories: cats, matches: [...jHits, ...pHits].slice(0, 8) };
   }, [query]);
 
   const toggle = (id: string) =>
-    setTodos((t) => t.map((x) => (x.id === id ? { ...x, done: !x.done } : x)));
+    setTodos((prev) => {
+      const next = prev.map((x) => (x.id === id ? { ...x, done: !x.done } : x));
+      try {
+        window.localStorage.setItem(
+          TODO_KEY,
+          JSON.stringify({ date: todayKey(), todos: next.map((t) => ({ id: t.id, done: t.done })) }),
+        );
+      } catch {
+        /* ignore */
+      }
+      return next;
+    });
 
   const doneCount = todos.filter((t) => t.done).length;
 
@@ -106,11 +157,12 @@ function Page() {
         />
         {q && (
           <button
+            type="button"
             onClick={() => setQ("")}
-            className="text-[11px] text-white/60 hover:text-white"
+            className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white/45 text-white transition hover:bg-white/60"
             aria-label="Clear search"
           >
-            Clear
+            <X className="h-3 w-3" strokeWidth={2.5} />
           </button>
         )}
       </div>

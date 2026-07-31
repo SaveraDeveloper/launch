@@ -1,13 +1,17 @@
 import { Outlet, Link, useRouterState } from "@tanstack/react-router";
-import { Backpack, Compass, Home, Coffee, User } from "lucide-react";
 import { apartmentByHour } from "@/lib/apartmentBg";
+import kitIcon from "@/assets/Kit.png.asset.json";
+import exploreIcon from "@/assets/Explore_1.png.asset.json";
+import homeIcon from "@/assets/Home.png.asset.json";
+import cafeIcon from "@/assets/TalkToSavera.png.asset.json";
+import profileIcon from "@/assets/Profile.png.asset.json";
 
 const tabs = [
-  { to: "/journey-kit", label: "Kit", Icon: Backpack, match: "/journey-kit" },
-  { to: "/experiences", label: "Explore", Icon: Compass, match: "/experiences" },
-  { to: "/home", label: "Home", Icon: Home, match: "/home" },
-  { to: "/companion", label: "Cafe", Icon: Coffee, match: "/companion" },
-  { to: "/profile", label: "Profile", Icon: User, match: "/profile" },
+  { to: "/journey-kit", label: "Kit", icon: kitIcon.url, match: "/journey-kit" },
+  { to: "/experiences", label: "Explore", icon: exploreIcon.url, match: "/experiences" },
+  { to: "/home", label: "Home", icon: homeIcon.url, match: "/home" },
+  { to: "/companion", label: "Cafe", icon: cafeIcon.url, match: "/companion" },
+  { to: "/profile", label: "Profile", icon: profileIcon.url, match: "/profile" },
 ] as const;
 
 export function AppShell() {
@@ -60,7 +64,7 @@ export function AppShell() {
               left: `calc(0.5rem + ((100% - 1rem) / ${tabs.length}) * ${activeIndex})`,
             }}
           />
-          {tabs.map(({ to, label, Icon }, idx) => {
+          {tabs.map(({ to, label, icon }, idx) => {
             const active = idx === activeIndex;
             return (
               <Link
@@ -70,11 +74,14 @@ export function AppShell() {
                   active ? "text-white" : "text-white/70 hover:text-white"
                 }`}
               >
-                <Icon
-                  className="h-[22px] w-[22px] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
-                  style={{ transform: active ? "scale(1.08)" : "scale(1)" }}
-                  strokeWidth={1.6}
+                <img
+                  src={icon}
+                  alt=""
+                  aria-hidden
+                  className="h-[22px] w-[22px] object-contain transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                  style={{ transform: active ? "scale(1.08)" : "scale(1)", opacity: active ? 1 : 0.75 }}
                 />
+
                 <span className="leading-none">{label}</span>
               </Link>
             );

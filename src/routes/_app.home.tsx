@@ -4,16 +4,28 @@ import {
   Sparkles,
   BookOpen,
   ChevronRight,
-  Zap,
-  NotebookPen,
-  Coffee,
-  TrendingUp,
   Clock,
   Brain,
   ArrowRight,
   ImageIcon,
 } from "lucide-react";
 import { firstName } from "@/lib/userStore";
+import journalIcon from "@/assets/Journal.png.asset.json";
+import talkIcon from "@/assets/TalkToSavera.png.asset.json";
+import progressIcon from "@/assets/ViewProgress.png.asset.json";
+import quickActionsIcon from "@/assets/QuickActions.png.asset.json";
+import morningPagesImg from "@/assets/MorningPages.webp.asset.json";
+import selfCompassionImg from "@/assets/SelfCompassionNotes.webp.asset.json";
+
+function greetingFor(d = new Date()): string {
+  const h = d.getHours();
+  const m = d.getMinutes();
+  if (h < 5) return "It's Midnight. Make sure you're getting some sleep.";
+  if (h < 12) return "Good Morning";
+  if (h === 12 && m === 0) return "Good Noon";
+  if (h < 17) return "Good Afternoon";
+  return "Good Evening";
+}
 
 export const Route = createFileRoute("/_app/home")({
   head: () => ({ meta: [{ title: "Home — Savera" }] }),
@@ -29,15 +41,15 @@ const EMOTIONS = [
 ];
 
 const JOURNEY = [
-  { title: "Morning Pages", subtitle: "Journaling · 5 min" },
-  { title: "Thought Lab", subtitle: "Activity · 10 min" },
-  { title: "Self-Compassion Notes", subtitle: "Reflection · 11 min" },
+  { title: "Morning Pages", subtitle: "Journaling · 5 min", img: morningPagesImg.url },
+  { title: "Thought Lab", subtitle: "Activity · 10 min", img: null },
+  { title: "Self-Compassion Notes", subtitle: "Reflection · 11 min", img: selfCompassionImg.url },
 ];
 
 const QUICK = [
-  { title: "Journal", desc: "Write your thoughts", Icon: NotebookPen, to: "/tracking" as const },
-  { title: "Talk to Savera", desc: "Chat about anything", Icon: Coffee, to: "/companion" as const },
-  { title: "View Progress", desc: "Track your growth", Icon: TrendingUp, to: "/progress" as const },
+  { title: "Journal", desc: "Write your thoughts", icon: journalIcon.url, to: "/tracking" as const },
+  { title: "Talk to Savera", desc: "Chat about anything", icon: talkIcon.url, to: "/companion" as const },
+  { title: "View Progress", desc: "Track your growth", icon: progressIcon.url, to: "/progress" as const },
 ];
 
 function GlassCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
@@ -53,14 +65,22 @@ function GlassCard({ children, className = "" }: { children: React.ReactNode; cl
 function Page() {
   const [name, setName] = useState("friend");
   const [mood, setMood] = useState<string | null>(null);
-  useEffect(() => setName(firstName()), []);
+  const [greeting, setGreeting] = useState("Good Evening");
+  useEffect(() => {
+    setName(firstName());
+    setGreeting(greetingFor());
+    const t = setInterval(() => setGreeting(greetingFor()), 30_000);
+    return () => clearInterval(t);
+  }, []);
+
+  const isMidnight = greeting.startsWith("It's Midnight");
 
   return (
     <div className="mx-auto w-full max-w-[430px] px-5 pt-10 animate-soft-in">
       {/* Header — breathing room shows apartment behind */}
       <header className="mb-8">
         <h1 className="font-seasons text-[28px] font-light leading-tight text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
-          Good Evening, {name} 🌻
+          {isMidnight ? `${name}, ${greeting}` : `${greeting}, ${name} 🌻`}
         </h1>
         <p className="mt-6 font-body text-[15px] font-light text-white/85">
           How are you feeling today?
@@ -140,8 +160,12 @@ function Page() {
         <div className="grid grid-cols-3 gap-2.5">
           {JOURNEY.map((j) => (
             <div key={j.title} className="rounded-2xl border border-white/30 bg-white/25 p-2.5 backdrop-blur">
-              <div className="mb-2 flex aspect-square items-center justify-center rounded-xl border border-white/30 bg-white/25 text-white/40">
-                <ImageIcon className="h-5 w-5" strokeWidth={1.2} />
+              <div className="mb-2 flex aspect-square items-center justify-center overflow-hidden rounded-xl border border-white/30 bg-white/25 text-white/40">
+                {j.img ? (
+                  <img src={j.img} alt={j.title} className="h-full w-full object-cover" loading="lazy" />
+                ) : (
+                  <ImageIcon className="h-5 w-5" strokeWidth={1.2} />
+                )}
               </div>
               <p className="font-seasons text-[13px] leading-tight text-white">{j.title}</p>
               <p className="mt-0.5 text-[10px] font-light text-white/70">{j.subtitle}</p>
@@ -157,17 +181,17 @@ function Page() {
       {/* Quick Actions */}
       <GlassCard className="mb-6">
         <div className="mb-4 flex items-center gap-2">
-          <Zap className="h-4 w-4 text-amber-200" />
+          <img src={quickActionsIcon.url} alt="" aria-hidden className="h-4 w-4 object-contain" />
           <h2 className="font-seasons text-[18px] text-white">Quick Actions</h2>
         </div>
         <div className="grid grid-cols-3 gap-2.5">
-          {QUICK.map(({ title, desc, Icon, to }) => (
+          {QUICK.map(({ title, desc, icon, to }) => (
             <Link
               key={title}
               to={to}
               className="flex flex-col gap-2 rounded-2xl border border-white/30 bg-white/25 p-3 backdrop-blur transition hover:bg-white/30"
             >
-              <Icon className="h-5 w-5 text-amber-100" strokeWidth={1.5} />
+              <img src={icon} alt="" aria-hidden className="h-5 w-5 object-contain" />
               <div>
                 <p className="font-seasons text-[13px] leading-tight text-white">{title}</p>
                 <p className="mt-0.5 text-[10px] font-light leading-snug text-white/70">{desc}</p>

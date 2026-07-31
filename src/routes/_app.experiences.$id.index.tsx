@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ChevronLeft, Clock, BookOpen, Sparkles } from "lucide-react";
+import { ChevronLeft, Clock, BookOpen, Sparkles, ImageIcon } from "lucide-react";
 import { categoryById, JOURNEYS, PRACTICES } from "@/lib/experiencesCatalog";
 
 export const Route = createFileRoute("/_app/experiences/$id/")({
@@ -44,17 +44,22 @@ function Page() {
               key={j.id}
               to="/experiences/$id/journey/$journeyId"
               params={{ id, journeyId: j.id }}
-              className="rounded-[24px] border border-white/35 bg-white/25 p-4 backdrop-blur-2xl shadow-[0_10px_28px_rgba(0,0,0,0.32)] active:scale-[.99]"
+              className="flex gap-3 rounded-[24px] border border-white/35 bg-white/25 p-4 backdrop-blur-2xl shadow-[0_10px_28px_rgba(0,0,0,0.32)] active:scale-[.99]"
             >
-              <p className="font-seasons text-[18px] leading-tight text-white">{j.title}</p>
-              <p className="mt-1 text-[12px] font-light leading-snug text-white/80">{j.desc}</p>
-              <p className="mt-2 text-[10.5px] uppercase tracking-[0.14em] text-white/60">{j.framework}</p>
-              <div className="mt-3 flex items-center justify-between text-[11px] text-white/75">
-                <span className="inline-flex items-center gap-1"><Clock className="h-3 w-3" /> {j.time}</span>
-                <span>{j.progress}%</span>
+              <div className="flex h-[76px] w-[76px] shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/30 bg-white/25 text-white/40">
+                <ImageIcon className="h-6 w-6" strokeWidth={1.2} />
               </div>
-              <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-white/30">
-                <div className="h-full rounded-full bg-white/80" style={{ width: `${j.progress}%` }} />
+              <div className="min-w-0 flex-1">
+                <p className="font-seasons text-[18px] leading-tight text-white">{j.title}</p>
+                <p className="mt-1 text-[12px] font-light leading-snug text-white/80">{j.desc}</p>
+                <p className="mt-2 text-[10.5px] uppercase tracking-[0.14em] text-white/60">{j.framework}</p>
+                <div className="mt-3 flex items-center justify-between text-[11px] text-white/75">
+                  <span className="inline-flex items-center gap-1"><Clock className="h-3 w-3" /> {j.time}</span>
+                  <span>{j.progress}%</span>
+                </div>
+                <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-white/30">
+                  <div className="h-full rounded-full bg-white/80" style={{ width: `${j.progress}%` }} />
+                </div>
               </div>
             </Link>
           ))}
@@ -74,7 +79,10 @@ function Page() {
               params={{ id, practiceId: p.id }}
               className="flex items-center justify-between gap-3 rounded-[22px] border border-white/35 bg-white/25 px-4 py-3 backdrop-blur-xl active:scale-[.99]"
             >
-              <div className="min-w-0">
+              <div className="flex h-[52px] w-[52px] shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/30 bg-white/25 text-white/40">
+                <ImageIcon className="h-5 w-5" strokeWidth={1.2} />
+              </div>
+              <div className="min-w-0 flex-1">
                 <p className="font-seasons text-[15px] leading-tight text-white">{p.title}</p>
                 <p className="mt-0.5 truncate text-[11.5px] font-light text-white/75">{p.summary}</p>
               </div>
