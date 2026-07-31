@@ -1,7 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ChevronRight, Settings2, Camera } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import { firstName, readOnboarding } from "@/lib/userStore";
+import { ChevronRight, Settings2, Pencil } from "lucide-react";
+import { useEffect, useState } from "react";
+import {
+  firstName,
+  readOnboarding,
+  readSaveraMemory,
+  saveOnboarding,
+  type OnboardingData,
+  type SaveraMemory,
+} from "@/lib/userStore";
+import { EditProfileDialog } from "@/components/EditProfileDialog";
 import quickActionsIcon from "@/assets/QuickActions.png.asset.json";
 import goalsIcon from "@/assets/Goals.png.asset.json";
 import progressIcon from "@/assets/ViewProgress.png.asset.json";
@@ -14,33 +22,53 @@ export const Route = createFileRoute("/_app/profile")({
 });
 
 function Page() {
-  const name = firstName();
-  const initials = (name[0] || "S").toUpperCase();
-  const d = readOnboarding();
+  const [name, setName] = useState("friend");
+  const [bio, setBio] = useState("");
   const [avatar, setAvatar] = useState<string | null>(null);
-  const fileRef = useRef<HTMLInputElement>(null);
+  const [d, setD] = useState<OnboardingData>({});
+  const [memory, setMemory] = useState<SaveraMemory | null>(null);
+  const [editing, setEditing] = useState(false);
 
   useEffect(() => {
+    const data = readOnboarding();
+    setD(data);
+    setName(firstName());
+    setBio(data.bio || "");
     setAvatar(window.localStorage.getItem(AVATAR_KEY));
+    setMemory(readSaveraMemory());
   }, []);
 
-  function onPick(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      const url = String(reader.result);
-      try {
-        window.localStorage.setItem(AVATAR_KEY, url);
-      } catch {
-        /* image too large to persist */
-      }
-      setAvatar(url);
-    };
-    reader.readAsDataURL(file);
+  const initials = (name[0] || "S").toUpperCase();
+  const display = name.charAt(0).toUpperCase() + name.slice(1);
+
+  function handleSave(v: { name: string; bio: string; avatar: string | null }) {
+    saveOnboarding({ name: v.name || undefined, bio: v.bio });
+    try {
+      if (v.avatar) window.localStorage.setItem(AVATAR_KEY, v.avatar);
+      else window.localStorage.removeItem(AVATAR_KEY);
+    } catch {
+      /* image too large to persist */
+    }
+    setName(v.name ? v.name.split(/\s+/)[0] : "friend");
+    setBio(v.bio);
+    setAvatar(v.avatar);
+    setEditing(false);
   }
+
   const traits = ["Empathetic", "Reflective", "Curious", "Resilient"];
   const goals = (d.goals && d.goals.length ? d.goals : ["Build Confidence", "Reduce Overthinking", "Improve Sleep"]).slice(0, 3);
+
+  const survey = (memory?.assessment ?? []).filter((a) => a.answer);
+  const memoryFacts: string[] = [
+    memory?.location?.state
+      ? `You're in ${[memory.location.district, memory.location.state].filter(Boolean).join(", ")}.`
+      : null,
+    memory?.supportPreferences?.length
+      ? `You said support feels best as: ${memory.supportPreferences.join(", ")}.`
+      : null,
+    memory?.goals?.length ? `You're working towards ${memory.goals.join(", ")}.` : null,
+    survey.length ? `You shared ${survey.length} reflections in your 5-minute survey.` : null,
+  ].filter(Boolean) as string[];
 
   return (
     <div className="mx-auto w-full max-w-[430px] px-5 pt-10 pb-4 animate-soft-in">
@@ -48,33 +76,93 @@ function Page() {
       <header className="mb-6 flex items-center gap-4">
         <button
           type="button"
-          onClick={() => fileRef.current?.click()}
-          aria-label="Upload your own picture"
-          className="group relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/30 bg-white/30 font-seasons text-[24px] text-white shadow-[0_8px_24px_rgba(0,0,0,0.35)] backdrop-blur-xl"
+          onClick={() => setEditing(true)}
+          aria-label="Edit your profile"
+          className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/30 bg-white/30 font-seasons text-[24px] text-white shadow-[0_8px_24px_rgba(0,0,0,0.35)] backdrop-blur-xl"
         >
           {avatar ? (
             <img src={avatar} alt="Your profile" className="h-full w-full object-cover" />
           ) : (
             initials
           )}
-          <span className="absolute inset-x-0 bottom-0 flex items-center justify-center gap-1 bg-black/45 py-[3px] text-[8.5px] font-light tracking-wide text-white">
-            <Camera className="h-2.5 w-2.5" /> Upload
+        </button>
+        <button
+          type="button"
+          onClick={() => setEditing(true)}
+          className="group flex min-w-0 items-center gap-2 text-left"
+        >
+          <h1 className="truncate font-seasons text-[26px] leading-tight text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
+            {display}
+          </h1>
+          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/35 bg-white/25 text-white/85 backdrop-blur-xl transition group-hover:bg-white/35">
+            <Pencil className="h-3.5 w-3.5" />
           </span>
         </button>
-        <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={onPick} />
-        <div className="min-w-0">
-          <h1 className="font-seasons text-[26px] leading-tight text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
-            {name.charAt(0).toUpperCase() + name.slice(1)}
-          </h1>
+      </header>
+
+      <EditProfileDialog
+        open={editing}
+        onClose={() => setEditing(false)}
+        name={d.name || (name === "friend" ? "" : name)}
+        bio={bio}
+        avatar={avatar}
+        onSave={handleSave}
+      />
+
+      {/* About me */}
+      <section className="mb-4 rounded-[26px] border border-white/35 bg-white/25 p-4 shadow-[0_10px_30px_rgba(0,0,0,0.32)] backdrop-blur-2xl">
+        <div className="mb-2 flex items-center justify-between">
+          <h2 className="font-seasons text-[17px] text-white">About me</h2>
           <button
-            type="button"
-            onClick={() => fileRef.current?.click()}
-            className="mt-0.5 text-[11.5px] font-light text-white/75 underline underline-offset-2"
+            onClick={() => setEditing(true)}
+            className="inline-flex items-center gap-1 rounded-full border border-white/35 bg-white/25 px-3 py-1 text-[11px] font-light text-white/90"
           >
-            Upload your own picture
+            <Pencil className="h-3 w-3" /> Edit
           </button>
         </div>
-      </header>
+        <p className="text-[12.5px] font-light leading-relaxed text-white/85">
+          {bio || "Write a little about yourself — what you care about, what you're moving through."}
+        </p>
+      </section>
+
+      {/* Survey answers */}
+      <section className="mb-4 rounded-[26px] border border-white/35 bg-white/25 p-4 shadow-[0_10px_30px_rgba(0,0,0,0.32)] backdrop-blur-2xl">
+        <h2 className="mb-2 font-seasons text-[17px] text-white">Your survey answers</h2>
+        {survey.length ? (
+          <ul className="flex flex-col gap-2.5">
+            {survey.map((a) => (
+              <li key={a.question} className="rounded-2xl border border-white/25 bg-white/15 p-3">
+                <p className="text-[11.5px] font-light text-white/70">{a.question}</p>
+                <p className="mt-1 text-[13px] text-white/95">{a.answer}</p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-[12.5px] font-light text-white/80">
+            No survey answers yet — finish the 5-minute check-in and they'll appear here.
+          </p>
+        )}
+      </section>
+
+      {/* Savera's memories */}
+      <section className="mb-4 rounded-[26px] border border-white/35 bg-white/25 p-4 shadow-[0_10px_30px_rgba(0,0,0,0.32)] backdrop-blur-2xl">
+        <h2 className="mb-2 font-seasons text-[17px] text-white">Savera's memories of you</h2>
+        {memoryFacts.length ? (
+          <ul className="flex flex-col gap-2">
+            {memoryFacts.map((m) => (
+              <li key={m} className="flex gap-2 text-[12.5px] font-light leading-snug text-white/90">
+                <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-white/60" />
+                {m}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-[12.5px] font-light text-white/80">
+            Savera hasn't gathered memories yet. They'll build as you chat and reflect.
+          </p>
+        )}
+      </section>
+
 
       {/* Personal Snapshot */}
       <SectionCard
