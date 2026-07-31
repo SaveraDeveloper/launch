@@ -23,7 +23,7 @@ export function AppShell() {
     ),
   );
 
-  const bgUrl = apartmentByHour();
+  const bgUrl = useApartmentBg();
 
   let blurClass = "";
   let overlayClass = "bg-gradient-to-b from-black/40 via-black/55 to-black/80";
