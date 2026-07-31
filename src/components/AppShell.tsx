@@ -1,13 +1,17 @@
 import { Outlet, Link, useRouterState } from "@tanstack/react-router";
-import { Backpack, Compass, Home, Coffee, User } from "lucide-react";
 import { apartmentByHour } from "@/lib/apartmentBg";
+import kitIcon from "@/assets/Kit.png.asset.json";
+import exploreIcon from "@/assets/Explore_1.png.asset.json";
+import homeIcon from "@/assets/Home.png.asset.json";
+import cafeIcon from "@/assets/TalkToSavera.png.asset.json";
+import profileIcon from "@/assets/Profile.png.asset.json";
 
 const tabs = [
-  { to: "/journey-kit", label: "Kit", Icon: Backpack, match: "/journey-kit" },
-  { to: "/experiences", label: "Explore", Icon: Compass, match: "/experiences" },
-  { to: "/home", label: "Home", Icon: Home, match: "/home" },
-  { to: "/companion", label: "Cafe", Icon: Coffee, match: "/companion" },
-  { to: "/profile", label: "Profile", Icon: User, match: "/profile" },
+  { to: "/journey-kit", label: "Kit", icon: kitIcon.url, match: "/journey-kit" },
+  { to: "/experiences", label: "Explore", icon: exploreIcon.url, match: "/experiences" },
+  { to: "/home", label: "Home", icon: homeIcon.url, match: "/home" },
+  { to: "/companion", label: "Cafe", icon: cafeIcon.url, match: "/companion" },
+  { to: "/profile", label: "Profile", icon: profileIcon.url, match: "/profile" },
 ] as const;
 
 export function AppShell() {
