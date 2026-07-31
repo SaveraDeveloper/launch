@@ -1,8 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import {
-  Sparkles,
-  BookOpen,
   ChevronRight,
   Clock,
   Brain,
@@ -14,6 +12,8 @@ import journalIcon from "@/assets/Journal.png.asset.json";
 import talkIcon from "@/assets/PixelatedCoffee.png.asset.json";
 import progressIcon from "@/assets/ViewProgress.png.asset.json";
 import quickActionsIcon from "@/assets/QuickActions.png.asset.json";
+import thoughtLabImg from "@/assets/ThoughtLab.jpg.asset.json";
+import journalArchiveIcon from "@/assets/Journal_Archive.png.asset.json";
 import morningPagesImg from "@/assets/MorningPages.webp.asset.json";
 import selfCompassionImg from "@/assets/SelfCompassionNotes.webp.asset.json";
 
@@ -42,7 +42,7 @@ const EMOTIONS = [
 
 const JOURNEY = [
   { title: "Morning Pages", subtitle: "Journaling · 5 min", img: morningPagesImg.url },
-  { title: "Thought Lab", subtitle: "Activity · 10 min", img: null },
+  { title: "Thought Lab", subtitle: "Activity · 10 min", img: thoughtLabImg.url },
   { title: "Self-Compassion Notes", subtitle: "Reflection · 11 min", img: selfCompassionImg.url },
 ];
 
@@ -115,12 +115,12 @@ function Page() {
       {/* Today's Recommendation */}
       <GlassCard className="mb-6">
         <div className="mb-4 flex items-center gap-2">
-          <Sparkles className="h-4 w-4 text-amber-200" />
+          <img src={quickActionsIcon.url} alt="" aria-hidden className="h-7 w-7 object-contain" />
           <h2 className="font-seasons text-[18px] text-white">Today's Recommendation</h2>
         </div>
         <div className="flex gap-4">
-          <div className="flex h-28 w-24 shrink-0 items-center justify-center rounded-2xl border border-white/30 bg-white/25 text-white/40">
-            <ImageIcon className="h-8 w-8" strokeWidth={1.2} />
+          <div className="h-28 w-24 shrink-0 overflow-hidden rounded-2xl border border-white/30 bg-white/25">
+            <img src={thoughtLabImg.url} alt="Thought Lab" className="h-full w-full object-cover" loading="lazy" />
           </div>
           <div className="min-w-0 flex-1">
             <p className="font-seasons text-[22px] leading-tight text-white">Thought Lab</p>
@@ -150,7 +150,7 @@ function Page() {
       <GlassCard className="mb-6">
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <BookOpen className="h-4 w-4 text-white/85" />
+            <img src={journalArchiveIcon.url} alt="" aria-hidden className="h-7 w-7 object-contain" />
             <h2 className="font-seasons text-[18px] text-white">Continue Journey</h2>
           </div>
           <Link to="/experiences" className="inline-flex items-center gap-1 text-[12px] text-white/85">
@@ -181,7 +181,7 @@ function Page() {
       {/* Quick Actions */}
       <GlassCard className="mb-6">
         <div className="mb-4 flex items-center gap-2">
-          <img src={quickActionsIcon.url} alt="" aria-hidden className="h-4 w-4 object-contain" />
+          <img src={quickActionsIcon.url} alt="" aria-hidden className="h-7 w-7 object-contain" />
           <h2 className="font-seasons text-[18px] text-white">Quick Actions</h2>
         </div>
         <div className="grid grid-cols-3 gap-2.5">
@@ -191,7 +191,7 @@ function Page() {
               to={to}
               className="flex flex-col gap-2 rounded-2xl border border-white/30 bg-white/25 p-3 backdrop-blur transition hover:bg-white/30"
             >
-              <img src={icon} alt="" aria-hidden className="h-5 w-5 object-contain" />
+              <img src={icon} alt="" aria-hidden className="h-10 w-10 object-contain" />
               <div>
                 <p className="font-seasons text-[13px] leading-tight text-white">{title}</p>
                 <p className="mt-0.5 text-[10px] font-light leading-snug text-white/70">{desc}</p>

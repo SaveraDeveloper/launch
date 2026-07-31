@@ -2,12 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import {
   Search,
-  Brain,
-  Heart,
-  Users,
-  Sparkles,
-  GraduationCap,
-  Sun,
   Clock,
   CheckCircle2,
   Circle,
