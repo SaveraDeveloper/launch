@@ -41,15 +41,15 @@ const EMOTIONS = [
 ];
 
 const JOURNEY = [
-  { title: "Morning Pages", subtitle: "Journaling · 5 min" },
-  { title: "Thought Lab", subtitle: "Activity · 10 min" },
-  { title: "Self-Compassion Notes", subtitle: "Reflection · 11 min" },
+  { title: "Morning Pages", subtitle: "Journaling · 5 min", img: morningPagesImg.url },
+  { title: "Thought Lab", subtitle: "Activity · 10 min", img: null },
+  { title: "Self-Compassion Notes", subtitle: "Reflection · 11 min", img: selfCompassionImg.url },
 ];
 
 const QUICK = [
-  { title: "Journal", desc: "Write your thoughts", Icon: NotebookPen, to: "/tracking" as const },
-  { title: "Talk to Savera", desc: "Chat about anything", Icon: Coffee, to: "/companion" as const },
-  { title: "View Progress", desc: "Track your growth", Icon: TrendingUp, to: "/progress" as const },
+  { title: "Journal", desc: "Write your thoughts", icon: journalIcon.url, to: "/tracking" as const },
+  { title: "Talk to Savera", desc: "Chat about anything", icon: talkIcon.url, to: "/companion" as const },
+  { title: "View Progress", desc: "Track your growth", icon: progressIcon.url, to: "/progress" as const },
 ];
 
 function GlassCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
