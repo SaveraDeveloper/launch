@@ -1,5 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Video, BookOpen, NotebookPen, Heart, ChevronRight } from "lucide-react";
+import { Video, ChevronRight } from "lucide-react";
+import journalIcon from "@/assets/Journal.png.asset.json";
+import journalArchiveIcon from "@/assets/Journal_Archive.png.asset.json";
+import savedIcon from "@/assets/Saved.png.asset.json";
 
 export const Route = createFileRoute("/_app/journey-kit/")({
   head: () => ({
@@ -15,27 +18,28 @@ const CARDS = [
   {
     to: "/journey-kit/videos" as const,
     Icon: Video,
+    img: null as string | null,
     title: "Videos",
     desc: "Expert videos you've saved or unlocked.",
     tint: "from-amber-200/40 to-amber-500/20",
   },
   {
     to: "/journey-kit/books" as const,
-    Icon: BookOpen,
+    img: journalIcon.url,
     title: "Books",
     desc: "Reading recommendations collected along the way.",
     tint: "from-rose-200/40 to-rose-500/20",
   },
   {
     to: "/journey-kit/journal-archive" as const,
-    Icon: NotebookPen,
+    img: journalArchiveIcon.url,
     title: "Journal Archive",
     desc: "Every journal you've written.",
     tint: "from-emerald-200/40 to-emerald-500/20",
   },
   {
     to: "/journey-kit/saved" as const,
-    Icon: Heart,
+    img: savedIcon.url,
     title: "Saved",
     desc: "Journeys, practices, books, and videos you've kept.",
     tint: "from-violet-200/40 to-violet-500/20",
@@ -55,14 +59,18 @@ function Page() {
       </header>
 
       <div className="flex flex-col gap-3">
-        {CARDS.map(({ to, Icon, title, desc, tint }) => (
+        {CARDS.map(({ to, Icon, img, title, desc, tint }) => (
           <Link
             key={to}
             to={to}
             className={`group flex items-center gap-4 rounded-[26px] border border-white/30 bg-gradient-to-br ${tint} bg-white/25 p-4 shadow-[0_10px_30px_rgba(0,0,0,0.35)] backdrop-blur-2xl transition active:scale-[.985] hover:bg-white/30`}
           >
             <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/30 bg-white/25">
-              <Icon className="h-6 w-6 text-white" strokeWidth={1.5} />
+              {img ? (
+                <img src={img} alt="" aria-hidden className="h-10 w-10 object-contain" />
+              ) : (
+                Icon && <Icon className="h-6 w-6 text-white" strokeWidth={1.5} />
+              )}
             </div>
             <div className="min-w-0 flex-1">
               <p className="font-seasons text-[19px] leading-tight text-white">{title}</p>
@@ -75,9 +83,6 @@ function Page() {
         ))}
       </div>
 
-      <p className="mt-8 text-center text-[11px] font-light text-white/60">
-        A quiet shelf. Nothing to chase.
-      </p>
     </div>
   );
 }

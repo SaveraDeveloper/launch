@@ -70,22 +70,21 @@ export function AppShell() {
               <Link
                 key={label}
                 to={to}
-                className={`relative z-10 flex flex-1 flex-col items-center gap-1 py-1.5 text-[10.5px] transition-colors duration-300 ${
-                  active ? "text-white" : "text-white/70 hover:text-white"
-                }`}
+                aria-label={label}
+                title={label}
+                className="relative z-10 flex flex-1 flex-col items-center justify-center py-1.5"
               >
                 <img
                   src={icon}
                   alt=""
                   aria-hidden
-                  className="h-[22px] w-[22px] object-contain transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
-                  style={{ transform: active ? "scale(1.08)" : "scale(1)", opacity: active ? 1 : 0.75 }}
+                  className="h-[38px] w-[38px] object-contain transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                  style={{ transform: active ? "scale(1.12)" : "scale(1)", opacity: active ? 1 : 0.7 }}
                 />
-
-                <span className="leading-none">{label}</span>
               </Link>
             );
           })}
+
         </div>
       </nav>
     </div>
