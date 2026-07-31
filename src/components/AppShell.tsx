@@ -1,9 +1,9 @@
 import { Outlet, Link, useRouterState } from "@tanstack/react-router";
 import { apartmentByHour } from "@/lib/apartmentBg";
 import kitIcon from "@/assets/Kit.png.asset.json";
-import exploreIcon from "@/assets/Explore_1.png.asset.json";
+import exploreIcon from "@/assets/MagnifyingGlass.png.asset.json";
 import homeIcon from "@/assets/Home.png.asset.json";
-import cafeIcon from "@/assets/TalkToSavera.png.asset.json";
+import cafeIcon from "@/assets/PixelatedCoffee.png.asset.json";
 import profileIcon from "@/assets/Profile.png.asset.json";
 
 const tabs = [

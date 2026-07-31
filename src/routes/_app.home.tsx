@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { firstName } from "@/lib/userStore";
 import journalIcon from "@/assets/Journal.png.asset.json";
-import talkIcon from "@/assets/TalkToSavera.png.asset.json";
+import talkIcon from "@/assets/PixelatedCoffee.png.asset.json";
 import progressIcon from "@/assets/ViewProgress.png.asset.json";
 import quickActionsIcon from "@/assets/QuickActions.png.asset.json";
 import morningPagesImg from "@/assets/MorningPages.webp.asset.json";
