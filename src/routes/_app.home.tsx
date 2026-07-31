@@ -152,8 +152,12 @@ function Page() {
         <div className="grid grid-cols-3 gap-2.5">
           {JOURNEY.map((j) => (
             <div key={j.title} className="rounded-2xl border border-white/30 bg-white/25 p-2.5 backdrop-blur">
-              <div className="mb-2 flex aspect-square items-center justify-center rounded-xl border border-white/30 bg-white/25 text-white/40">
-                <ImageIcon className="h-5 w-5" strokeWidth={1.2} />
+              <div className="mb-2 flex aspect-square items-center justify-center overflow-hidden rounded-xl border border-white/30 bg-white/25 text-white/40">
+                {j.img ? (
+                  <img src={j.img} alt={j.title} className="h-full w-full object-cover" loading="lazy" />
+                ) : (
+                  <ImageIcon className="h-5 w-5" strokeWidth={1.2} />
+                )}
               </div>
               <p className="font-seasons text-[13px] leading-tight text-white">{j.title}</p>
               <p className="mt-0.5 text-[10px] font-light text-white/70">{j.subtitle}</p>
