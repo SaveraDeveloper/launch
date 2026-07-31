@@ -65,14 +65,22 @@ function GlassCard({ children, className = "" }: { children: React.ReactNode; cl
 function Page() {
   const [name, setName] = useState("friend");
   const [mood, setMood] = useState<string | null>(null);
-  useEffect(() => setName(firstName()), []);
+  const [greeting, setGreeting] = useState("Good Evening");
+  useEffect(() => {
+    setName(firstName());
+    setGreeting(greetingFor());
+    const t = setInterval(() => setGreeting(greetingFor()), 30_000);
+    return () => clearInterval(t);
+  }, []);
+
+  const isMidnight = greeting.startsWith("It's Midnight");
 
   return (
     <div className="mx-auto w-full max-w-[430px] px-5 pt-10 animate-soft-in">
       {/* Header — breathing room shows apartment behind */}
       <header className="mb-8">
         <h1 className="font-seasons text-[28px] font-light leading-tight text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
-          Good Evening, {name} 🌻
+          {isMidnight ? `${name}, ${greeting}` : `${greeting}, ${name} 🌻`}
         </h1>
         <p className="mt-6 font-body text-[15px] font-light text-white/85">
           How are you feeling today?
