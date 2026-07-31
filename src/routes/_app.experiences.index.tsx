@@ -14,19 +14,25 @@ import {
   X,
 } from "lucide-react";
 import { CATEGORIES, JOURNEYS, PRACTICES } from "@/lib/experiencesCatalog";
+import thoughtsIcon from "@/assets/Thoughts.png.asset.json";
+import emotionsIcon from "@/assets/Emotions.png.asset.json";
+import relationshipsIcon from "@/assets/Relationships.png.asset.json";
+import identityIcon from "@/assets/Identity.png.asset.json";
+import schoolIcon from "@/assets/School_and_Career.png.asset.json";
+import lifestyleIcon from "@/assets/Lifestyle.png.asset.json";
 
 export const Route = createFileRoute("/_app/experiences/")({
   head: () => ({ meta: [{ title: "Explore — Savera" }] }),
   component: Page,
 });
 
-const ICONS: Record<string, typeof Brain> = {
-  thoughts: Brain,
-  emotions: Heart,
-  relationships: Users,
-  identity: Sparkles,
-  "school-career": GraduationCap,
-  lifestyle: Sun,
+const ICONS: Record<string, string> = {
+  thoughts: thoughtsIcon.url,
+  emotions: emotionsIcon.url,
+  relationships: relationshipsIcon.url,
+  identity: identityIcon.url,
+  "school-career": schoolIcon.url,
+  lifestyle: lifestyleIcon.url,
 };
 
 const TINTS: Record<string, string> = {
@@ -227,7 +233,7 @@ function Page() {
       {/* Categories */}
       <div className="flex flex-col gap-3">
         {filtered.categories.map(({ id, title, desc, journeyIds, practiceIds }) => {
-          const Icon = ICONS[id] ?? Sparkles;
+          const iconUrl = ICONS[id];
           const tint = TINTS[id] ?? "from-white/10 to-white/5";
           return (
             <Link
@@ -237,7 +243,7 @@ function Page() {
               className={`group flex items-center gap-4 rounded-[26px] border border-white/35 bg-gradient-to-br ${tint} bg-white/25 p-4 shadow-[0_10px_30px_rgba(0,0,0,0.35)] backdrop-blur-2xl transition active:scale-[.985] hover:bg-white/30`}
             >
               <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/35 bg-white/30">
-                <Icon className="h-6 w-6 text-white" strokeWidth={1.5} />
+                <img src={iconUrl} alt="" aria-hidden className="h-10 w-10 object-contain" />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="font-seasons text-[19px] leading-tight text-white">{title}</p>
