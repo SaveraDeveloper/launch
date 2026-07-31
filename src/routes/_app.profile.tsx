@@ -1,6 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ChevronRight, Sparkles, Target, LineChart, Settings2 } from "lucide-react";
+import { ChevronRight, Settings2, Camera } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { firstName, readOnboarding } from "@/lib/userStore";
+import quickActionsIcon from "@/assets/QuickActions.png.asset.json";
+import goalsIcon from "@/assets/Goals.png.asset.json";
+import progressIcon from "@/assets/ViewProgress.png.asset.json";
+
+const AVATAR_KEY = "savera_avatar";
 
 export const Route = createFileRoute("/_app/profile")({
   head: () => ({ meta: [{ title: "Profile — Savera" }] }),
@@ -11,6 +17,28 @@ function Page() {
   const name = firstName();
   const initials = (name[0] || "S").toUpperCase();
   const d = readOnboarding();
+  const [avatar, setAvatar] = useState<string | null>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setAvatar(window.localStorage.getItem(AVATAR_KEY));
+  }, []);
+
+  function onPick(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const url = String(reader.result);
+      try {
+        window.localStorage.setItem(AVATAR_KEY, url);
+      } catch {
+        /* image too large to persist */
+      }
+      setAvatar(url);
+    };
+    reader.readAsDataURL(file);
+  }
   const traits = ["Empathetic", "Reflective", "Curious", "Resilient"];
   const goals = (d.goals && d.goals.length ? d.goals : ["Build Confidence", "Reduce Overthinking", "Improve Sleep"]).slice(0, 3);
 
@@ -18,23 +46,40 @@ function Page() {
     <div className="mx-auto w-full max-w-[430px] px-5 pt-10 pb-4 animate-soft-in">
       {/* Header */}
       <header className="mb-6 flex items-center gap-4">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full border border-white/30 bg-white/30 backdrop-blur-xl font-seasons text-[24px] text-white shadow-[0_8px_24px_rgba(0,0,0,0.35)]">
-          {initials}
-        </div>
+        <button
+          type="button"
+          onClick={() => fileRef.current?.click()}
+          aria-label="Upload your own picture"
+          className="group relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/30 bg-white/30 font-seasons text-[24px] text-white shadow-[0_8px_24px_rgba(0,0,0,0.35)] backdrop-blur-xl"
+        >
+          {avatar ? (
+            <img src={avatar} alt="Your profile" className="h-full w-full object-cover" />
+          ) : (
+            initials
+          )}
+          <span className="absolute inset-x-0 bottom-0 flex items-center justify-center gap-1 bg-black/45 py-[3px] text-[8.5px] font-light tracking-wide text-white">
+            <Camera className="h-2.5 w-2.5" /> Upload
+          </span>
+        </button>
+        <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={onPick} />
         <div className="min-w-0">
           <h1 className="font-seasons text-[26px] leading-tight text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
             {name.charAt(0).toUpperCase() + name.slice(1)}
           </h1>
-          <p className="mt-0.5 text-[12.5px] font-light italic text-white/80">
-            Growing one day at a time.
-          </p>
+          <button
+            type="button"
+            onClick={() => fileRef.current?.click()}
+            className="mt-0.5 text-[11.5px] font-light text-white/75 underline underline-offset-2"
+          >
+            Upload your own picture
+          </button>
         </div>
       </header>
 
       {/* Personal Snapshot */}
       <SectionCard
         to="/profile/snapshot"
-        icon={<Sparkles className="h-5 w-5 text-amber-100" strokeWidth={1.5} />}
+        icon={<img src={quickActionsIcon.url} alt="" aria-hidden className="h-8 w-8 object-contain" />}
         title="Personal Snapshot"
         subtitle="How Savera understands you"
         cta="View Snapshot"
@@ -54,7 +99,7 @@ function Page() {
       {/* Goals */}
       <SectionCard
         to="/profile/goals"
-        icon={<Target className="h-5 w-5 text-rose-100" strokeWidth={1.5} />}
+        icon={<img src={goalsIcon.url} alt="" aria-hidden className="h-8 w-8 object-contain" />}
         title="Goals"
         subtitle="What you're working towards"
         cta="View Goals"
@@ -72,7 +117,7 @@ function Page() {
       {/* Progress */}
       <SectionCard
         to="/profile/progress"
-        icon={<LineChart className="h-5 w-5 text-emerald-100" strokeWidth={1.5} />}
+        icon={<img src={progressIcon.url} alt="" aria-hidden className="h-8 w-8 object-contain" />}
         title="Progress"
         subtitle="Gentle patterns over time"
         cta="View Progress"
@@ -114,7 +159,7 @@ function SectionCard({
   return (
     <section className="mb-4 rounded-[26px] border border-white/35 bg-white/25 p-4 shadow-[0_10px_30px_rgba(0,0,0,0.32)] backdrop-blur-2xl">
       <div className="mb-3 flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/35 bg-white/30">
+        <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/35 bg-white/30">
           {icon}
         </div>
         <div className="min-w-0 flex-1">
