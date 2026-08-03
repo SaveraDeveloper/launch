@@ -254,6 +254,35 @@ function Page() {
         </div>
 
         <div className="relative z-10 flex h-full flex-col px-4 pt-4 animate-soft-in">
+          {/* Header — top of the phone frame */}
+          <div className="flex items-center gap-3 py-3">
+            <button
+              onClick={() => setMenuOpen(true)}
+              aria-label="Open chats menu"
+              className="rounded-full border border-white/30 bg-white/15 p-2 text-white backdrop-blur-xl transition-transform duration-300 active:rotate-90"
+            >
+              <Hamburger open={menuOpen} />
+            </button>
+            <h1 className="font-seasons flex-1 text-[22px] font-light leading-tight text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
+              Cafe
+            </h1>
+            <button
+              onClick={newChat}
+              aria-label="New chat"
+              title="New chat"
+              className="rounded-2xl border border-white/30 bg-white/20 p-2 text-white backdrop-blur-xl transition active:scale-95"
+            >
+              <SquarePen className="h-[17px] w-[17px]" />
+            </button>
+            <button
+              onClick={() => nav({ to: "/companion/voice" })}
+              aria-label="Have a call with Savera"
+              title="Have a call with Savera"
+              className="rounded-2xl border border-white/30 bg-white/20 p-2 text-white backdrop-blur-xl transition active:scale-95"
+            >
+              <Phone className="h-[17px] w-[17px]" />
+            </button>
+          </div>
           {/* Transcript */}
           <div className="min-h-0 flex-1 space-y-3 overflow-y-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {active?.messages.map((m) => (
@@ -395,35 +424,6 @@ function Page() {
             </div>
           </div>
 
-          {/* Title bar — sits at the bottom, just above the nav */}
-          <div className="flex items-center gap-3 py-3">
-            <button
-              onClick={() => setMenuOpen(true)}
-              aria-label="Open chats menu"
-              className="rounded-full border border-white/30 bg-white/15 p-2 text-white backdrop-blur-xl transition-transform duration-300 active:rotate-90"
-            >
-              <Hamburger open={menuOpen} />
-            </button>
-            <h1 className="font-seasons flex-1 text-[22px] font-light leading-tight text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
-              Cafe
-            </h1>
-            <button
-              onClick={newChat}
-              aria-label="New chat"
-              title="New chat"
-              className="rounded-2xl border border-white/30 bg-white/20 p-2 text-white backdrop-blur-xl transition active:scale-95"
-            >
-              <SquarePen className="h-[17px] w-[17px]" />
-            </button>
-            <button
-              onClick={() => nav({ to: "/companion/voice" })}
-              aria-label="Have a call with Savera"
-              title="Have a call with Savera"
-              className="rounded-2xl border border-white/30 bg-white/20 p-2 text-white backdrop-blur-xl transition active:scale-95"
-            >
-              <Phone className="h-[17px] w-[17px]" />
-            </button>
-          </div>
         </div>
 
         {/* Side menu */}
