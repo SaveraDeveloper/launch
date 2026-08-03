@@ -55,7 +55,7 @@ export function AppShell() {
       </div>
 
 
-      <div className="relative flex-1 pb-32">
+      <div className={`relative flex-1 ${hideBg ? "pb-2" : "pb-32"}`}>
         <Outlet />
       </div>
 
