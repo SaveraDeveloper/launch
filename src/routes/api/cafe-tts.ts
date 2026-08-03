@@ -19,8 +19,9 @@ export const Route = createFileRoute("/api/cafe-tts")({
           body: JSON.stringify({
             model: "openai/gpt-4o-mini-tts",
             input: text.slice(0, 3000),
-            voice: "alloy",
-            instructions: "Speak slowly, warmly and gently, like a calm therapist.",
+            voice: "coral",
+            instructions:
+              "You are a young woman in her twenties: warm, gentle, softly feminine and unhurried. Speak slowly and kindly, with a light, caring lilt. Never sound deep, gruff or clinical.",
             response_format: "mp3",
             stream_format: "audio",
           }),

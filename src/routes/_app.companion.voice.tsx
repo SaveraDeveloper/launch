@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Mic, MicOff, Phone, ArrowLeft } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import saveraCafe from "@/assets/severacafe.png.asset.json";
-import { useMicLevel } from "@/components/CafeBits";
+import { useMicLevel, TypingDots } from "@/components/CafeBits";
 import {
   saveraReply,
   newId,
@@ -24,11 +24,32 @@ export const Route = createFileRoute("/_app/companion/voice")({
   component: Page,
 });
 
-/** Floating, word-by-word caption. */
+/** Floating caption that plays one sentence at a time, word by word. */
 function Caption({ text }: { text: string }) {
-  const words = text.split(/\s+/).filter(Boolean);
+  const sentences = (text.match(/[^.!?…]+[.!?…]*/g) ?? [text])
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const [idx, setIdx] = useState(0);
+
+  useEffect(() => {
+    setIdx(0);
+  }, [text]);
+
+  useEffect(() => {
+    if (idx >= sentences.length - 1) return;
+    const words = sentences[idx].split(/\s+/).length;
+    const id = window.setTimeout(() => setIdx((i) => i + 1), 900 + words * 320);
+    return () => window.clearTimeout(id);
+  }, [idx, sentences]);
+
+  const current = sentences[Math.min(idx, sentences.length - 1)] ?? "";
+  const words = current.split(/\s+/).filter(Boolean);
+
   return (
-    <p className="flex flex-wrap justify-center gap-x-1.5 gap-y-0.5 text-[15px] font-light leading-relaxed text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)]">
+    <p
+      key={`${text}-${idx}`}
+      className="flex flex-wrap justify-center gap-x-1.5 gap-y-0.5 text-[15px] font-light leading-relaxed text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)]"
+    >
       {words.map((w, i) => (
         <span key={`${w}-${i}`} className="cafe-word" style={{ animationDelay: `${i * 0.11}s` }}>
           {w}
@@ -44,11 +65,14 @@ function Page() {
   const [muted, setMuted] = useState(false);
   const [caption, setCaption] = useState("");
   const [speaking, setSpeaking] = useState(false);
+  const [thinking, setThinking] = useState(false);
   const level = useMicLevel(!muted);
   const historyRef = useRef<CafeMessage[]>([]);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const busyRef = useRef(false);
   const endedRef = useRef(false);
+  /** Bumped whenever the client interrupts — stale replies/audio are discarded. */
+  const genRef = useRef(0);
 
   const stopAudio = useCallback(() => {
     const a = audioRef.current;
@@ -61,16 +85,24 @@ function Page() {
     setSpeaking(false);
   }, []);
 
-  const speak = useCallback(async (text: string) => {
+  /** Barge-in: the client started speaking, so Savera stops instantly. */
+  const interrupt = useCallback(() => {
+    genRef.current += 1;
+    busyRef.current = false;
+    setThinking(false);
+    stopAudio();
+  }, [stopAudio]);
+
+  const speak = useCallback(async (text: string, gen: number) => {
     try {
       const res = await fetch("/api/cafe-tts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text }),
       });
-      if (!res.ok || endedRef.current) return;
+      if (!res.ok || endedRef.current || gen !== genRef.current) return;
       const blob = await res.blob();
-      if (endedRef.current) return;
+      if (endedRef.current || gen !== genRef.current) return;
       const url = URL.createObjectURL(blob);
       const audio = new Audio(url);
       audioRef.current = audio;
@@ -87,23 +119,29 @@ function Page() {
 
   const respond = useCallback(
     async (userText: string) => {
-      if (busyRef.current || endedRef.current) return;
+      if (endedRef.current) return;
+      const gen = genRef.current;
       busyRef.current = true;
+      setThinking(true);
       historyRef.current = [
         ...historyRef.current,
         { id: newId(), role: "user", text: userText },
       ];
       try {
         const reply = await saveraReply(historyRef.current);
-        if (endedRef.current) return;
+        if (endedRef.current || gen !== genRef.current) return;
         historyRef.current = [
           ...historyRef.current,
           { id: newId(), role: "savera", text: reply },
         ];
+        setThinking(false);
         setCaption(reply);
-        await speak(reply);
+        await speak(reply, gen);
       } finally {
-        busyRef.current = false;
+        if (gen === genRef.current) {
+          busyRef.current = false;
+          setThinking(false);
+        }
       }
     },
     [speak],
@@ -156,7 +194,10 @@ function Page() {
         interimResults: boolean;
         onresult: (e: {
           resultIndex: number;
-          results: { length: number; [i: number]: { 0: { transcript: string } } };
+          results: {
+            length: number;
+            [i: number]: { isFinal: boolean; 0: { transcript: string } };
+          };
         }) => void;
         onend: () => void;
         start: () => void;
@@ -169,13 +210,33 @@ function Page() {
     const rec = new Ctor();
     rec.lang = "en-IN";
     rec.continuous = true;
-    rec.interimResults = false;
+    // Interim results let us barge in the instant the client starts talking.
+    rec.interimResults = true;
     let stopped = false;
+    let buffer = "";
+    let sendTimer = 0;
+
     rec.onresult = (e) => {
-      let text = "";
-      for (let i = e.resultIndex; i < e.results.length; i++) text += e.results[i][0].transcript;
-      if (text.trim()) void respond(text.trim());
+      let interim = "";
+      let final = "";
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        const r = e.results[i];
+        if (r.isFinal) final += r[0].transcript;
+        else interim += r[0].transcript;
+      }
+      // Any speech at all cuts Savera off immediately.
+      if ((interim + final).trim()) interrupt();
+      if (!final.trim()) return;
+      buffer = `${buffer} ${final}`.trim();
+      window.clearTimeout(sendTimer);
+      // Wait for a short pause so a whole thought is sent, not one word.
+      sendTimer = window.setTimeout(() => {
+        const text = buffer.trim();
+        buffer = "";
+        if (text) void respond(text);
+      }, 900);
     };
+
     rec.onend = () => {
       if (!stopped && !endedRef.current) {
         try {
@@ -192,13 +253,14 @@ function Page() {
     }
     return () => {
       stopped = true;
+      window.clearTimeout(sendTimer);
       try {
         rec.stop();
       } catch {
         /* ignore */
       }
     };
-  }, [muted, respond]);
+  }, [muted, respond, interrupt]);
 
   const scale = 1 + (muted ? 0 : level * 0.55);
 
@@ -226,8 +288,12 @@ function Page() {
           </div>
 
           {/* Floating captions */}
-          <div className="mt-5 min-h-[84px] px-3 text-center">
-            {caption && <Caption key={caption} text={caption} />}
+          <div className="mt-5 flex min-h-[84px] items-start justify-center px-3 text-center">
+            {thinking ? (
+              <TypingDots dark />
+            ) : (
+              caption && <Caption key={caption} text={caption} />
+            )}
           </div>
 
           <div className="mt-6 flex justify-center">
