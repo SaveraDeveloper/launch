@@ -191,14 +191,15 @@ function Page() {
   }
 
   function dictate() {
+    if (listening) {
+      recRef.current?.stop();
+      recRef.current = null;
+      setListening(false);
+      return;
+    }
     const W = window as unknown as {
-      SpeechRecognition?: new () => {
-        lang: string;
-        onresult: (e: { results: { 0: { 0: { transcript: string } } } }) => void;
-        onend: () => void;
-        start: () => void;
-      };
-      webkitSpeechRecognition?: typeof W.SpeechRecognition;
+      SpeechRecognition?: new () => SpeechRec;
+      webkitSpeechRecognition?: new () => SpeechRec;
     };
     const Ctor = W.SpeechRecognition ?? W.webkitSpeechRecognition;
     if (!Ctor) {
@@ -207,10 +208,33 @@ function Page() {
     }
     const rec = new Ctor();
     rec.lang = "en-IN";
-    rec.onresult = (e) => setDraft((d) => `${d}${d ? " " : ""}${e.results[0][0].transcript}`);
-    rec.onend = () => setListening(false);
+    rec.continuous = true;
+    rec.interimResults = false;
+    rec.onresult = (e) => {
+      let text = "";
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        text += e.results[i][0].transcript;
+      }
+      const t = text.trim();
+      if (t) setDraft((d) => `${d}${d ? " " : ""}${t}`);
+    };
+    // Keep listening until the user taps stop.
+    rec.onend = () => {
+      if (recRef.current === rec) {
+        try {
+          rec.start();
+        } catch {
+          /* ignore */
+        }
+      }
+    };
+    recRef.current = rec;
     setListening(true);
-    rec.start();
+    try {
+      rec.start();
+    } catch {
+      /* ignore */
+    }
   }
 
   const started = !!active;
