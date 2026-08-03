@@ -288,8 +288,12 @@ function Page() {
           </div>
 
           {/* Floating captions */}
-          <div className="mt-5 min-h-[84px] px-3 text-center">
-            {caption && <Caption key={caption} text={caption} />}
+          <div className="mt-5 flex min-h-[84px] items-start justify-center px-3 text-center">
+            {thinking ? (
+              <TypingDots dark />
+            ) : (
+              caption && <Caption key={caption} text={caption} />
+            )}
           </div>
 
           <div className="mt-6 flex justify-center">
