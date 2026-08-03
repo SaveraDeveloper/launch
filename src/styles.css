@@ -286,3 +286,34 @@
   50% { transform: translate3d(4px, -8px, 0); }
 }
 .animate-cafe-drift { animation: cafe-drift 5s ease-in-out infinite; }
+
+/* ---- Cafe polish ---- */
+@keyframes cafe-dot-wave {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.55; }
+  30% { transform: translateY(-6px); opacity: 1; }
+}
+.cafe-dot { animation: cafe-dot-wave 1.15s cubic-bezier(.4,0,.2,1) infinite; }
+
+@keyframes cafe-shimmer-in {
+  from { opacity: 0; filter: brightness(2.2); text-shadow: 0 0 10px rgba(255,240,215,0.9); }
+  to { opacity: 1; filter: brightness(1); text-shadow: none; }
+}
+.cafe-char { display: inline; animation: cafe-shimmer-in 620ms ease-out both; white-space: pre-wrap; }
+
+@keyframes cafe-menu-in {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+.animate-cafe-menu-in { animation: cafe-menu-in 340ms cubic-bezier(.22,1,.36,1) both; }
+
+@keyframes cafe-scrim-in { from { opacity: 0; } to { opacity: 1; } }
+.animate-cafe-scrim-in { animation: cafe-scrim-in 300ms ease-out both; }
+
+@keyframes cafe-spin-once { from { transform: rotate(0deg); } to { transform: rotate(180deg); } }
+.animate-spin-once { animation: cafe-spin-once 420ms cubic-bezier(.22,1,.36,1) both; }
+
+@keyframes cafe-caption-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-caption-in { animation: cafe-caption-in 420ms ease-out both; }
