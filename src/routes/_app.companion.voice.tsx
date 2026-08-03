@@ -194,7 +194,10 @@ function Page() {
         interimResults: boolean;
         onresult: (e: {
           resultIndex: number;
-          results: { length: number; [i: number]: { 0: { transcript: string } } };
+          results: {
+            length: number;
+            [i: number]: { isFinal: boolean; 0: { transcript: string } };
+          };
         }) => void;
         onend: () => void;
         start: () => void;
@@ -207,13 +210,33 @@ function Page() {
     const rec = new Ctor();
     rec.lang = "en-IN";
     rec.continuous = true;
-    rec.interimResults = false;
+    // Interim results let us barge in the instant the client starts talking.
+    rec.interimResults = true;
     let stopped = false;
+    let buffer = "";
+    let sendTimer = 0;
+
     rec.onresult = (e) => {
-      let text = "";
-      for (let i = e.resultIndex; i < e.results.length; i++) text += e.results[i][0].transcript;
-      if (text.trim()) void respond(text.trim());
+      let interim = "";
+      let final = "";
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        const r = e.results[i];
+        if (r.isFinal) final += r[0].transcript;
+        else interim += r[0].transcript;
+      }
+      // Any speech at all cuts Savera off immediately.
+      if ((interim + final).trim()) interrupt();
+      if (!final.trim()) return;
+      buffer = `${buffer} ${final}`.trim();
+      window.clearTimeout(sendTimer);
+      // Wait for a short pause so a whole thought is sent, not one word.
+      sendTimer = window.setTimeout(() => {
+        const text = buffer.trim();
+        buffer = "";
+        if (text) void respond(text);
+      }, 900);
     };
+
     rec.onend = () => {
       if (!stopped && !endedRef.current) {
         try {
@@ -230,13 +253,14 @@ function Page() {
     }
     return () => {
       stopped = true;
+      window.clearTimeout(sendTimer);
       try {
         rec.stop();
       } catch {
         /* ignore */
       }
     };
-  }, [muted, respond]);
+  }, [muted, respond, interrupt]);
 
   const scale = 1 + (muted ? 0 : level * 0.55);
 
