@@ -29,6 +29,8 @@ import { Route as AuthForgotPasswordRouteImport } from './routes/auth.forgot-pas
 import { Route as AssessmentRecommendationsRouteImport } from './routes/assessment.recommendations'
 import { Route as AssessmentProcessingRouteImport } from './routes/assessment.processing'
 import { Route as AssessmentDiscoveryRouteImport } from './routes/assessment.discovery'
+import { Route as ApiCafeTtsRouteImport } from './routes/api/cafe-tts'
+import { Route as ApiCafeChatRouteImport } from './routes/api/cafe-chat'
 import { Route as AppTrackingRouteImport } from './routes/_app.tracking'
 import { Route as AppProfileRouteImport } from './routes/_app.profile'
 import { Route as AppNotificationsRouteImport } from './routes/_app.notifications'
@@ -183,6 +185,16 @@ const AssessmentProcessingRoute = AssessmentProcessingRouteImport.update({
 const AssessmentDiscoveryRoute = AssessmentDiscoveryRouteImport.update({
   id: '/assessment/discovery',
   path: '/assessment/discovery',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCafeTtsRoute = ApiCafeTtsRouteImport.update({
+  id: '/api/cafe-tts',
+  path: '/api/cafe-tts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCafeChatRoute = ApiCafeChatRouteImport.update({
+  id: '/api/cafe-chat',
+  path: '/api/cafe-chat',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppTrackingRoute = AppTrackingRouteImport.update({
@@ -474,6 +486,8 @@ export interface FileRoutesByFullPath {
   '/notifications': typeof AppNotificationsRoute
   '/profile': typeof AppProfileRouteWithChildren
   '/tracking': typeof AppTrackingRouteWithChildren
+  '/api/cafe-chat': typeof ApiCafeChatRoute
+  '/api/cafe-tts': typeof ApiCafeTtsRoute
   '/assessment/discovery': typeof AssessmentDiscoveryRoute
   '/assessment/processing': typeof AssessmentProcessingRoute
   '/assessment/recommendations': typeof AssessmentRecommendationsRoute
@@ -548,6 +562,8 @@ export interface FileRoutesByTo {
   '/insights': typeof AppInsightsRoute
   '/notifications': typeof AppNotificationsRoute
   '/profile': typeof AppProfileRouteWithChildren
+  '/api/cafe-chat': typeof ApiCafeChatRoute
+  '/api/cafe-tts': typeof ApiCafeTtsRoute
   '/assessment/discovery': typeof AssessmentDiscoveryRoute
   '/assessment/processing': typeof AssessmentProcessingRoute
   '/assessment/recommendations': typeof AssessmentRecommendationsRoute
@@ -625,6 +641,8 @@ export interface FileRoutesById {
   '/_app/notifications': typeof AppNotificationsRoute
   '/_app/profile': typeof AppProfileRouteWithChildren
   '/_app/tracking': typeof AppTrackingRouteWithChildren
+  '/api/cafe-chat': typeof ApiCafeChatRoute
+  '/api/cafe-tts': typeof ApiCafeTtsRoute
   '/assessment/discovery': typeof AssessmentDiscoveryRoute
   '/assessment/processing': typeof AssessmentProcessingRoute
   '/assessment/recommendations': typeof AssessmentRecommendationsRoute
@@ -702,6 +720,8 @@ export interface FileRouteTypes {
     | '/notifications'
     | '/profile'
     | '/tracking'
+    | '/api/cafe-chat'
+    | '/api/cafe-tts'
     | '/assessment/discovery'
     | '/assessment/processing'
     | '/assessment/recommendations'
@@ -776,6 +796,8 @@ export interface FileRouteTypes {
     | '/insights'
     | '/notifications'
     | '/profile'
+    | '/api/cafe-chat'
+    | '/api/cafe-tts'
     | '/assessment/discovery'
     | '/assessment/processing'
     | '/assessment/recommendations'
@@ -852,6 +874,8 @@ export interface FileRouteTypes {
     | '/_app/notifications'
     | '/_app/profile'
     | '/_app/tracking'
+    | '/api/cafe-chat'
+    | '/api/cafe-tts'
     | '/assessment/discovery'
     | '/assessment/processing'
     | '/assessment/recommendations'
@@ -923,6 +947,8 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRouteWithChildren
   WelcomeRoute: typeof WelcomeRoute
+  ApiCafeChatRoute: typeof ApiCafeChatRoute
+  ApiCafeTtsRoute: typeof ApiCafeTtsRoute
   AssessmentDiscoveryRoute: typeof AssessmentDiscoveryRoute
   AssessmentProcessingRoute: typeof AssessmentProcessingRoute
   AssessmentRecommendationsRoute: typeof AssessmentRecommendationsRoute
@@ -1082,6 +1108,20 @@ declare module '@tanstack/react-router' {
       path: '/assessment/discovery'
       fullPath: '/assessment/discovery'
       preLoaderRoute: typeof AssessmentDiscoveryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/cafe-tts': {
+      id: '/api/cafe-tts'
+      path: '/api/cafe-tts'
+      fullPath: '/api/cafe-tts'
+      preLoaderRoute: typeof ApiCafeTtsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/cafe-chat': {
+      id: '/api/cafe-chat'
+      path: '/api/cafe-chat'
+      fullPath: '/api/cafe-chat'
+      preLoaderRoute: typeof ApiCafeChatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_app/tracking': {
@@ -1633,6 +1673,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRouteWithChildren,
   WelcomeRoute: WelcomeRoute,
+  ApiCafeChatRoute: ApiCafeChatRoute,
+  ApiCafeTtsRoute: ApiCafeTtsRoute,
   AssessmentDiscoveryRoute: AssessmentDiscoveryRoute,
   AssessmentProcessingRoute: AssessmentProcessingRoute,
   AssessmentRecommendationsRoute: AssessmentRecommendationsRoute,
