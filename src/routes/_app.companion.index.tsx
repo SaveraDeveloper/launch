@@ -167,7 +167,7 @@ function Page() {
   const recent = chats.filter((c) => !c.pinned).sort((a, b) => b.updatedAt - a.updatedAt);
 
   return (
-    <div className="relative h-[calc(100svh-9.5rem)]">
+    <div className="relative h-[calc(100svh-12.5rem)]">
       {/* Cafe backdrop */}
       <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-[#1a120c]">
         <img
