@@ -17,6 +17,8 @@ import {
   Trash2,
   Moon,
   Sun,
+  Mic,
+  Square,
 } from "lucide-react";
 import emptyCafe from "@/assets/emptycafe.png.asset.json";
 import saveraCafe from "@/assets/severacafe.png.asset.json";
@@ -45,6 +47,16 @@ export const Route = createFileRoute("/_app/companion/")({
   component: Page,
 });
 
+type SpeechRec = {
+  lang: string;
+  continuous: boolean;
+  interimResults: boolean;
+  onresult: (e: { resultIndex: number; results: { length: number; [i: number]: { 0: { transcript: string } } } }) => void;
+  onend: () => void;
+  start: () => void;
+  stop: () => void;
+};
+
 const PROMPTS = ["I'm overwhelmed today", "Help me reframe a thought", "Reflect on this week"];
 
 function Page() {
@@ -70,6 +82,7 @@ function Page() {
   const endRef = useRef<HTMLDivElement>(null);
   const plusWrapRef = useRef<HTMLDivElement>(null);
   const chatsRef = useRef<CafeChat[]>([]);
+  const recRef = useRef<SpeechRec | null>(null);
 
   useEffect(() => setChats(loadChats()), []);
   useEffect(() => {
@@ -429,12 +442,19 @@ function Page() {
 
               <button
                 onClick={dictate}
-                aria-label="Record a voice message"
-                className={`mb-1 rounded-full px-2 py-1.5 text-white transition ${
+                aria-label={listening ? "Stop recording" : "Record a voice message"}
+                className={`mb-1 flex items-center gap-1.5 rounded-full px-2 py-1.5 text-white transition ${
                   listening ? "bg-[#a33a2b]" : "bg-white/40"
                 }`}
               >
-                <VoiceBars level={micLevel} active={listening} />
+                {listening ? (
+                  <>
+                    <Square className="h-3.5 w-3.5 fill-current" />
+                    <VoiceBars level={micLevel} active />
+                  </>
+                ) : (
+                  <Mic className="h-4 w-4" />
+                )}
               </button>
               {draft.trim() && (
                 <button
