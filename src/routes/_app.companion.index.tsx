@@ -257,11 +257,9 @@ function Page() {
   const frameText = isDark ? "text-white" : "text-white";
 
   return (
-    <div className="flex w-full justify-center px-3 pt-3">
+    <div className="flex w-full justify-center">
       <div
-        className={`relative h-[calc(100svh-6.5rem)] w-full max-w-[400px] overflow-hidden rounded-[30px] border ${
-          isDark ? "border-white/10" : "border-white/25"
-        } bg-[#1a120c] shadow-[0_24px_70px_rgba(0,0,0,0.55)] ${frameText}`}
+        className={`relative h-[calc(100svh-6.5rem)] w-full overflow-hidden bg-[#1a120c] ${frameText}`}
       >
         {/* Cafe backdrop (contained in the phone frame) */}
         <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
