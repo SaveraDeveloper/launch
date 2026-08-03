@@ -65,11 +65,14 @@ function Page() {
   const [muted, setMuted] = useState(false);
   const [caption, setCaption] = useState("");
   const [speaking, setSpeaking] = useState(false);
+  const [thinking, setThinking] = useState(false);
   const level = useMicLevel(!muted);
   const historyRef = useRef<CafeMessage[]>([]);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const busyRef = useRef(false);
   const endedRef = useRef(false);
+  /** Bumped whenever the client interrupts — stale replies/audio are discarded. */
+  const genRef = useRef(0);
 
   const stopAudio = useCallback(() => {
     const a = audioRef.current;
@@ -82,16 +85,24 @@ function Page() {
     setSpeaking(false);
   }, []);
 
-  const speak = useCallback(async (text: string) => {
+  /** Barge-in: the client started speaking, so Savera stops instantly. */
+  const interrupt = useCallback(() => {
+    genRef.current += 1;
+    busyRef.current = false;
+    setThinking(false);
+    stopAudio();
+  }, [stopAudio]);
+
+  const speak = useCallback(async (text: string, gen: number) => {
     try {
       const res = await fetch("/api/cafe-tts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text }),
       });
-      if (!res.ok || endedRef.current) return;
+      if (!res.ok || endedRef.current || gen !== genRef.current) return;
       const blob = await res.blob();
-      if (endedRef.current) return;
+      if (endedRef.current || gen !== genRef.current) return;
       const url = URL.createObjectURL(blob);
       const audio = new Audio(url);
       audioRef.current = audio;
@@ -108,23 +119,29 @@ function Page() {
 
   const respond = useCallback(
     async (userText: string) => {
-      if (busyRef.current || endedRef.current) return;
+      if (endedRef.current) return;
+      const gen = genRef.current;
       busyRef.current = true;
+      setThinking(true);
       historyRef.current = [
         ...historyRef.current,
         { id: newId(), role: "user", text: userText },
       ];
       try {
         const reply = await saveraReply(historyRef.current);
-        if (endedRef.current) return;
+        if (endedRef.current || gen !== genRef.current) return;
         historyRef.current = [
           ...historyRef.current,
           { id: newId(), role: "savera", text: reply },
         ];
+        setThinking(false);
         setCaption(reply);
-        await speak(reply);
+        await speak(reply, gen);
       } finally {
-        busyRef.current = false;
+        if (gen === genRef.current) {
+          busyRef.current = false;
+          setThinking(false);
+        }
       }
     },
     [speak],
