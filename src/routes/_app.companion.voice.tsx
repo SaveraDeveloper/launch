@@ -203,12 +203,8 @@ function Page() {
   const scale = 1 + (muted ? 0 : level * 0.55);
 
   return (
-    <div className="flex w-full justify-center px-3 pt-3">
-      <div
-        className={`relative h-[calc(100svh-6.5rem)] w-full max-w-[400px] overflow-hidden rounded-[30px] border ${
-          isDark ? "border-white/10" : "border-white/25"
-        } bg-[#1a120c] shadow-[0_24px_70px_rgba(0,0,0,0.55)]`}
-      >
+    <div className="flex w-full justify-center">
+      <div className="relative h-[calc(100svh-6.5rem)] w-full overflow-hidden bg-[#1a120c]">
         <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
           <img src={saveraCafe.url} alt="" aria-hidden className="h-full w-full object-cover" />
           <div className={`absolute inset-0 ${isDark ? "bg-black/65" : "bg-black/45"}`} />
