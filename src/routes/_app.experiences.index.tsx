@@ -236,9 +236,8 @@ function Page() {
               params={{ id }}
               className={`group flex items-center gap-4 rounded-[26px] border border-white/35 bg-gradient-to-br ${tint} bg-white/25 p-4 shadow-[0_10px_30px_rgba(0,0,0,0.35)] backdrop-blur-2xl transition active:scale-[.985] hover:bg-white/30`}
             >
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/35 bg-white/30">
-                <img src={iconUrl} alt="" aria-hidden className="h-10 w-10 object-contain" />
-              </div>
+              <img src={iconUrl} alt="" aria-hidden className="h-14 w-14 shrink-0 object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.45)]" />
+
               <div className="min-w-0 flex-1">
                 <p className="font-seasons text-[19px] leading-tight text-white">{title}</p>
                 <p className="mt-1 line-clamp-2 text-[12px] font-light leading-snug text-white/80">

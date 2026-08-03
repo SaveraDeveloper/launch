@@ -21,6 +21,7 @@ import { Route as OnboardingGoalsRouteImport } from './routes/onboarding.goals'
 import { Route as OnboardingGenderRouteImport } from './routes/onboarding.gender'
 import { Route as OnboardingChallengesRouteImport } from './routes/onboarding.challenges'
 import { Route as OnboardingBasicInfoRouteImport } from './routes/onboarding.basic-info'
+import { Route as OnboardingAuthRouteImport } from './routes/onboarding.auth'
 import { Route as OnboardingAssessmentIntroRouteImport } from './routes/onboarding.assessment-intro'
 import { Route as AuthSignupRouteImport } from './routes/auth.signup'
 import { Route as AuthLoginRouteImport } from './routes/auth.login'
@@ -64,8 +65,8 @@ import { Route as AppProfileSettingsRouteImport } from './routes/_app.profile.se
 import { Route as AppProfileProgressRouteImport } from './routes/_app.profile.progress'
 import { Route as AppProfileGoalsRouteImport } from './routes/_app.profile.goals'
 import { Route as AppJourneyKitSavedRouteImport } from './routes/_app.journey-kit.saved'
+import { Route as AppCompanionVoiceRouteImport } from './routes/_app.companion.voice'
 import { Route as AppCompanionReflectionRouteImport } from './routes/_app.companion.reflection'
-import { Route as AppCompanionChatRouteImport } from './routes/_app.companion.chat'
 import { Route as AppJourneyKitVideosIndexRouteImport } from './routes/_app.journey-kit.videos.index'
 import { Route as AppJourneyKitJournalArchiveIndexRouteImport } from './routes/_app.journey-kit.journal-archive.index'
 import { Route as AppJourneyKitBooksIndexRouteImport } from './routes/_app.journey-kit.books.index'
@@ -140,6 +141,11 @@ const OnboardingChallengesRoute = OnboardingChallengesRouteImport.update({
 const OnboardingBasicInfoRoute = OnboardingBasicInfoRouteImport.update({
   id: '/onboarding/basic-info',
   path: '/onboarding/basic-info',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingAuthRoute = OnboardingAuthRouteImport.update({
+  id: '/onboarding/auth',
+  path: '/onboarding/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OnboardingAssessmentIntroRoute =
@@ -360,14 +366,14 @@ const AppJourneyKitSavedRoute = AppJourneyKitSavedRouteImport.update({
   path: '/journey-kit/saved',
   getParentRoute: () => AppRoute,
 } as any)
+const AppCompanionVoiceRoute = AppCompanionVoiceRouteImport.update({
+  id: '/companion/voice',
+  path: '/companion/voice',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppCompanionReflectionRoute = AppCompanionReflectionRouteImport.update({
   id: '/companion/reflection',
   path: '/companion/reflection',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppCompanionChatRoute = AppCompanionChatRouteImport.update({
-  id: '/companion/chat',
-  path: '/companion/chat',
   getParentRoute: () => AppRoute,
 } as any)
 const AppJourneyKitVideosIndexRoute =
@@ -475,6 +481,7 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
   '/onboarding/assessment-intro': typeof OnboardingAssessmentIntroRoute
+  '/onboarding/auth': typeof OnboardingAuthRoute
   '/onboarding/basic-info': typeof OnboardingBasicInfoRoute
   '/onboarding/challenges': typeof OnboardingChallengesRoute
   '/onboarding/gender': typeof OnboardingGenderRoute
@@ -484,8 +491,8 @@ export interface FileRoutesByFullPath {
   '/onboarding/ready': typeof OnboardingReadyRoute
   '/onboarding/support': typeof OnboardingSupportRoute
   '/assessment/': typeof AssessmentIndexRoute
-  '/companion/chat': typeof AppCompanionChatRoute
   '/companion/reflection': typeof AppCompanionReflectionRoute
+  '/companion/voice': typeof AppCompanionVoiceRoute
   '/journey-kit/saved': typeof AppJourneyKitSavedRoute
   '/profile/goals': typeof AppProfileGoalsRoute
   '/profile/progress': typeof AppProfileProgressRoute
@@ -548,6 +555,7 @@ export interface FileRoutesByTo {
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
   '/onboarding/assessment-intro': typeof OnboardingAssessmentIntroRoute
+  '/onboarding/auth': typeof OnboardingAuthRoute
   '/onboarding/basic-info': typeof OnboardingBasicInfoRoute
   '/onboarding/challenges': typeof OnboardingChallengesRoute
   '/onboarding/gender': typeof OnboardingGenderRoute
@@ -557,8 +565,8 @@ export interface FileRoutesByTo {
   '/onboarding/ready': typeof OnboardingReadyRoute
   '/onboarding/support': typeof OnboardingSupportRoute
   '/assessment': typeof AssessmentIndexRoute
-  '/companion/chat': typeof AppCompanionChatRoute
   '/companion/reflection': typeof AppCompanionReflectionRoute
+  '/companion/voice': typeof AppCompanionVoiceRoute
   '/journey-kit/saved': typeof AppJourneyKitSavedRoute
   '/profile/goals': typeof AppProfileGoalsRoute
   '/profile/progress': typeof AppProfileProgressRoute
@@ -624,6 +632,7 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
   '/onboarding/assessment-intro': typeof OnboardingAssessmentIntroRoute
+  '/onboarding/auth': typeof OnboardingAuthRoute
   '/onboarding/basic-info': typeof OnboardingBasicInfoRoute
   '/onboarding/challenges': typeof OnboardingChallengesRoute
   '/onboarding/gender': typeof OnboardingGenderRoute
@@ -633,8 +642,8 @@ export interface FileRoutesById {
   '/onboarding/ready': typeof OnboardingReadyRoute
   '/onboarding/support': typeof OnboardingSupportRoute
   '/assessment/': typeof AssessmentIndexRoute
-  '/_app/companion/chat': typeof AppCompanionChatRoute
   '/_app/companion/reflection': typeof AppCompanionReflectionRoute
+  '/_app/companion/voice': typeof AppCompanionVoiceRoute
   '/_app/journey-kit/saved': typeof AppJourneyKitSavedRoute
   '/_app/profile/goals': typeof AppProfileGoalsRoute
   '/_app/profile/progress': typeof AppProfileProgressRoute
@@ -700,6 +709,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/signup'
     | '/onboarding/assessment-intro'
+    | '/onboarding/auth'
     | '/onboarding/basic-info'
     | '/onboarding/challenges'
     | '/onboarding/gender'
@@ -709,8 +719,8 @@ export interface FileRouteTypes {
     | '/onboarding/ready'
     | '/onboarding/support'
     | '/assessment/'
-    | '/companion/chat'
     | '/companion/reflection'
+    | '/companion/voice'
     | '/journey-kit/saved'
     | '/profile/goals'
     | '/profile/progress'
@@ -773,6 +783,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/signup'
     | '/onboarding/assessment-intro'
+    | '/onboarding/auth'
     | '/onboarding/basic-info'
     | '/onboarding/challenges'
     | '/onboarding/gender'
@@ -782,8 +793,8 @@ export interface FileRouteTypes {
     | '/onboarding/ready'
     | '/onboarding/support'
     | '/assessment'
-    | '/companion/chat'
     | '/companion/reflection'
+    | '/companion/voice'
     | '/journey-kit/saved'
     | '/profile/goals'
     | '/profile/progress'
@@ -848,6 +859,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/signup'
     | '/onboarding/assessment-intro'
+    | '/onboarding/auth'
     | '/onboarding/basic-info'
     | '/onboarding/challenges'
     | '/onboarding/gender'
@@ -857,8 +869,8 @@ export interface FileRouteTypes {
     | '/onboarding/ready'
     | '/onboarding/support'
     | '/assessment/'
-    | '/_app/companion/chat'
     | '/_app/companion/reflection'
+    | '/_app/companion/voice'
     | '/_app/journey-kit/saved'
     | '/_app/profile/goals'
     | '/_app/profile/progress'
@@ -918,6 +930,7 @@ export interface RootRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
   AuthSignupRoute: typeof AuthSignupRoute
   OnboardingAssessmentIntroRoute: typeof OnboardingAssessmentIntroRoute
+  OnboardingAuthRoute: typeof OnboardingAuthRoute
   OnboardingBasicInfoRoute: typeof OnboardingBasicInfoRoute
   OnboardingChallengesRoute: typeof OnboardingChallengesRoute
   OnboardingGenderRoute: typeof OnboardingGenderRoute
@@ -1013,6 +1026,13 @@ declare module '@tanstack/react-router' {
       path: '/onboarding/basic-info'
       fullPath: '/onboarding/basic-info'
       preLoaderRoute: typeof OnboardingBasicInfoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding/auth': {
+      id: '/onboarding/auth'
+      path: '/onboarding/auth'
+      fullPath: '/onboarding/auth'
+      preLoaderRoute: typeof OnboardingAuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/onboarding/assessment-intro': {
@@ -1316,18 +1336,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppJourneyKitSavedRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/companion/voice': {
+      id: '/_app/companion/voice'
+      path: '/companion/voice'
+      fullPath: '/companion/voice'
+      preLoaderRoute: typeof AppCompanionVoiceRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/companion/reflection': {
       id: '/_app/companion/reflection'
       path: '/companion/reflection'
       fullPath: '/companion/reflection'
       preLoaderRoute: typeof AppCompanionReflectionRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/companion/chat': {
-      id: '/_app/companion/chat'
-      path: '/companion/chat'
-      fullPath: '/companion/chat'
-      preLoaderRoute: typeof AppCompanionChatRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/journey-kit/videos/': {
@@ -1520,8 +1540,8 @@ interface AppRouteChildren {
   AppNotificationsRoute: typeof AppNotificationsRoute
   AppProfileRoute: typeof AppProfileRouteWithChildren
   AppTrackingRoute: typeof AppTrackingRouteWithChildren
-  AppCompanionChatRoute: typeof AppCompanionChatRoute
   AppCompanionReflectionRoute: typeof AppCompanionReflectionRoute
+  AppCompanionVoiceRoute: typeof AppCompanionVoiceRoute
   AppJourneyKitSavedRoute: typeof AppJourneyKitSavedRoute
   AppProgressAchievementsRoute: typeof AppProgressAchievementsRoute
   AppProgressMilestonesRoute: typeof AppProgressMilestonesRoute
@@ -1566,8 +1586,8 @@ const AppRouteChildren: AppRouteChildren = {
   AppNotificationsRoute: AppNotificationsRoute,
   AppProfileRoute: AppProfileRouteWithChildren,
   AppTrackingRoute: AppTrackingRouteWithChildren,
-  AppCompanionChatRoute: AppCompanionChatRoute,
   AppCompanionReflectionRoute: AppCompanionReflectionRoute,
+  AppCompanionVoiceRoute: AppCompanionVoiceRoute,
   AppJourneyKitSavedRoute: AppJourneyKitSavedRoute,
   AppProgressAchievementsRoute: AppProgressAchievementsRoute,
   AppProgressMilestonesRoute: AppProgressMilestonesRoute,
@@ -1620,6 +1640,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
   AuthSignupRoute: AuthSignupRoute,
   OnboardingAssessmentIntroRoute: OnboardingAssessmentIntroRoute,
+  OnboardingAuthRoute: OnboardingAuthRoute,
   OnboardingBasicInfoRoute: OnboardingBasicInfoRoute,
   OnboardingChallengesRoute: OnboardingChallengesRoute,
   OnboardingGenderRoute: OnboardingGenderRoute,

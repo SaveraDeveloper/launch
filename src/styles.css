@@ -280,3 +280,9 @@
 }
 .beige-input::placeholder { color: #b09a63; }
 .beige-input:focus { border-color: #7a4a1d; box-shadow: 0 0 0 3px rgba(122,74,29,0.15); }
+
+@keyframes cafe-drift {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(4px, -8px, 0); }
+}
+.animate-cafe-drift { animation: cafe-drift 5s ease-in-out infinite; }

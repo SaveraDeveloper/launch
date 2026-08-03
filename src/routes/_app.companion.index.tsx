@@ -1,21 +1,447 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { ScreenScaffold, Section, ActionList } from "@/components/ScreenScaffold";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  Menu,
+  SquarePen,
+  Phone,
+  Plus,
+  Mic,
+  ArrowUp,
+  ChevronDown,
+  MessageCircle,
+  AudioLines,
+  Image as ImageIcon,
+  Paperclip,
+  X,
+} from "lucide-react";
+import emptyCafe from "@/assets/emptycafe.png.asset.json";
+import saveraCafe from "@/assets/severacafe.png.asset.json";
+import {
+  loadChats,
+  saveChats,
+  titleFrom,
+  newId,
+  type CafeChat,
+  type CafeMessage,
+} from "@/lib/cafeChats";
 
-export const Route = createFileRoute("/_app/companion/")({ component: Page });
+export const Route = createFileRoute("/_app/companion/")({
+  head: () => ({
+    meta: [
+      { title: "Cafe — Savera" },
+      {
+        name: "description",
+        content: "Sit down with Savera in the cafe for a warm, unhurried conversation.",
+      },
+    ],
+  }),
+  component: Page,
+});
+
+const PROMPTS = [
+  "I'm overwhelmed today",
+  "Help me reframe a thought",
+  "Reflect on this week",
+];
+
 function Page() {
+  const nav = useNavigate();
+  const [chats, setChats] = useState<CafeChat[]>([]);
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const [draft, setDraft] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [plusOpen, setPlusOpen] = useState(false);
+  const [attachments, setAttachments] = useState<string[]>([]);
+  const [pinnedOpen, setPinnedOpen] = useState(true);
+  const [recentOpen, setRecentOpen] = useState(true);
+  const photoRef = useRef<HTMLInputElement>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const endRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => setChats(loadChats()), []);
+  useEffect(() => {
+    inputRef.current?.focus({ preventScroll: true });
+  }, [activeId]);
+  useEffect(() => {
+    const el = endRef.current?.parentElement;
+    if (activeId && el) el.scrollTop = el.scrollHeight;
+  }, [chats, activeId]);
+
+
+
+  const active = useMemo(
+    () => chats.find((c) => c.id === activeId) ?? null,
+    [chats, activeId],
+  );
+
+  const persist = (next: CafeChat[]) => {
+    setChats(next);
+    saveChats(next);
+  };
+
+  function send(text: string) {
+    const body = text.trim();
+    if (!body && attachments.length === 0) return;
+    const msg: CafeMessage = { id: newId(), role: "user", text: body };
+    setDraft("");
+    setAttachments([]);
+
+    if (active) {
+      persist(
+        chats.map((c) =>
+          c.id === active.id
+            ? { ...c, messages: [...c.messages, msg], updatedAt: Date.now() }
+            : c,
+        ),
+      );
+    } else {
+      const chat: CafeChat = {
+        id: newId(),
+        kind: "text",
+        title: titleFrom(body),
+        pinned: false,
+        updatedAt: Date.now(),
+        messages: [msg],
+      };
+      persist([chat, ...chats]);
+      setActiveId(chat.id);
+    }
+  }
+
+  function newChat() {
+    setActiveId(null);
+    setDraft("");
+    setMenuOpen(false);
+    inputRef.current?.focus({ preventScroll: true });
+  }
+
+  function onPaste(e: React.ClipboardEvent) {
+    const item = Array.from(e.clipboardData.items).find((i) =>
+      i.type.startsWith("image/"),
+    );
+    const file = item?.getAsFile();
+    if (!file) return;
+    e.preventDefault();
+    const reader = new FileReader();
+    reader.onload = () => setAttachments((a) => [...a, String(reader.result)]);
+    reader.readAsDataURL(file);
+  }
+
+  function onPickPhoto(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    setPlusOpen(false);
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => setAttachments((a) => [...a, String(reader.result)]);
+    reader.readAsDataURL(file);
+    e.target.value = "";
+  }
+
+  function onPickFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    setPlusOpen(false);
+    if (file) setDraft((d) => `${d}${d ? " " : ""}[${file.name}]`);
+    e.target.value = "";
+  }
+
+  function dictate() {
+    const W = window as unknown as {
+      SpeechRecognition?: new () => {
+        lang: string;
+        onresult: (e: { results: { 0: { 0: { transcript: string } } } }) => void;
+        start: () => void;
+      };
+      webkitSpeechRecognition?: typeof W.SpeechRecognition;
+    };
+    const Ctor = W.SpeechRecognition ?? W.webkitSpeechRecognition;
+    if (!Ctor) return;
+    const rec = new Ctor();
+    rec.lang = "en-IN";
+    rec.onresult = (e) => setDraft((d) => `${d}${d ? " " : ""}${e.results[0][0].transcript}`);
+    rec.start();
+  }
+
+  const started = !!active;
+  const pinned = chats.filter((c) => c.pinned);
+  const recent = chats.filter((c) => !c.pinned).sort((a, b) => b.updatedAt - a.updatedAt);
+
   return (
-    <ScreenScaffold part="Part 11 · AI Companion" title="Your Companion" subtitle="A supportive space to think things through.">
-      <Section title="Start">
-        <ActionList items={[
-          { label: "Open Chat", variant: "primary", to: "/companion/chat" },
-          { label: "Reflection Session", variant: "secondary", to: "/companion/reflection" },
-        ]} />
-      </Section>
-      <Section title="Suggested Prompts">
-        {["I'm overwhelmed today","Help me reframe a thought","Reflect on this week"].map((p)=>(
-          <div key={p} className="rounded-lg bg-secondary px-4 py-3 text-sm">{p}</div>
-        ))}
-      </Section>
-    </ScreenScaffold>
+    <div className="relative h-[calc(100svh-9.5rem)]">
+      {/* Cafe backdrop */}
+      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-[#1a120c]">
+        <img
+          src={emptyCafe.url}
+          alt=""
+          aria-hidden
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[900ms] ${
+            started ? "opacity-0" : "opacity-100"
+          }`}
+        />
+        <img
+          src={saveraCafe.url}
+          alt=""
+          aria-hidden
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[900ms] ${
+            started ? "opacity-100" : "opacity-0"
+          }`}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/25 to-black/70" />
+      </div>
+
+      <div className="relative z-10 mx-auto flex h-full w-full max-w-[430px] flex-col overflow-hidden px-5 pt-8 animate-soft-in">
+        {/* Title row */}
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setMenuOpen(true)}
+            aria-label="Open chats menu"
+            className="rounded-full border border-white/30 bg-white/15 p-2 text-white backdrop-blur-xl"
+          >
+            <Menu className="h-4 w-4" />
+          </button>
+          <h1 className="font-seasons text-[30px] font-light leading-tight text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
+            Cafe
+          </h1>
+        </div>
+
+        {/* Header actions */}
+        <div className="mt-3 flex items-center gap-2.5">
+          <button
+            onClick={newChat}
+            aria-label="New chat"
+            title="New chat"
+            className="rounded-2xl border border-white/30 bg-white/20 p-2.5 text-white backdrop-blur-xl transition active:scale-95"
+          >
+            <SquarePen className="h-[18px] w-[18px]" />
+          </button>
+          <button
+            onClick={() => nav({ to: "/companion/voice" })}
+            aria-label="Have a call with Savera"
+            title="Have a call with Savera"
+            className="rounded-2xl border border-white/30 bg-white/20 p-2.5 text-white backdrop-blur-xl transition active:scale-95"
+          >
+            <Phone className="h-[18px] w-[18px]" />
+          </button>
+        </div>
+
+        {/* Transcript */}
+        <div className="min-h-0 flex-1 space-y-3 overflow-y-auto py-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {active?.messages.map((m) => (
+            <div
+              key={m.id}
+              className={m.role === "user" ? "flex justify-end" : "flex justify-start"}
+            >
+              <div
+                className={
+                  m.role === "user"
+                    ? "max-w-[80%] rounded-3xl rounded-br-lg bg-[#4a2f1d] px-4 py-2.5 text-[14px] font-light text-[#fdf3ea]"
+                    : "max-w-[85%] text-[14px] font-light leading-relaxed text-white"
+                }
+              >
+                {m.text}
+              </div>
+            </div>
+          ))}
+          <div ref={endRef} />
+        </div>
+
+        {/* Composer */}
+        <div className="relative z-20 pb-2">
+          {/* Floating bubbles */}
+          {!started && (
+            <div className="mb-3 flex flex-wrap justify-center gap-2">
+              {PROMPTS.map((p, i) => (
+                <button
+                  key={p}
+                  onClick={() => send(p)}
+                  className="animate-cafe-drift rounded-full border border-white/40 bg-white/25 px-4 py-2 text-[12.5px] font-light text-white shadow-[0_8px_24px_rgba(0,0,0,0.3)] backdrop-blur-xl transition active:scale-95"
+                  style={{ animationDelay: `${i * 0.8}s` }}
+                >
+                  {p}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {attachments.length > 0 && (
+            <div className="mb-2 flex gap-2">
+              {attachments.map((src, i) => (
+                <div key={i} className="relative">
+                  <img
+                    src={src}
+                    alt="Attachment preview"
+                    className="h-14 w-14 rounded-xl border border-white/40 object-cover"
+                  />
+                  <button
+                    aria-label="Remove attachment"
+                    onClick={() => setAttachments((a) => a.filter((_, j) => j !== i))}
+                    className="absolute -right-1.5 -top-1.5 rounded-full bg-[#4a2f1d] p-0.5 text-white"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="relative flex items-end gap-2 rounded-[26px] border border-white/40 bg-white/30 px-3 py-2 shadow-[0_10px_30px_rgba(0,0,0,0.35)] backdrop-blur-2xl">
+            {plusOpen && (
+              <div className="absolute bottom-[calc(100%+8px)] left-0 w-48 overflow-hidden rounded-2xl border border-white/50 bg-[linear-gradient(160deg,rgba(255,247,240,0.96),rgba(246,222,205,0.92))] text-[#4a2f1d] shadow-[0_16px_40px_rgba(0,0,0,0.4)]">
+                <button
+                  onClick={() => photoRef.current?.click()}
+                  className="flex w-full items-center gap-2 px-4 py-3 text-[13px] hover:bg-white/60"
+                >
+                  <ImageIcon className="h-4 w-4" /> Add Photo
+                </button>
+                <button
+                  onClick={() => fileRef.current?.click()}
+                  className="flex w-full items-center gap-2 px-4 py-3 text-[13px] hover:bg-white/60"
+                >
+                  <Paperclip className="h-4 w-4" /> Add File
+                </button>
+              </div>
+            )}
+            <button
+              onClick={() => setPlusOpen((v) => !v)}
+              aria-label="Add photo or file"
+              className="mb-1 rounded-full bg-white/40 p-1.5 text-white"
+            >
+              <Plus className="h-4 w-4" />
+            </button>
+            <input ref={photoRef} type="file" accept="image/*" className="hidden" onChange={onPickPhoto} />
+            <input ref={fileRef} type="file" className="hidden" onChange={onPickFile} />
+
+            <textarea
+              ref={inputRef}
+              value={draft}
+              rows={1}
+              onPaste={onPaste}
+              onChange={(e) => setDraft(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  send(draft);
+                }
+              }}
+              placeholder="Talk to Savera…"
+              className="max-h-28 flex-1 resize-none bg-transparent py-2 text-[14px] font-light text-white placeholder:text-white/65 focus:outline-none"
+            />
+
+            <button
+              onClick={dictate}
+              aria-label="Dictate a message"
+              className="mb-1 rounded-full bg-white/40 p-1.5 text-white"
+            >
+              <Mic className="h-4 w-4" />
+            </button>
+            {draft.trim() && (
+              <button
+                onClick={() => send(draft)}
+                aria-label="Send"
+                className="mb-1 rounded-full bg-[#4a2f1d] p-1.5 text-[#fdf3ea]"
+              >
+                <ArrowUp className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Side menu */}
+      {menuOpen && (
+        <div className="fixed inset-0 z-50 flex">
+          <button
+            aria-label="Close menu"
+            onClick={() => setMenuOpen(false)}
+            className="absolute inset-0 bg-[#2a1a10]/60 backdrop-blur-sm"
+          />
+          <aside className="relative h-full w-[78%] max-w-[300px] overflow-y-auto border-r border-white/40 bg-[linear-gradient(170deg,rgba(255,247,240,0.97),rgba(240,214,193,0.94))] p-4 text-[#4a2f1d] shadow-[0_0_60px_rgba(0,0,0,0.5)]">
+            <button
+              onClick={newChat}
+              className="flex w-full items-center gap-2.5 rounded-2xl bg-white/70 px-3 py-3 text-[14px]"
+            >
+              <SquarePen className="h-4 w-4" /> New Chat
+            </button>
+            <button
+              onClick={() => {
+                setMenuOpen(false);
+                nav({ to: "/companion/voice" });
+              }}
+              className="mt-2 flex w-full items-center gap-2.5 rounded-2xl bg-white/70 px-3 py-3 text-[14px]"
+            >
+              <AudioLines className="h-4 w-4" /> New Voice Chat
+            </button>
+
+            <MenuSection
+              label="Pinned"
+              open={pinnedOpen}
+              onToggle={() => setPinnedOpen((v) => !v)}
+              chats={pinned}
+              onSelect={(c) => {
+                setActiveId(c.id);
+                setMenuOpen(false);
+              }}
+            />
+            <MenuSection
+              label="Recent"
+              open={recentOpen}
+              onToggle={() => setRecentOpen((v) => !v)}
+              chats={recent}
+              onSelect={(c) => {
+                setActiveId(c.id);
+                setMenuOpen(false);
+              }}
+            />
+          </aside>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function MenuSection({
+  label,
+  open,
+  onToggle,
+  chats,
+  onSelect,
+}: {
+  label: string;
+  open: boolean;
+  onToggle: () => void;
+  chats: CafeChat[];
+  onSelect: (c: CafeChat) => void;
+}) {
+  return (
+    <section className="mt-5">
+      <button
+        onClick={onToggle}
+        className="flex w-full items-center justify-between px-1 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#4a2f1d]/60"
+      >
+        {label}
+        <ChevronDown className={`h-4 w-4 transition-transform ${open ? "" : "-rotate-90"}`} />
+      </button>
+      {open && (
+        <div className="mt-1 flex flex-col">
+          {chats.length === 0 && (
+            <p className="px-1 py-2 text-[12px] font-light text-[#4a2f1d]/55">Nothing here yet.</p>
+          )}
+          {chats.map((c) => (
+            <button
+              key={c.id}
+              onClick={() => onSelect(c)}
+              className="flex items-center gap-2.5 rounded-xl px-2 py-2 text-left text-[13px] hover:bg-white/60"
+            >
+              {c.kind === "voice" ? (
+                <AudioLines className="h-4 w-4 shrink-0 opacity-70" />
+              ) : (
+                <MessageCircle className="h-4 w-4 shrink-0 opacity-70" />
+              )}
+              <span className="truncate">{c.title}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </section>
   );
 }
