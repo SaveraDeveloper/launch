@@ -317,3 +317,9 @@
   to { opacity: 1; transform: translateY(0); }
 }
 .animate-caption-in { animation: cafe-caption-in 420ms ease-out both; }
+
+@keyframes cafe-word-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); filter: blur(4px); }
+  to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+.cafe-word { display: inline-block; animation: cafe-word-in 520ms cubic-bezier(.22,1,.36,1) both; }
