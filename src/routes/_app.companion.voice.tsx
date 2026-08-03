@@ -24,11 +24,32 @@ export const Route = createFileRoute("/_app/companion/voice")({
   component: Page,
 });
 
-/** Floating, word-by-word caption. */
+/** Floating caption that plays one sentence at a time, word by word. */
 function Caption({ text }: { text: string }) {
-  const words = text.split(/\s+/).filter(Boolean);
+  const sentences = (text.match(/[^.!?…]+[.!?…]*/g) ?? [text])
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const [idx, setIdx] = useState(0);
+
+  useEffect(() => {
+    setIdx(0);
+  }, [text]);
+
+  useEffect(() => {
+    if (idx >= sentences.length - 1) return;
+    const words = sentences[idx].split(/\s+/).length;
+    const id = window.setTimeout(() => setIdx((i) => i + 1), 900 + words * 320);
+    return () => window.clearTimeout(id);
+  }, [idx, sentences]);
+
+  const current = sentences[Math.min(idx, sentences.length - 1)] ?? "";
+  const words = current.split(/\s+/).filter(Boolean);
+
   return (
-    <p className="flex flex-wrap justify-center gap-x-1.5 gap-y-0.5 text-[15px] font-light leading-relaxed text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)]">
+    <p
+      key={`${text}-${idx}`}
+      className="flex flex-wrap justify-center gap-x-1.5 gap-y-0.5 text-[15px] font-light leading-relaxed text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)]"
+    >
       {words.map((w, i) => (
         <span key={`${w}-${i}`} className="cafe-word" style={{ animationDelay: `${i * 0.11}s` }}>
           {w}
