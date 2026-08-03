@@ -1,9 +1,17 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Mic, MicOff, PhoneOff, ArrowLeft } from "lucide-react";
+import { Mic, MicOff, Phone, ArrowLeft } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import saveraCafe from "@/assets/severacafe.png.asset.json";
 import { useMicLevel } from "@/components/CafeBits";
-import { saveraReply, newId, type CafeMessage } from "@/lib/cafeChats";
+import {
+  saveraReply,
+  newId,
+  loadChats,
+  saveChats,
+  generateTitle,
+  type CafeMessage,
+  type CafeChat,
+} from "@/lib/cafeChats";
 import { useCafeTheme } from "@/lib/cafeTheme";
 
 export const Route = createFileRoute("/_app/companion/voice")({
@@ -16,6 +24,20 @@ export const Route = createFileRoute("/_app/companion/voice")({
   component: Page,
 });
 
+/** Floating, word-by-word caption. */
+function Caption({ text }: { text: string }) {
+  const words = text.split(/\s+/).filter(Boolean);
+  return (
+    <p className="flex flex-wrap justify-center gap-x-1.5 gap-y-0.5 text-[15px] font-light leading-relaxed text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)]">
+      {words.map((w, i) => (
+        <span key={`${w}-${i}`} className="cafe-word" style={{ animationDelay: `${i * 0.11}s` }}>
+          {w}
+        </span>
+      ))}
+    </p>
+  );
+}
+
 function Page() {
   const nav = useNavigate();
   const { isDark } = useCafeTheme();
@@ -26,6 +48,18 @@ function Page() {
   const historyRef = useRef<CafeMessage[]>([]);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const busyRef = useRef(false);
+  const endedRef = useRef(false);
+
+  const stopAudio = useCallback(() => {
+    const a = audioRef.current;
+    if (a) {
+      a.pause();
+      a.currentTime = 0;
+      a.src = "";
+      audioRef.current = null;
+    }
+    setSpeaking(false);
+  }, []);
 
   const speak = useCallback(async (text: string) => {
     try {
@@ -34,8 +68,9 @@ function Page() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text }),
       });
-      if (!res.ok) return;
+      if (!res.ok || endedRef.current) return;
       const blob = await res.blob();
+      if (endedRef.current) return;
       const url = URL.createObjectURL(blob);
       const audio = new Audio(url);
       audioRef.current = audio;
@@ -52,7 +87,7 @@ function Page() {
 
   const respond = useCallback(
     async (userText: string) => {
-      if (busyRef.current) return;
+      if (busyRef.current || endedRef.current) return;
       busyRef.current = true;
       historyRef.current = [
         ...historyRef.current,
@@ -60,6 +95,7 @@ function Page() {
       ];
       try {
         const reply = await saveraReply(historyRef.current);
+        if (endedRef.current) return;
         historyRef.current = [
           ...historyRef.current,
           { id: newId(), role: "savera", text: reply },
@@ -73,11 +109,39 @@ function Page() {
     [speak],
   );
 
+  /** Save the call transcript into Recent, then leave. */
+  const hangUp = useCallback(() => {
+    endedRef.current = true;
+    stopAudio();
+
+    const spoken = historyRef.current.filter(
+      (m) => !m.text.startsWith("(the client has just sat down"),
+    );
+    if (spoken.length > 0) {
+      const chat: CafeChat = {
+        id: newId(),
+        kind: "voice",
+        title: "Voice session",
+        pinned: false,
+        updatedAt: Date.now(),
+        messages: spoken,
+      };
+      saveChats([chat, ...loadChats()]);
+      const first = spoken.find((m) => m.role === "user")?.text ?? spoken[0].text;
+      void generateTitle(first).then((title) => {
+        saveChats(loadChats().map((c) => (c.id === chat.id ? { ...c, title } : c)));
+      });
+    }
+    nav({ to: "/companion" });
+  }, [nav, stopAudio]);
+
   // Greeting when the call connects.
   useEffect(() => {
+    endedRef.current = false;
     void respond("(the client has just sat down for a voice session)");
     return () => {
-      audioRef.current?.pause();
+      endedRef.current = true;
+      stopAudio();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -90,7 +154,10 @@ function Page() {
         lang: string;
         continuous: boolean;
         interimResults: boolean;
-        onresult: (e: { results: { 0: { 0: { transcript: string } } } }) => void;
+        onresult: (e: {
+          resultIndex: number;
+          results: { length: number; [i: number]: { 0: { transcript: string } } };
+        }) => void;
         onend: () => void;
         start: () => void;
         stop: () => void;
@@ -105,11 +172,12 @@ function Page() {
     rec.interimResults = false;
     let stopped = false;
     rec.onresult = (e) => {
-      const text = e.results[0][0].transcript;
-      if (text?.trim()) void respond(text.trim());
+      let text = "";
+      for (let i = e.resultIndex; i < e.results.length; i++) text += e.results[i][0].transcript;
+      if (text.trim()) void respond(text.trim());
     };
     rec.onend = () => {
-      if (!stopped) {
+      if (!stopped && !endedRef.current) {
         try {
           rec.start();
         } catch {
@@ -148,7 +216,7 @@ function Page() {
 
         <div className="relative z-10 flex h-full flex-col px-5 pt-5 animate-soft-in">
           <button
-            onClick={() => nav({ to: "/companion" })}
+            onClick={hangUp}
             aria-label="Back to Cafe"
             className="inline-flex w-fit items-center rounded-full border border-white/30 bg-white/15 p-2 text-white backdrop-blur-xl"
           >
@@ -162,15 +230,8 @@ function Page() {
           </div>
 
           {/* Floating captions */}
-          <div className="mt-5 min-h-[72px] px-2 text-center">
-            {caption && (
-              <p
-                key={caption}
-                className="animate-caption-in rounded-2xl bg-black/35 px-4 py-2 text-[13px] font-light leading-relaxed text-white backdrop-blur-md"
-              >
-                {caption}
-              </p>
-            )}
+          <div className="mt-5 min-h-[84px] px-3 text-center">
+            {caption && <Caption key={caption} text={caption} />}
           </div>
 
           <div className="mt-6 flex justify-center">
@@ -199,14 +260,11 @@ function Page() {
               {muted ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
             </button>
             <button
-              onClick={() => {
-                audioRef.current?.pause();
-                nav({ to: "/companion" });
-              }}
+              onClick={hangUp}
               aria-label="End call"
               className="rounded-full bg-[#d13b2c] p-4 text-white shadow-[0_10px_30px_rgba(0,0,0,0.4)]"
             >
-              <PhoneOff className="h-5 w-5 rotate-[135deg]" />
+              <Phone className="h-5 w-5 rotate-[135deg]" />
             </button>
           </div>
         </div>

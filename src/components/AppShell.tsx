@@ -24,6 +24,8 @@ export function AppShell() {
   );
 
   const bgUrl = useApartmentBg();
+  // Cafe renders its own backdrop inside the phone frame — no apartment layer behind it.
+  const hideBg = pathname.startsWith("/companion");
 
   let blurClass = "";
   let overlayClass = "bg-gradient-to-b from-black/40 via-black/55 to-black/80";
@@ -41,7 +43,7 @@ export function AppShell() {
   return (
     <div className="relative flex min-h-svh flex-col text-white">
       <div className="pointer-events-none sticky top-0 -mb-[100svh] h-svh w-full overflow-hidden bg-[#1a1410]">
-        {bgUrl && (
+        {bgUrl && !hideBg && (
           <img
             src={bgUrl}
             alt=""
@@ -49,7 +51,7 @@ export function AppShell() {
             className={`h-full w-full object-cover transition-all duration-700 ${blurClass}`}
           />
         )}
-        <div className={`absolute inset-0 ${overlayClass}`} />
+        {!hideBg && <div className={`absolute inset-0 ${overlayClass}`} />}
       </div>
 
 

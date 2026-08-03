@@ -17,6 +17,8 @@ import {
   Trash2,
   Moon,
   Sun,
+  Mic,
+  Square,
 } from "lucide-react";
 import emptyCafe from "@/assets/emptycafe.png.asset.json";
 import saveraCafe from "@/assets/severacafe.png.asset.json";
@@ -45,6 +47,16 @@ export const Route = createFileRoute("/_app/companion/")({
   component: Page,
 });
 
+type SpeechRec = {
+  lang: string;
+  continuous: boolean;
+  interimResults: boolean;
+  onresult: (e: { resultIndex: number; results: { length: number; [i: number]: { 0: { transcript: string } } } }) => void;
+  onend: () => void;
+  start: () => void;
+  stop: () => void;
+};
+
 const PROMPTS = ["I'm overwhelmed today", "Help me reframe a thought", "Reflect on this week"];
 
 function Page() {
@@ -70,6 +82,7 @@ function Page() {
   const endRef = useRef<HTMLDivElement>(null);
   const plusWrapRef = useRef<HTMLDivElement>(null);
   const chatsRef = useRef<CafeChat[]>([]);
+  const recRef = useRef<SpeechRec | null>(null);
 
   useEffect(() => setChats(loadChats()), []);
   useEffect(() => {
@@ -191,14 +204,15 @@ function Page() {
   }
 
   function dictate() {
+    if (listening) {
+      recRef.current?.stop();
+      recRef.current = null;
+      setListening(false);
+      return;
+    }
     const W = window as unknown as {
-      SpeechRecognition?: new () => {
-        lang: string;
-        onresult: (e: { results: { 0: { 0: { transcript: string } } } }) => void;
-        onend: () => void;
-        start: () => void;
-      };
-      webkitSpeechRecognition?: typeof W.SpeechRecognition;
+      SpeechRecognition?: new () => SpeechRec;
+      webkitSpeechRecognition?: new () => SpeechRec;
     };
     const Ctor = W.SpeechRecognition ?? W.webkitSpeechRecognition;
     if (!Ctor) {
@@ -207,10 +221,33 @@ function Page() {
     }
     const rec = new Ctor();
     rec.lang = "en-IN";
-    rec.onresult = (e) => setDraft((d) => `${d}${d ? " " : ""}${e.results[0][0].transcript}`);
-    rec.onend = () => setListening(false);
+    rec.continuous = true;
+    rec.interimResults = false;
+    rec.onresult = (e) => {
+      let text = "";
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        text += e.results[i][0].transcript;
+      }
+      const t = text.trim();
+      if (t) setDraft((d) => `${d}${d ? " " : ""}${t}`);
+    };
+    // Keep listening until the user taps stop.
+    rec.onend = () => {
+      if (recRef.current === rec) {
+        try {
+          rec.start();
+        } catch {
+          /* ignore */
+        }
+      }
+    };
+    recRef.current = rec;
     setListening(true);
-    rec.start();
+    try {
+      rec.start();
+    } catch {
+      /* ignore */
+    }
   }
 
   const started = !!active;
@@ -254,6 +291,35 @@ function Page() {
         </div>
 
         <div className="relative z-10 flex h-full flex-col px-4 pt-4 animate-soft-in">
+          {/* Header — top of the phone frame */}
+          <div className="flex items-center gap-3 py-3">
+            <button
+              onClick={() => setMenuOpen(true)}
+              aria-label="Open chats menu"
+              className="rounded-full border border-white/30 bg-white/15 p-2 text-white backdrop-blur-xl transition-transform duration-300 active:rotate-90"
+            >
+              <Hamburger open={menuOpen} />
+            </button>
+            <h1 className="font-seasons flex-1 text-[22px] font-light leading-tight text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
+              Cafe
+            </h1>
+            <button
+              onClick={newChat}
+              aria-label="New chat"
+              title="New chat"
+              className="rounded-2xl border border-white/30 bg-white/20 p-2 text-white backdrop-blur-xl transition active:scale-95"
+            >
+              <SquarePen className="h-[17px] w-[17px]" />
+            </button>
+            <button
+              onClick={() => nav({ to: "/companion/voice" })}
+              aria-label="Have a call with Savera"
+              title="Have a call with Savera"
+              className="rounded-2xl border border-white/30 bg-white/20 p-2 text-white backdrop-blur-xl transition active:scale-95"
+            >
+              <Phone className="h-[17px] w-[17px]" />
+            </button>
+          </div>
           {/* Transcript */}
           <div className="min-h-0 flex-1 space-y-3 overflow-y-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {active?.messages.map((m) => (
@@ -376,12 +442,19 @@ function Page() {
 
               <button
                 onClick={dictate}
-                aria-label="Record a voice message"
-                className={`mb-1 rounded-full px-2 py-1.5 text-white transition ${
+                aria-label={listening ? "Stop recording" : "Record a voice message"}
+                className={`mb-1 flex items-center gap-1.5 rounded-full px-2 py-1.5 text-white transition ${
                   listening ? "bg-[#a33a2b]" : "bg-white/40"
                 }`}
               >
-                <VoiceBars level={micLevel} active={listening} />
+                {listening ? (
+                  <>
+                    <Square className="h-3.5 w-3.5 fill-current" />
+                    <VoiceBars level={micLevel} active />
+                  </>
+                ) : (
+                  <Mic className="h-4 w-4" />
+                )}
               </button>
               {draft.trim() && (
                 <button
@@ -395,35 +468,6 @@ function Page() {
             </div>
           </div>
 
-          {/* Title bar — sits at the bottom, just above the nav */}
-          <div className="flex items-center gap-3 py-3">
-            <button
-              onClick={() => setMenuOpen(true)}
-              aria-label="Open chats menu"
-              className="rounded-full border border-white/30 bg-white/15 p-2 text-white backdrop-blur-xl transition-transform duration-300 active:rotate-90"
-            >
-              <Hamburger open={menuOpen} />
-            </button>
-            <h1 className="font-seasons flex-1 text-[22px] font-light leading-tight text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
-              Cafe
-            </h1>
-            <button
-              onClick={newChat}
-              aria-label="New chat"
-              title="New chat"
-              className="rounded-2xl border border-white/30 bg-white/20 p-2 text-white backdrop-blur-xl transition active:scale-95"
-            >
-              <SquarePen className="h-[17px] w-[17px]" />
-            </button>
-            <button
-              onClick={() => nav({ to: "/companion/voice" })}
-              aria-label="Have a call with Savera"
-              title="Have a call with Savera"
-              className="rounded-2xl border border-white/30 bg-white/20 p-2 text-white backdrop-blur-xl transition active:scale-95"
-            >
-              <Phone className="h-[17px] w-[17px]" />
-            </button>
-          </div>
         </div>
 
         {/* Side menu */}
