@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Mic, MicOff, Phone, ArrowLeft } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import saveraCafe from "@/assets/severacafe.png.asset.json";
-import { useMicLevel } from "@/components/CafeBits";
+import { useMicLevel, TypingDots } from "@/components/CafeBits";
 import {
   saveraReply,
   newId,
